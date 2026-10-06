@@ -19,7 +19,7 @@ async fn create() {
         Some("application/json"),
         r#"{"currency":"ERN","custom_properties":{"key":"value","count":3,"ratio":0.5,"flags":[true,false],"nested":{"ok":true}},"custom_taxes":[{"name":"sample","rate":"sample","tax_code":"sample"}],"id":"customer_id_1","invoicing_emails":["sample"],"invoicing_entity_id":"invoicing_entity_id_83","name":"sample","preferred_locales":["sample"]}"#,
     );
-    client.customers().create(decode::<meteroid::models::CustomerCreateRequest>(r#"{"currency":"ERN","custom_taxes":[{"name":"sample","rate":"sample","tax_code":"sample"}],"invoicing_emails":["sample"]}"#)).await.unwrap();
+    client.customers().create(decode::<meteroid_rs::models::CustomerCreateRequest>(r#"{"currency":"ERN","custom_taxes":[{"name":"sample","rate":"sample","tax_code":"sample"}],"invoicing_emails":["sample"]}"#)).await.unwrap();
     assert_eq!(*requests.lock().unwrap(), ["POST /api/v1/customers"]);
 }
 
@@ -44,7 +44,7 @@ async fn replace() {
         Some("application/json"),
         r#"{"currency":"ERN","custom_properties":{"key":"value","count":3,"ratio":0.5,"flags":[true,false],"nested":{"ok":true}},"custom_taxes":[{"name":"sample","rate":"sample","tax_code":"sample"}],"id":"customer_id_1","invoicing_emails":["sample"],"invoicing_entity_id":"invoicing_entity_id_83","name":"sample","preferred_locales":["sample"]}"#,
     );
-    client.customers().replace("id_or_alias", decode::<meteroid::models::CustomerUpdateRequest>(r#"{"currency":"MMK","custom_taxes":[{"name":"sample","rate":"sample","tax_code":"sample"}],"invoicing_emails":["sample"],"invoicing_entity_id":"invoicing_entity_id_26"}"#)).await.unwrap();
+    client.customers().replace("id_or_alias", decode::<meteroid_rs::models::CustomerUpdateRequest>(r#"{"currency":"MMK","custom_taxes":[{"name":"sample","rate":"sample","tax_code":"sample"}],"invoicing_emails":["sample"],"invoicing_entity_id":"invoicing_entity_id_26"}"#)).await.unwrap();
     assert_eq!(
         *requests.lock().unwrap(),
         ["PUT /api/v1/customers/id_or_alias"]
@@ -72,7 +72,7 @@ async fn update() {
         .customers()
         .update(
             "id_or_alias",
-            decode::<meteroid::models::CustomerPatchRequest>(r#"{}"#),
+            decode::<meteroid_rs::models::CustomerPatchRequest>(r#"{}"#),
         )
         .await
         .unwrap();
@@ -111,7 +111,7 @@ async fn create_portal_token() {
         .customers()
         .create_portal_token(
             "id_or_alias",
-            decode::<meteroid::models::CustomerPortalTokenRequest>(r#"{}"#),
+            decode::<meteroid_rs::models::CustomerPortalTokenRequest>(r#"{}"#),
         )
         .await
         .unwrap();

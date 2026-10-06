@@ -21,7 +21,7 @@ async fn create() {
     );
     client
         .coupons()
-        .create(decode::<meteroid::models::CreateCouponRequest>(
+        .create(decode::<meteroid_rs::models::CreateCouponRequest>(
             r#"{"code":"sample","discount":{"type":"PERCENTAGE","percentage":"sample"}}"#,
         ))
         .await
@@ -51,7 +51,7 @@ async fn update() {
         .coupons()
         .update(
             "coupon_id",
-            decode::<meteroid::models::UpdateCouponRequest>(r#"{}"#),
+            decode::<meteroid_rs::models::UpdateCouponRequest>(r#"{}"#),
         )
         .await
         .unwrap();

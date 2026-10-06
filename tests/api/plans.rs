@@ -26,7 +26,7 @@ async fn create_plan_version_entitlement() {
         Some("application/json"),
         r#"{"data":[{"created_at":"2023-12-31T23:59:59.999-05:30","feature_id":"feature_id_39","id":"entitlement_id_2","updated_at":"2024-03-15T10:30:45.123+02:00","value":{"type":"BOOLEAN","enabled":false}}]}"#,
     );
-    client.plans().create_plan_version_entitlement("plan_version_id", decode::<meteroid::models::CreateEntitlementsRequest>(r#"{"entitlements":[{"feature_id":"feature_id_9","value":{"type":"BOOLEAN","enabled":false}}]}"#)).await.unwrap();
+    client.plans().create_plan_version_entitlement("plan_version_id", decode::<meteroid_rs::models::CreateEntitlementsRequest>(r#"{"entitlements":[{"feature_id":"feature_id_9","value":{"type":"BOOLEAN","enabled":false}}]}"#)).await.unwrap();
     assert_eq!(
         *requests.lock().unwrap(),
         ["POST /api/v1/plan-versions/plan_version_id/entitlements"]
@@ -51,7 +51,7 @@ async fn create() {
         Some("application/json"),
         r#"{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"sample","id":"plan_id_13","name":"sample","net_terms":2147483647,"plan_type":"FREE","price_components":[{"id":"price_component_id_38","name":"sample"}],"product_family":{"id":"product_family_id_66","name":"sample"},"status":"ARCHIVED","tax_inclusive":false,"version":123456789,"version_id":"plan_version_id_84"}"#,
     );
-    client.plans().create(decode::<meteroid::models::CreatePlanRequest>(r#"{"components":[{"fee":{"type":"RATE","rates":[{"price":"-0.000123","term":"ANNUAL"}]},"name":"sample"}],"currency":"sample","name":"sample","plan_type":"CUSTOM","product_family_id":"product_family_id_99","status":"ACTIVE"}"#)).await.unwrap();
+    client.plans().create(decode::<meteroid_rs::models::CreatePlanRequest>(r#"{"components":[{"fee":{"type":"RATE","rates":[{"price":"-0.000123","term":"ANNUAL"}]},"name":"sample"}],"currency":"sample","name":"sample","plan_type":"CUSTOM","product_family_id":"product_family_id_99","status":"ACTIVE"}"#)).await.unwrap();
     assert_eq!(*requests.lock().unwrap(), ["POST /api/v1/plans"]);
 }
 
@@ -66,7 +66,7 @@ async fn update_version_minimum() {
         .plans()
         .update_version_minimum(
             "plan_version_id",
-            decode::<meteroid::models::MinimumCommitment>(
+            decode::<meteroid_rs::models::MinimumCommitment>(
                 r#"{"amount":"sample","scope":{"type":"all_components"}}"#,
             ),
         )
@@ -110,7 +110,7 @@ async fn replace() {
         Some("application/json"),
         r#"{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"sample","id":"plan_id_13","name":"sample","net_terms":2147483647,"plan_type":"FREE","price_components":[{"id":"price_component_id_38","name":"sample"}],"product_family":{"id":"product_family_id_66","name":"sample"},"status":"ARCHIVED","tax_inclusive":false,"version":123456789,"version_id":"plan_version_id_84"}"#,
     );
-    client.plans().replace("plan_id", decode::<meteroid::models::ReplacePlanRequest>(r#"{"components":[{"fee":{"type":"RATE","rates":[{"price":"-0.000123","term":"ANNUAL"}]},"name":"sample"}],"currency":"sample","name":"sample"}"#)).await.unwrap();
+    client.plans().replace("plan_id", decode::<meteroid_rs::models::ReplacePlanRequest>(r#"{"components":[{"fee":{"type":"RATE","rates":[{"price":"-0.000123","term":"ANNUAL"}]},"name":"sample"}],"currency":"sample","name":"sample"}"#)).await.unwrap();
     assert_eq!(*requests.lock().unwrap(), ["PUT /api/v1/plans/plan_id"]);
 }
 
@@ -125,7 +125,7 @@ async fn update() {
         .plans()
         .update(
             "plan_id",
-            decode::<meteroid::models::PatchPlanRequest>(r#"{}"#),
+            decode::<meteroid_rs::models::PatchPlanRequest>(r#"{}"#),
         )
         .await
         .unwrap();

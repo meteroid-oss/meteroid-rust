@@ -21,7 +21,7 @@ async fn create() {
     );
     client
         .features()
-        .create(decode::<meteroid::models::CreateFeatureRequest>(
+        .create(decode::<meteroid_rs::models::CreateFeatureRequest>(
             r#"{"code":"sample","feature_type":{"type":"BOOLEAN"},"name":"sample"}"#,
         ))
         .await
@@ -54,7 +54,7 @@ async fn update() {
         .features()
         .update(
             "id_or_code",
-            decode::<meteroid::models::UpdateFeatureRequest>(r#"{}"#),
+            decode::<meteroid_rs::models::UpdateFeatureRequest>(r#"{}"#),
         )
         .await
         .unwrap();

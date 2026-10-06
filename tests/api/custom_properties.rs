@@ -29,7 +29,7 @@ async fn create_custom_property_definition() {
     client
         .custom_properties()
         .create_custom_property_definition(decode::<
-            meteroid::models::CustomPropertyDefinitionCreateRequest,
+            meteroid_rs::models::CustomPropertyDefinitionCreateRequest,
         >(
             r#"{"entity_type":"INVOICE","key":"sample","name":"sample","property_type":"TEXT"}"#,
         ))
@@ -70,7 +70,7 @@ async fn update_custom_property_definition() {
         .custom_properties()
         .update_custom_property_definition(
             "id",
-            decode::<meteroid::models::CustomPropertyDefinitionUpdateRequest>(r#"{}"#),
+            decode::<meteroid_rs::models::CustomPropertyDefinitionUpdateRequest>(r#"{}"#),
         )
         .await
         .unwrap();

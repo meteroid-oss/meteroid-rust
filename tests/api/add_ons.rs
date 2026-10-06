@@ -21,7 +21,7 @@ async fn create() {
     );
     client
         .add_ons()
-        .create(decode::<meteroid::models::CreateAddOnRequest>(
+        .create(decode::<meteroid_rs::models::CreateAddOnRequest>(
             r#"{"name":"sample","price_id":"price_id_44","product_id":"product_id_47"}"#,
         ))
         .await
@@ -51,7 +51,7 @@ async fn update() {
         .add_ons()
         .update(
             "addon_id",
-            decode::<meteroid::models::UpdateAddOnRequest>(r#"{}"#),
+            decode::<meteroid_rs::models::UpdateAddOnRequest>(r#"{}"#),
         )
         .await
         .unwrap();
@@ -93,7 +93,7 @@ async fn create_entitlement() {
         Some("application/json"),
         r#"{"data":[{"created_at":"2023-12-31T23:59:59.999-05:30","feature_id":"feature_id_39","id":"entitlement_id_2","updated_at":"2024-03-15T10:30:45.123+02:00","value":{"type":"BOOLEAN","enabled":false}}]}"#,
     );
-    client.add_ons().create_entitlement("addon_id", decode::<meteroid::models::CreateEntitlementsRequest>(r#"{"entitlements":[{"feature_id":"feature_id_9","value":{"type":"BOOLEAN","enabled":false}}]}"#)).await.unwrap();
+    client.add_ons().create_entitlement("addon_id", decode::<meteroid_rs::models::CreateEntitlementsRequest>(r#"{"entitlements":[{"feature_id":"feature_id_9","value":{"type":"BOOLEAN","enabled":false}}]}"#)).await.unwrap();
     assert_eq!(
         *requests.lock().unwrap(),
         ["POST /api/v1/addons/addon_id/entitlements"]

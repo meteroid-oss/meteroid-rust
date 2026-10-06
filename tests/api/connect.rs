@@ -24,9 +24,11 @@ async fn create_connected_account() {
     );
     client
         .connect()
-        .create_connected_account(decode::<meteroid::models::CreateConnectedAccountRequest>(
-            r#"{"connected_organization_id":"00000000-0000-0000-0000-000000000000"}"#,
-        ))
+        .create_connected_account(
+            decode::<meteroid_rs::models::CreateConnectedAccountRequest>(
+                r#"{"connected_organization_id":"00000000-0000-0000-0000-000000000000"}"#,
+            ),
+        )
         .await
         .unwrap();
     assert_eq!(
@@ -74,7 +76,9 @@ async fn create_onboarding_link() {
         .connect()
         .create_onboarding_link(
             "id",
-            decode::<meteroid::models::CreateOnboardingLinkRequest>(r#"{"redirect_url":"sample"}"#),
+            decode::<meteroid_rs::models::CreateOnboardingLinkRequest>(
+                r#"{"redirect_url":"sample"}"#,
+            ),
         )
         .await
         .unwrap();

@@ -37,7 +37,7 @@ async fn update_custom_properties() {
         Some("application/json"),
         r#"{"created_at":"2023-12-31T23:59:59.999-05:30","credit_note_number":"sample","credit_type":"REFUND","credited_amount_cents":9007199254740993,"currency":"MMK","custom_properties":{"key":"value","count":3,"ratio":0.5,"flags":[true,false],"nested":{"ok":true}},"customer_id":"customer_id_13","id":"credit_note_id_99","invoice_id":"invoice_id_90","invoice_number":"sample","line_items":[{"amount_total":-9007199254740993,"end_date":"2024-02-29","name":"sample","start_date":"1999-12-31","sub_line_items":[{"id":"sample","name":"sample","quantity":"12345.6789","total":9007199254740993,"unit_price":"-0.000123"}],"tax_rate":"12345.6789"}],"refunded_amount_cents":-9007199254740993,"status":"DRAFT","subtotal":9007199254740993,"tax_amount":9007199254740993,"tax_breakdown":[{"name":"sample","tax_amount":9007199254740993,"tax_rate":"12345.6789","taxable_amount":9007199254740993}],"total":-9007199254740993}"#,
     );
-    client.credit_notes().update_custom_properties("credit_note_id", decode::<meteroid::models::CreditNoteCustomPropertiesRequest>(r#"{"custom_properties":{"key":"value","count":3,"ratio":0.5,"flags":[true,false],"nested":{"ok":true}}}"#)).await.unwrap();
+    client.credit_notes().update_custom_properties("credit_note_id", decode::<meteroid_rs::models::CreditNoteCustomPropertiesRequest>(r#"{"custom_properties":{"key":"value","count":3,"ratio":0.5,"flags":[true,false],"nested":{"ok":true}}}"#)).await.unwrap();
     assert_eq!(
         *requests.lock().unwrap(),
         ["PATCH /api/v1/credit-notes/credit_note_id/custom-properties"]
