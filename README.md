@@ -3,7 +3,7 @@
 Meteroid API client
 
 ```sh
-cargo add meteroid
+cargo add meteroid-rs
 ```
 
 Calls are futures: run them on Tokio. Every method of the API is listed in [api.md](api.md).
@@ -11,7 +11,7 @@ Calls are futures: run them on Tokio. Every method of the API is listed in [api.
 ## Usage
 
 ```rust
-use meteroid::api::Meteroid;
+use meteroid_rs::api::Meteroid;
 
 let client = Meteroid::builder()
     .token("your-api-key")
@@ -48,7 +48,7 @@ the struct or `None`. Models keep the properties this version of the SDK does no
 and send them back. Request models are built from their required fields by `new(...)`:
 
 ```rust
-use meteroid::models::CreateOnboardingLinkRequest;
+use meteroid_rs::models::CreateOnboardingLinkRequest;
 
 let onboarding_link_response = client.connect().create_onboarding_link("id", CreateOnboardingLinkRequest::new("redirect_url")).await?;
 ```
@@ -69,12 +69,12 @@ let add_on = response.into_data();
 
 ## Errors
 
-Every call fails with `meteroid::error::Error`: `Api` for a non-2xx response (after
+Every call fails with `meteroid_rs::error::Error`: `Api` for a non-2xx response (after
 retries), `Timeout`, `Connection`, `Decode` for an unexpected body, `Request` for a request that
 could not be built.
 
 ```rust
-use meteroid::error::{ApiErrorKind, Error};
+use meteroid_rs::error::{ApiErrorKind, Error};
 
 match client.add_ons().retrieve("addon_id").await {
     Err(Error::Api(error)) if error.kind() == ApiErrorKind::NotFound => {}
@@ -94,7 +94,7 @@ with an `Idempotency-Key` (POST requests get one automatically). Each attempt ti
 seconds by default.
 
 ```rust
-use meteroid::api::RequestOptions;
+use meteroid_rs::api::RequestOptions;
 
 let options = RequestOptions::new().max_retries(0).timeout(std::time::Duration::from_secs(5));
 client.add_ons().with_options(options).retrieve("addon_id").await?;

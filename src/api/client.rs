@@ -24,9 +24,9 @@ static DEFAULT_SECURITY: Security = &[&["bearer_auth"]];
 /// The `Meteroid` API client, cheap to clone: clones share their connections.
 ///
 /// ```no_run
-/// use meteroid::api::Meteroid;
+/// use meteroid_rs::api::Meteroid;
 ///
-/// # async fn example() -> Result<(), meteroid::error::Error> {
+/// # async fn example() -> Result<(), meteroid_rs::error::Error> {
 /// // The token from `METEROID_API_KEY`, the base URL from `METEROID_BASE_URL`
 /// let client = Meteroid::from_env()?;
 /// let client = Meteroid::builder()

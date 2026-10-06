@@ -44,7 +44,7 @@ async fn update() {
         .entitlements()
         .update(
             "entitlement_id",
-            decode::<meteroid::models::UpdateEntitlementRequest>(r#"{}"#),
+            decode::<meteroid_rs::models::UpdateEntitlementRequest>(r#"{}"#),
         )
         .await
         .unwrap();

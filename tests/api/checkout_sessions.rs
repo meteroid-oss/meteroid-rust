@@ -21,7 +21,7 @@ async fn create() {
     );
     client
         .checkout_sessions()
-        .create(decode::<meteroid::models::CreateCheckoutSessionRequest>(
+        .create(decode::<meteroid_rs::models::CreateCheckoutSessionRequest>(
             r#"{"customer_id":"sample","plan_version_id":"plan_version_id_2"}"#,
         ))
         .await

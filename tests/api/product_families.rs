@@ -21,7 +21,7 @@ async fn create() {
     );
     client
         .product_families()
-        .create(decode::<meteroid::models::ProductFamilyCreateRequest>(
+        .create(decode::<meteroid_rs::models::ProductFamilyCreateRequest>(
             r#"{"name":"sample"}"#,
         ))
         .await

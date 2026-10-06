@@ -2,7 +2,7 @@
 //! Standard Webhooks signature verification, also accepting the legacy `svix-*` headers.
 //!
 //! ```no_run
-//! use meteroid::webhooks::{Webhook, WebhookError};
+//! use meteroid_rs::webhooks::{Webhook, WebhookError};
 //!
 //! fn verify(body: &[u8], headers: &http::HeaderMap) -> Result<(), WebhookError> {
 //!     Webhook::new("whsec_your_webhook_secret")?.verify(body, headers)

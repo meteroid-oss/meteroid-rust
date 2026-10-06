@@ -21,7 +21,7 @@ async fn create() {
     );
     client
         .oauth_apps()
-        .create(decode::<meteroid::models::CreateOAuthAppRequest>(
+        .create(decode::<meteroid_rs::models::CreateOAuthAppRequest>(
             r#"{"name":"sample","redirect_uris":["sample"]}"#,
         ))
         .await

@@ -19,7 +19,7 @@ async fn create() {
         Some("application/json"),
         r#"{"catalog":true,"created_at":"2023-12-31T23:59:59.999-05:30","fee_structure":{"type":"RATE"},"fee_type":"RATE","id":"product_id_13","name":"sample","product_family_id":"product_family_id_99"}"#,
     );
-    client.products().create(decode::<meteroid::models::CreateProductRequest>(r#"{"fee_structure":{"type":"RATE"},"name":"sample","product_family_id":"product_family_id_47"}"#)).await.unwrap();
+    client.products().create(decode::<meteroid_rs::models::CreateProductRequest>(r#"{"fee_structure":{"type":"RATE"},"name":"sample","product_family_id":"product_family_id_47"}"#)).await.unwrap();
     assert_eq!(*requests.lock().unwrap(), ["POST /api/v1/products"]);
 }
 
@@ -48,7 +48,7 @@ async fn update() {
         .products()
         .update(
             "product_id",
-            decode::<meteroid::models::UpdateProductRequest>(r#"{}"#),
+            decode::<meteroid_rs::models::UpdateProductRequest>(r#"{}"#),
         )
         .await
         .unwrap();
@@ -93,7 +93,7 @@ async fn create_entitlement() {
         Some("application/json"),
         r#"{"data":[{"created_at":"2023-12-31T23:59:59.999-05:30","feature_id":"feature_id_39","id":"entitlement_id_2","updated_at":"2024-03-15T10:30:45.123+02:00","value":{"type":"BOOLEAN","enabled":false}}]}"#,
     );
-    client.products().create_entitlement("product_id", decode::<meteroid::models::CreateEntitlementsRequest>(r#"{"entitlements":[{"feature_id":"feature_id_9","value":{"type":"BOOLEAN","enabled":false}}]}"#)).await.unwrap();
+    client.products().create_entitlement("product_id", decode::<meteroid_rs::models::CreateEntitlementsRequest>(r#"{"entitlements":[{"feature_id":"feature_id_9","value":{"type":"BOOLEAN","enabled":false}}]}"#)).await.unwrap();
     assert_eq!(
         *requests.lock().unwrap(),
         ["POST /api/v1/products/product_id/entitlements"]

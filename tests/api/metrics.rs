@@ -19,7 +19,7 @@ async fn create() {
         Some("application/json"),
         r#"{"aggregation_type":"LATEST","code":"sample","created_at":"2023-12-31T23:59:59.999-05:30","id":"billable_metric_id_40","name":"sample","product_family_id":"product_family_id_90"}"#,
     );
-    client.metrics().create(decode::<meteroid::models::CreateMetricRequest>(r#"{"aggregation_type":"LATEST","code":"sample","name":"sample","product_family_id":"product_family_id_13"}"#)).await.unwrap();
+    client.metrics().create(decode::<meteroid_rs::models::CreateMetricRequest>(r#"{"aggregation_type":"LATEST","code":"sample","name":"sample","product_family_id":"product_family_id_13"}"#)).await.unwrap();
     assert_eq!(*requests.lock().unwrap(), ["POST /api/v1/metrics"]);
 }
 
@@ -45,7 +45,7 @@ async fn update() {
         .metrics()
         .update(
             "metric_id",
-            decode::<meteroid::models::UpdateMetricRequest>(r#"{}"#),
+            decode::<meteroid_rs::models::UpdateMetricRequest>(r#"{}"#),
         )
         .await
         .unwrap();

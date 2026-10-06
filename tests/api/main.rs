@@ -24,7 +24,7 @@ mod usage;
 
 use std::sync::{Arc, Mutex};
 
-use meteroid::api::{
+use meteroid_rs::api::{
     http::{header::CONTENT_TYPE, HeaderMap, HeaderValue, StatusCode},
     middleware::{BoxError, BoxFuture, Middleware, Next, Request, Response},
     Bytes, Meteroid,

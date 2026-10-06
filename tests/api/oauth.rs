@@ -6,7 +6,7 @@ async fn introspect() {
     let (client, requests) = mock(200, Some("application/json"), r#"{"active":false}"#);
     client
         .oauth()
-        .introspect(decode::<meteroid::models::IntrospectionRequest>(
+        .introspect(decode::<meteroid_rs::models::IntrospectionRequest>(
             r#"{"token":"sample"}"#,
         ))
         .await
@@ -19,7 +19,7 @@ async fn revoke() {
     let (client, requests) = mock(204, None, r#""#);
     client
         .oauth()
-        .revoke(decode::<meteroid::models::RevocationRequest>(
+        .revoke(decode::<meteroid_rs::models::RevocationRequest>(
             r#"{"token":"sample"}"#,
         ))
         .await
@@ -36,7 +36,7 @@ async fn token() {
     );
     client
         .oauth()
-        .token(decode::<meteroid::models::TokenRequest>(
+        .token(decode::<meteroid_rs::models::TokenRequest>(
             r#"{"grant_type":"sample"}"#,
         ))
         .await
