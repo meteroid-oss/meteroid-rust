@@ -1,0 +1,61 @@
+[package]
+name = "meteroid"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.82"
+description = "Meteroid API client"
+license = "Apache-2.0"
+repository = "https://github.com/meteroid-oss/meteroid-rust"
+homepage = "https://meteroid.com"
+authors = ["Meteroid <hey@meteroid.com>"]
+readme = "README.md"
+categories = ["api-bindings"]
+
+[dependencies]
+# HTTP & Networking
+hyper = { version = "1.7", features = ["client", "http1"] }
+hyper-util = { version = "0.1", features = ["client-legacy", "http1", "tokio"] }
+http-body-util = "0.1"
+bytes = "1"
+futures-core = "0.3"
+http = "1"
+
+# TLS (rustls by default)
+hyper-rustls = { version = "0.27", optional = true, default-features = false, features = ["http1", "tls12", "ring", "native-tokio"] }
+rustls = { version = "0.23", optional = true, default-features = false, features = ["std", "tls12", "ring"] }
+
+# Native TLS (alternative)
+hyper-tls = { version = "0.6", optional = true }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+rust_decimal = { version = "1", features = ["serde"] }
+chrono = { version = "0.4.38", default-features = false, features = ["serde", "std"] }
+uuid = { version = "1", features = ["serde"] }
+
+# Utilities
+url = "2.5"
+percent-encoding = "2.3"
+
+# Webhook verification, behind the `webhooks` feature
+hmac = { version = "0.12", optional = true }
+sha2 = { version = "0.10", optional = true }
+base64 = { version = "0.22", optional = true }
+
+# Async runtime
+tokio = { version = "1", features = ["time", "sync"] }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt", "macros"] }
+
+[features]
+default = ["http1", "rustls-tls"]
+http1 = ["hyper-util/http1", "hyper-rustls?/http1"]
+http2 = ["hyper-util/http2", "hyper-rustls?/http2"]
+rustls-tls = ["dep:hyper-rustls", "dep:rustls"]
+native-tls = ["dep:hyper-tls"]
+webhooks = ["dep:hmac", "dep:sha2", "dep:base64"]
+
+[package.metadata.docs.rs]
+all-features = true
