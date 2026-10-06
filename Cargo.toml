@@ -50,7 +50,7 @@ tokio = { version = "1", features = ["time", "sync"] }
 tokio = { version = "1", features = ["rt", "macros"] }
 
 [features]
-default = ["http1", "rustls-tls"]
+default = ["http1", "rustls-tls", "webhooks"]
 http1 = ["hyper-util/http1", "hyper-rustls?/http1"]
 http2 = ["hyper-util/http2", "hyper-rustls?/http2"]
 rustls-tls = ["dep:hyper-rustls", "dep:rustls"]

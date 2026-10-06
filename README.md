@@ -102,7 +102,7 @@ client.add_ons().with_options(options).retrieve("addon_id").await?;
 
 ## Features
 
-`rustls-tls` (default) or `native-tls`, `http2`, and `webhooks` for the webhook verifier.
+`rustls-tls` (default) or `native-tls`, `http2`, and `webhooks` (default) for the webhook verifier.
 
 - Source: https://github.com/meteroid-oss/meteroid-rust
 - License: Apache-2.0
