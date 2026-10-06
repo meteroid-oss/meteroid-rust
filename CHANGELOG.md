@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.27.1](https://github.com/meteroid-oss/meteroid-rust/compare/v0.27.0...v0.27.1) (2026-10-06)
+
+
+### Features
+
+* enable the webhook verifier by default ([#4](https://github.com/meteroid-oss/meteroid-rust/issues/4)) ([dc965ad](https://github.com/meteroid-oss/meteroid-rust/commit/dc965ad09ae870b6a1e3f15c7fbd4f17ad8b5969))
+
 ## [0.27.0](https://github.com/meteroid-oss/meteroid-rust/compare/v0.1.0...v0.27.0) (2026-10-06)
 
 
