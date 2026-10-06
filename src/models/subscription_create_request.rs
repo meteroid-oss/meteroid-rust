@@ -1,0 +1,114 @@
+// this file is @generated
+use serde::{Deserialize, Serialize};
+
+use super::{
+    create_subscription_add_on::CreateSubscriptionAddOn,
+    create_subscription_components::CreateSubscriptionComponents,
+    payment_methods_config::PaymentMethodsConfig, plan_id::PlanId,
+    subscription_activation_condition_enum::SubscriptionActivationConditionEnum,
+};
+
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct SubscriptionCreateRequest {
+    pub activation_condition: SubscriptionActivationConditionEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub add_ons: Option<Vec<CreateSubscriptionAddOn>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub auto_advance_invoices: Option<bool>,
+
+    /// Historical import mode: when true, invoices finalized for this subscription keep their
+    /// billing-period date as the invoice date instead of being stamped with the emission date.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub backdate_invoices: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub billing_day_anchor: Option<i32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub charge_automatically: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub coupon_codes: Option<Vec<String>>,
+
+    /// User-defined custom property values, keyed by definition `key`. Validated against the
+    /// tenant's subscription definitions.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub custom_properties: Option<serde_json::Value>,
+
+    pub customer_id_or_alias: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub end_date: Option<chrono::NaiveDate>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub invoice_memo: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub net_terms: Option<i32>,
+
+    /// Payment methods configuration. If not specified, inherits from the invoicing entity.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_methods_config: Option<PaymentMethodsConfig>,
+
+    pub plan_id: PlanId,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub price_components: Option<CreateSubscriptionComponents>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub purchase_order: Option<String>,
+
+    /// Migration mode: when true with a past start_date, skip creating invoices for past cycles.
+    /// The subscription will be set to the current billing period with correct cycle_index.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub skip_past_invoices: Option<bool>,
+
+    pub start_date: chrono::NaiveDate,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub trial_days: Option<i32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub version: Option<i32>,
+
+    /// Properties this version of the SDK does not know, sent back as received.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+impl SubscriptionCreateRequest {
+    /// Creates a value from its required fields.
+    #[must_use]
+    pub fn new(
+        activation_condition: SubscriptionActivationConditionEnum,
+        customer_id_or_alias: impl Into<String>,
+        plan_id: PlanId,
+        start_date: chrono::NaiveDate,
+    ) -> Self {
+        Self {
+            activation_condition,
+            add_ons: None,
+            auto_advance_invoices: None,
+            backdate_invoices: None,
+            billing_day_anchor: None,
+            charge_automatically: None,
+            coupon_codes: None,
+            custom_properties: None,
+            customer_id_or_alias: customer_id_or_alias.into(),
+            end_date: None,
+            invoice_memo: None,
+            net_terms: None,
+            payment_methods_config: None,
+            plan_id,
+            price_components: None,
+            purchase_order: None,
+            skip_past_invoices: None,
+            start_date,
+            trial_days: None,
+            version: None,
+            extra: serde_json::Map::new(),
+        }
+    }
+}

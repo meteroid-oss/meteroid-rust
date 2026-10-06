@@ -1,0 +1,129 @@
+// this file is @generated
+use serde::{Deserialize, Serialize};
+
+use super::{
+    address::Address, currency::Currency, custom_tax_rate::CustomTaxRate,
+    customer_type::CustomerType, invoicing_entity_id::InvoicingEntityId,
+    shipping_address::ShippingAddress,
+};
+
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+pub struct CustomerCreateRequest {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub alias: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub billing_address: Option<Address>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub billing_email: Option<String>,
+
+    /// BT-10 — the reference the buyer routes invoices by (a Leitweg-ID for German
+    /// public bodies). Required by XRechnung.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub buyer_reference: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub connected_account_id: Option<String>,
+
+    pub currency: Currency,
+
+    /// User-defined custom property values, keyed by definition `key`. Validated against the
+    /// tenant's `CUSTOMER` property definitions. Omit to leave unset.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub custom_properties: Option<serde_json::Value>,
+
+    pub custom_taxes: Vec<CustomTaxRate>,
+
+    /// `INDIVIDUAL` requires `first_name`, `last_name`, and a billing-address country.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub customer_type: Option<CustomerType>,
+
+    /// Free-text legal exemption mention surfaced on exempt invoices.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub exemption_reason: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub first_name: Option<String>,
+
+    pub invoicing_emails: Vec<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub invoicing_entity_id: Option<InvoicingEntityId>,
+
+    /// Deprecated: use `preferred_locales`. Applied only when `preferred_locales` is absent.
+    #[deprecated]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub invoicing_language: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_tax_exempt: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub last_name: Option<String>,
+
+    /// BT-47 — the buyer's national register identifier (SIREN/SIRET, HRB).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub legal_number: Option<String>,
+
+    /// Required for `COMPANY`. Ignored for `INDIVIDUAL`: derived from `first_name` + `last_name`.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub phone: Option<String>,
+
+    /// Preferred document languages, most-preferred first (BCP-47 tags, e.g.
+    /// `["fr-FR", "en"]`); overrides the invoicing entity default. The first one the
+    /// renderer has a template for wins, so an unsupported entry alongside a supported
+    /// one just falls through; a list of only unsupported ones is rejected.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub preferred_locales: Option<Vec<String>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub shipping_address: Option<ShippingAddress>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub vat_number: Option<String>,
+
+    /// Properties this version of the SDK does not know, sent back as received.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+impl CustomerCreateRequest {
+    /// Creates a value from its required fields.
+    #[must_use]
+    pub fn new(
+        currency: Currency,
+        custom_taxes: Vec<CustomTaxRate>,
+        invoicing_emails: Vec<String>,
+    ) -> Self {
+        #[allow(deprecated)]
+        Self {
+            alias: None,
+            billing_address: None,
+            billing_email: None,
+            buyer_reference: None,
+            connected_account_id: None,
+            currency,
+            custom_properties: None,
+            custom_taxes,
+            customer_type: None,
+            exemption_reason: None,
+            first_name: None,
+            invoicing_emails,
+            invoicing_entity_id: None,
+            invoicing_language: None,
+            is_tax_exempt: None,
+            last_name: None,
+            legal_number: None,
+            name: None,
+            phone: None,
+            preferred_locales: None,
+            shipping_address: None,
+            vat_number: None,
+            extra: serde_json::Map::new(),
+        }
+    }
+}
