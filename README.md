@@ -1,6 +1,8 @@
 # Meteroid Rust SDK
 
-Meteroid API client
+The official Rust SDK for [Meteroid](https://meteroid.com), the open-source billing and pricing platform. Meteroid manages subscriptions, usage-based billing and metering, invoicing and revenue analytics; this library calls its REST API and verifies its webhooks, against Meteroid Cloud (`https://api.meteroid.com`) or a self-hosted instance.
+
+[Website](https://meteroid.com) · [Documentation](https://docs.meteroid.com) · [API reference](https://docs.meteroid.com/api-reference) · [Meteroid on GitHub](https://github.com/meteroid-oss/meteroid)
 
 ```sh
 cargo add meteroid-rs
@@ -15,7 +17,7 @@ use meteroid_rs::api::Meteroid;
 
 let client = Meteroid::builder()
     .token("your-api-key")
-    .base_url("https://api.example.com")
+    .base_url("https://api.meteroid.com")
     .build()?;
 
 let add_on = client.add_ons().retrieve("addon_id").await?;
@@ -28,7 +30,7 @@ println!("{add_on:?}");
 ```rust
 let client = Meteroid::builder()
     .token("your-api-key")
-    .base_url("https://staging.example.com")
+    .base_url("https://meteroid.your-company.com")
     .timeout(std::time::Duration::from_secs(20))
     .max_retries(3)
     .header("x-team", "billing")

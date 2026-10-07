@@ -3,13 +3,15 @@ name = "meteroid-rs"
 version = "0.27.1"
 edition = "2021"
 rust-version = "1.82"
-description = "Meteroid API client"
+description = "Official Rust SDK for Meteroid, the open-source billing platform: subscriptions, invoicing, usage-based billing and webhooks."
 license = "Apache-2.0"
 repository = "https://github.com/meteroid-oss/meteroid-rust"
 homepage = "https://meteroid.com"
 authors = ["Meteroid <hey@meteroid.com>"]
 readme = "README.md"
-categories = ["api-bindings"]
+documentation = "https://docs.rs/meteroid-rs"
+keywords = ["meteroid", "billing", "subscriptions", "invoicing", "usage-based-billing"]
+categories = ["api-bindings", "finance"]
 
 [dependencies]
 # HTTP & Networking
