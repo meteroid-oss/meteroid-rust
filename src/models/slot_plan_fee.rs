@@ -33,4 +33,18 @@ impl SlotPlanFee {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `minimum_count`.
+    #[must_use]
+    pub fn minimum_count(mut self, minimum_count: impl Into<i32>) -> Self {
+        self.minimum_count = Some(minimum_count.into());
+        self
+    }
+
+    /// Sets `quota`.
+    #[must_use]
+    pub fn quota(mut self, quota: impl Into<i32>) -> Self {
+        self.quota = Some(quota.into());
+        self
+    }
 }

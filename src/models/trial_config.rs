@@ -28,4 +28,11 @@ impl TrialConfig {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `trialing_plan_id`.
+    #[must_use]
+    pub fn trialing_plan_id(mut self, trialing_plan_id: impl Into<PlanId>) -> Self {
+        self.trialing_plan_id = Some(trialing_plan_id.into());
+        self
+    }
 }

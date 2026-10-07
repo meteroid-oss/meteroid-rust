@@ -1,5 +1,6 @@
 // this file is @generated
 #![allow(clippy::doc_markdown, clippy::default_trait_access)]
+
 #[allow(unused_imports, clippy::wildcard_imports)]
 use crate::{error::Result, models::*, Configuration};
 
@@ -39,10 +40,24 @@ impl CustomersListOptions {
         self
     }
 
+    /// Sets the `order_by` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_order_by(mut self, order_by: Option<String>) -> Self {
+        self.order_by = order_by;
+        self
+    }
+
     /// Sets the `page` query parameter.
     #[must_use]
     pub fn page(mut self, page: impl Into<i32>) -> Self {
         self.page = Some(page.into());
+        self
+    }
+
+    /// Sets the `page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_page(mut self, page: Option<i32>) -> Self {
+        self.page = page;
         self
     }
 
@@ -53,6 +68,13 @@ impl CustomersListOptions {
         self
     }
 
+    /// Sets the `per_page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_per_page(mut self, per_page: Option<i32>) -> Self {
+        self.per_page = per_page;
+        self
+    }
+
     /// Sets the `search` query parameter.
     #[must_use]
     pub fn search(mut self, search: impl Into<String>) -> Self {
@@ -60,10 +82,24 @@ impl CustomersListOptions {
         self
     }
 
+    /// Sets the `search` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_search(mut self, search: Option<String>) -> Self {
+        self.search = search;
+        self
+    }
+
     /// Sets the `archived` query parameter.
     #[must_use]
     pub fn archived(mut self, archived: impl Into<bool>) -> Self {
         self.archived = Some(archived.into());
+        self
+    }
+
+    /// Sets the `archived` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_archived(mut self, archived: Option<bool>) -> Self {
+        self.archived = archived;
         self
     }
 }
@@ -100,14 +136,7 @@ impl Customers {
         self
     }
 
-    /// List customers with optional pagination and search filtering.
-    ///
-    /// `GET /api/v1/customers`.
-    ///
-    /// # Errors
-    ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429, 500).
-    pub fn list(
+    fn list_request(
         &self,
         options: impl Into<Option<CustomersListOptions>>,
     ) -> crate::api::Call<crate::models::CustomerListResponse> {
@@ -127,6 +156,36 @@ impl Customers {
             .with_optional_query_param("archived", archived)
             .with_options(&self.options)
             .json(&self.cfg)
+    }
+
+    /// List customers with optional pagination and search filtering.
+    ///
+    /// `GET /api/v1/customers`, a page at a time: awaiting the call gives the first
+    /// [`Page`](crate::api::Page), [`items`](crate::api::PageCall::items) every
+    /// [`Customer`](crate::models::Customer) across pages
+    /// and [`pages`](crate::api::PageCall::pages) every page.
+    ///
+    /// # Errors
+    ///
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429, 500).
+    pub fn list(
+        &self,
+        options: impl Into<Option<CustomersListOptions>>,
+    ) -> crate::api::PageCall<crate::models::CustomerListResponse, crate::models::Customer> {
+        static WALK: crate::api::pagination::Walk<CustomersListOptions> =
+            crate::api::pagination::Walk::Page {
+                first: 0,
+                get: |options| options.page.map(i64::from),
+                set: |options, position| options.page = i32::try_from(position).ok(),
+            };
+        let this = self.clone();
+        let call = move |options: CustomersListOptions| this.list_request(options);
+        crate::api::PageCall::new(
+            options.into().unwrap_or_default(),
+            WALK,
+            crate::api::pages::CUSTOMERS_LIST,
+            call,
+        )
     }
 
     /// Create customer

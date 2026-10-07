@@ -1,5 +1,6 @@
 // this file is @generated
 #![allow(clippy::doc_markdown, clippy::default_trait_access)]
+
 #[allow(unused_imports, clippy::wildcard_imports)]
 use crate::{error::Result, models::*, Configuration};
 
@@ -36,10 +37,24 @@ impl CustomPropertiesListCustomPropertyDefinitionsOptions {
         self
     }
 
+    /// Sets the `entity_type` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_entity_type(mut self, entity_type: Option<CustomPropertyEntityType>) -> Self {
+        self.entity_type = entity_type;
+        self
+    }
+
     /// Sets the `include_archived` query parameter.
     #[must_use]
     pub fn include_archived(mut self, include_archived: impl Into<bool>) -> Self {
         self.include_archived = Some(include_archived.into());
+        self
+    }
+
+    /// Sets the `include_archived` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_include_archived(mut self, include_archived: Option<bool>) -> Self {
+        self.include_archived = include_archived;
         self
     }
 
@@ -50,10 +65,24 @@ impl CustomPropertiesListCustomPropertyDefinitionsOptions {
         self
     }
 
+    /// Sets the `page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_page(mut self, page: Option<i32>) -> Self {
+        self.page = page;
+        self
+    }
+
     /// Sets the `per_page` query parameter.
     #[must_use]
     pub fn per_page(mut self, per_page: impl Into<i32>) -> Self {
         self.per_page = Some(per_page.into());
+        self
+    }
+
+    /// Sets the `per_page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_per_page(mut self, per_page: Option<i32>) -> Self {
+        self.per_page = per_page;
         self
     }
 }
@@ -90,14 +119,7 @@ impl CustomProperties {
         self
     }
 
-    /// List custom property definitions
-    ///
-    /// `GET /api/v1/custom-property-definitions`.
-    ///
-    /// # Errors
-    ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429, 500).
-    pub fn list_custom_property_definitions(
+    fn list_custom_property_definitions_request(
         &self,
         options: impl Into<Option<CustomPropertiesListCustomPropertyDefinitionsOptions>>,
     ) -> crate::api::Call<crate::models::CustomPropertyDefinitionListResponse> {
@@ -115,6 +137,42 @@ impl CustomProperties {
             .with_optional_query_param("per_page", per_page)
             .with_options(&self.options)
             .json(&self.cfg)
+    }
+
+    /// List custom property definitions
+    ///
+    /// `GET /api/v1/custom-property-definitions`, a page at a time: awaiting the call gives the first
+    /// [`Page`](crate::api::Page), [`items`](crate::api::PageCall::items) every
+    /// [`CustomPropertyDefinition`](crate::models::CustomPropertyDefinition) across pages
+    /// and [`pages`](crate::api::PageCall::pages) every page.
+    ///
+    /// # Errors
+    ///
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429, 500).
+    pub fn list_custom_property_definitions(
+        &self,
+        options: impl Into<Option<CustomPropertiesListCustomPropertyDefinitionsOptions>>,
+    ) -> crate::api::PageCall<
+        crate::models::CustomPropertyDefinitionListResponse,
+        crate::models::CustomPropertyDefinition,
+    > {
+        static WALK: crate::api::pagination::Walk<
+            CustomPropertiesListCustomPropertyDefinitionsOptions,
+        > = crate::api::pagination::Walk::Page {
+            first: 0,
+            get: |options| options.page.map(i64::from),
+            set: |options, position| options.page = i32::try_from(position).ok(),
+        };
+        let this = self.clone();
+        let call = move |options: CustomPropertiesListCustomPropertyDefinitionsOptions| {
+            this.list_custom_property_definitions_request(options)
+        };
+        crate::api::PageCall::new(
+            options.into().unwrap_or_default(),
+            WALK,
+            crate::api::pages::CUSTOM_PROPERTIES_LIST_CUSTOM_PROPERTY_DEFINITIONS,
+            call,
+        )
     }
 
     /// Create a custom property definition

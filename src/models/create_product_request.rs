@@ -28,15 +28,29 @@ impl CreateProductRequest {
     pub fn new(
         fee_structure: ProductFeeStructure,
         name: impl Into<String>,
-        product_family_id: ProductFamilyId,
+        product_family_id: impl Into<ProductFamilyId>,
     ) -> Self {
         Self {
             catalog: None,
             description: None,
             fee_structure,
             name: name.into(),
-            product_family_id,
+            product_family_id: product_family_id.into(),
             extra: serde_json::Map::new(),
         }
+    }
+
+    /// Sets `catalog`.
+    #[must_use]
+    pub fn catalog(mut self, catalog: impl Into<bool>) -> Self {
+        self.catalog = Some(catalog.into());
+        self
+    }
+
+    /// Sets `description`.
+    #[must_use]
+    pub fn description(mut self, description: impl Into<String>) -> Self {
+        self.description = Some(description.into());
+        self
     }
 }

@@ -26,4 +26,11 @@ impl RevocationRequest {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `token_type_hint`.
+    #[must_use]
+    pub fn token_type_hint(mut self, token_type_hint: impl Into<String>) -> Self {
+        self.token_type_hint = Some(token_type_hint.into());
+        self
+    }
 }

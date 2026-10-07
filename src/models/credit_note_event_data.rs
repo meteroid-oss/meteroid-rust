@@ -65,12 +65,12 @@ impl CreditNoteEventData {
     #[must_use]
     pub fn new(
         created_at: chrono::DateTime<chrono::Utc>,
-        credit_note_id: CreditNoteId,
+        credit_note_id: impl Into<CreditNoteId>,
         credited_amount_cents: i64,
         currency: impl Into<String>,
         custom_properties: serde_json::Value,
-        customer_id: CustomerId,
-        invoice_id: InvoiceId,
+        customer_id: impl Into<CustomerId>,
+        invoice_id: impl Into<InvoiceId>,
         line_items: Vec<InvoiceLineItem>,
         refunded_amount_cents: i64,
         status: CreditNoteStatus,
@@ -81,13 +81,13 @@ impl CreditNoteEventData {
     ) -> Self {
         Self {
             created_at,
-            credit_note_id,
+            credit_note_id: credit_note_id.into(),
             credit_note_number: None,
             credited_amount_cents,
             currency: currency.into(),
             custom_properties,
-            customer_id,
-            invoice_id,
+            customer_id: customer_id.into(),
+            invoice_id: invoice_id.into(),
             invoice_number: None,
             line_items,
             memo: None,

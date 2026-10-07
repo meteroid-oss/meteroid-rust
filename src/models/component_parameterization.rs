@@ -17,9 +17,9 @@ pub struct ComponentParameterization {
 impl ComponentParameterization {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(component_id: PriceComponentId, parameters: ComponentParameters) -> Self {
+    pub fn new(component_id: impl Into<PriceComponentId>, parameters: ComponentParameters) -> Self {
         Self {
-            component_id,
+            component_id: component_id.into(),
             parameters,
             extra: serde_json::Map::new(),
         }

@@ -24,10 +24,10 @@ pub struct PriceComponent {
 impl PriceComponent {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(id: PriceComponentId, name: impl Into<String>) -> Self {
+    pub fn new(id: impl Into<PriceComponentId>, name: impl Into<String>) -> Self {
         Self {
             fee: None,
-            id,
+            id: id.into(),
             name: name.into(),
             product_id: None,
             extra: serde_json::Map::new(),

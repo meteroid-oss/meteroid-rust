@@ -28,4 +28,11 @@ impl ConfigFeatureType {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `options`.
+    #[must_use]
+    pub fn options(mut self, options: impl Into<Vec<String>>) -> Self {
+        self.options = Some(options.into());
+        self
+    }
 }

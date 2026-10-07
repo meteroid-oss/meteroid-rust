@@ -69,7 +69,7 @@ impl RefundEventData {
         currency: impl Into<String>,
         payment_type: PaymentTypeEnum,
         status: PaymentStatusEnum,
-        transaction_id: PaymentTransactionId,
+        transaction_id: impl Into<PaymentTransactionId>,
     ) -> Self {
         Self {
             amount,
@@ -87,7 +87,7 @@ impl RefundEventData {
             refund_mode: None,
             reversal_kind: None,
             status,
-            transaction_id,
+            transaction_id: transaction_id.into(),
             extra: serde_json::Map::new(),
         }
     }

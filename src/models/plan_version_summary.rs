@@ -27,14 +27,14 @@ impl PlanVersionSummary {
     pub fn new(
         created_at: chrono::DateTime<chrono::Utc>,
         currency: impl Into<String>,
-        id: PlanVersionId,
+        id: impl Into<PlanVersionId>,
         is_draft: bool,
         version: i32,
     ) -> Self {
         Self {
             created_at,
             currency: currency.into(),
-            id,
+            id: id.into(),
             is_draft,
             version,
             extra: serde_json::Map::new(),

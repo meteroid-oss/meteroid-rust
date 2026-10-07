@@ -25,4 +25,11 @@ impl ShippingAddress {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `address`.
+    #[must_use]
+    pub fn address(mut self, address: impl Into<Address>) -> Self {
+        self.address = Some(address.into());
+        self
+    }
 }

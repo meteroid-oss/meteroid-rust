@@ -34,16 +34,16 @@ impl ProductEventData {
         created_at: chrono::DateTime<chrono::Utc>,
         fee_type: ProductFeeTypeEnum,
         name: impl Into<String>,
-        product_family_id: ProductFamilyId,
-        product_id: ProductId,
+        product_family_id: impl Into<ProductFamilyId>,
+        product_id: impl Into<ProductId>,
     ) -> Self {
         Self {
             created_at,
             description: None,
             fee_type,
             name: name.into(),
-            product_family_id,
-            product_id,
+            product_family_id: product_family_id.into(),
+            product_id: product_id.into(),
             extra: serde_json::Map::new(),
         }
     }

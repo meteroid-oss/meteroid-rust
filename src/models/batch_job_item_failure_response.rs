@@ -26,13 +26,13 @@ impl BatchJobItemFailureResponse {
     /// Creates a value from its required fields.
     #[must_use]
     pub fn new(
-        chunk_id: BatchJobChunkId,
+        chunk_id: impl Into<BatchJobChunkId>,
         id: uuid::Uuid,
         item_index: i32,
         reason: impl Into<String>,
     ) -> Self {
         Self {
-            chunk_id,
+            chunk_id: chunk_id.into(),
             id,
             item_identifier: None,
             item_index,

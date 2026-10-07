@@ -44,4 +44,46 @@ impl CustomPropertyDefinitionUpdateRequest {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `config`.
+    #[must_use]
+    pub fn config(mut self, config: impl Into<PropertyConfig>) -> Self {
+        self.config = Some(config.into());
+        self
+    }
+
+    /// Sets `default_value`.
+    #[must_use]
+    pub fn default_value(mut self, default_value: impl Into<serde_json::Value>) -> Self {
+        self.default_value = Some(default_value.into());
+        self
+    }
+
+    /// Sets `description`.
+    #[must_use]
+    pub fn description(mut self, description: impl Into<String>) -> Self {
+        self.description = Some(description.into());
+        self
+    }
+
+    /// Sets `display_order`.
+    #[must_use]
+    pub fn display_order(mut self, display_order: impl Into<i32>) -> Self {
+        self.display_order = Some(display_order.into());
+        self
+    }
+
+    /// Sets `name`.
+    #[must_use]
+    pub fn name(mut self, name: impl Into<String>) -> Self {
+        self.name = Some(name.into());
+        self
+    }
+
+    /// Sets `required`.
+    #[must_use]
+    pub fn required(mut self, required: impl Into<bool>) -> Self {
+        self.required = Some(required.into());
+        self
+    }
 }

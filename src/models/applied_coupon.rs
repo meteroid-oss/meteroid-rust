@@ -32,17 +32,17 @@ impl AppliedCoupon {
     /// Creates a value from its required fields.
     #[must_use]
     pub fn new(
-        coupon_id: CouponId,
+        coupon_id: impl Into<CouponId>,
         created_at: chrono::DateTime<chrono::Utc>,
-        id: AppliedCouponId,
+        id: impl Into<AppliedCouponId>,
         is_active: bool,
     ) -> Self {
         Self {
             applied_amount: None,
             applied_count: None,
-            coupon_id,
+            coupon_id: coupon_id.into(),
             created_at,
-            id,
+            id: id.into(),
             is_active,
             last_applied_at: None,
             extra: serde_json::Map::new(),

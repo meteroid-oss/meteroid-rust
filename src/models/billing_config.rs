@@ -28,4 +28,25 @@ impl BillingConfig {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `billing_cycles`.
+    #[must_use]
+    pub fn billing_cycles(mut self, billing_cycles: impl Into<i32>) -> Self {
+        self.billing_cycles = Some(billing_cycles.into());
+        self
+    }
+
+    /// Sets `net_terms`.
+    #[must_use]
+    pub fn net_terms(mut self, net_terms: impl Into<i32>) -> Self {
+        self.net_terms = Some(net_terms.into());
+        self
+    }
+
+    /// Sets `period_start_day`.
+    #[must_use]
+    pub fn period_start_day(mut self, period_start_day: impl Into<i32>) -> Self {
+        self.period_start_day = Some(period_start_day.into());
+        self
+    }
 }

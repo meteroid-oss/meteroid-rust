@@ -38,4 +38,32 @@ impl PropertyConfig {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `max`.
+    #[must_use]
+    pub fn max(mut self, max: impl Into<f64>) -> Self {
+        self.max = Some(max.into());
+        self
+    }
+
+    /// Sets `max_length`.
+    #[must_use]
+    pub fn max_length(mut self, max_length: impl Into<i32>) -> Self {
+        self.max_length = Some(max_length.into());
+        self
+    }
+
+    /// Sets `min`.
+    #[must_use]
+    pub fn min(mut self, min: impl Into<f64>) -> Self {
+        self.min = Some(min.into());
+        self
+    }
+
+    /// Sets `options`.
+    #[must_use]
+    pub fn options(mut self, options: impl Into<Vec<SelectOption>>) -> Self {
+        self.options = Some(options.into());
+        self
+    }
 }

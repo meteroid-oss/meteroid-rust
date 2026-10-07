@@ -1,5 +1,6 @@
 // this file is @generated
 #![allow(clippy::doc_markdown, clippy::default_trait_access)]
+
 #[allow(unused_imports, clippy::wildcard_imports)]
 use crate::{error::Result, models::*, Configuration};
 
@@ -39,10 +40,24 @@ impl CouponsListOptions {
         self
     }
 
+    /// Sets the `search` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_search(mut self, search: Option<String>) -> Self {
+        self.search = search;
+        self
+    }
+
     /// Sets the `filter` query parameter.
     #[must_use]
     pub fn filter(mut self, filter: impl Into<CouponFilter>) -> Self {
         self.filter = Some(filter.into());
+        self
+    }
+
+    /// Sets the `filter` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_filter(mut self, filter: Option<CouponFilter>) -> Self {
+        self.filter = filter;
         self
     }
 
@@ -53,6 +68,13 @@ impl CouponsListOptions {
         self
     }
 
+    /// Sets the `order_by` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_order_by(mut self, order_by: Option<String>) -> Self {
+        self.order_by = order_by;
+        self
+    }
+
     /// Sets the `page` query parameter.
     #[must_use]
     pub fn page(mut self, page: impl Into<i32>) -> Self {
@@ -60,10 +82,24 @@ impl CouponsListOptions {
         self
     }
 
+    /// Sets the `page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_page(mut self, page: Option<i32>) -> Self {
+        self.page = page;
+        self
+    }
+
     /// Sets the `per_page` query parameter.
     #[must_use]
     pub fn per_page(mut self, per_page: impl Into<i32>) -> Self {
         self.per_page = Some(per_page.into());
+        self
+    }
+
+    /// Sets the `per_page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_per_page(mut self, per_page: Option<i32>) -> Self {
+        self.per_page = per_page;
         self
     }
 }
@@ -100,14 +136,7 @@ impl Coupons {
         self
     }
 
-    /// List coupons
-    ///
-    /// `GET /api/v1/coupons`.
-    ///
-    /// # Errors
-    ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429).
-    pub fn list(
+    fn list_request(
         &self,
         options: impl Into<Option<CouponsListOptions>>,
     ) -> crate::api::Call<crate::models::CouponListResponse> {
@@ -127,6 +156,36 @@ impl Coupons {
             .with_optional_query_param("per_page", per_page)
             .with_options(&self.options)
             .json(&self.cfg)
+    }
+
+    /// List coupons
+    ///
+    /// `GET /api/v1/coupons`, a page at a time: awaiting the call gives the first
+    /// [`Page`](crate::api::Page), [`items`](crate::api::PageCall::items) every
+    /// [`Coupon`](crate::models::Coupon) across pages
+    /// and [`pages`](crate::api::PageCall::pages) every page.
+    ///
+    /// # Errors
+    ///
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429).
+    pub fn list(
+        &self,
+        options: impl Into<Option<CouponsListOptions>>,
+    ) -> crate::api::PageCall<crate::models::CouponListResponse, crate::models::Coupon> {
+        static WALK: crate::api::pagination::Walk<CouponsListOptions> =
+            crate::api::pagination::Walk::Page {
+                first: 0,
+                get: |options| options.page.map(i64::from),
+                set: |options, position| options.page = i32::try_from(position).ok(),
+            };
+        let this = self.clone();
+        let call = move |options: CouponsListOptions| this.list_request(options);
+        crate::api::PageCall::new(
+            options.into().unwrap_or_default(),
+            WALK,
+            crate::api::pages::COUPONS_LIST,
+            call,
+        )
     }
 
     /// Create a coupon
@@ -153,9 +212,15 @@ impl Coupons {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
-    pub fn retrieve(&self, coupon_id: &str) -> crate::api::Call<crate::models::Coupon> {
+    pub fn retrieve(
+        &self,
+        coupon_id: impl Into<crate::models::CouponId>,
+    ) -> crate::api::Call<crate::models::Coupon> {
         crate::request::Request::new(http::Method::GET, "/api/v1/coupons/{coupon_id}")
-            .with_path_param("coupon_id", coupon_id)
+            .with_path_param(
+                "coupon_id",
+                Into::<crate::models::CouponId>::into(coupon_id),
+            )
             .with_options(&self.options)
             .json(&self.cfg)
     }
@@ -169,11 +234,14 @@ impl Coupons {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429).
     pub fn update(
         &self,
-        coupon_id: &str,
+        coupon_id: impl Into<crate::models::CouponId>,
         update_coupon_request: crate::models::UpdateCouponRequest,
     ) -> crate::api::Call<crate::models::Coupon> {
         crate::request::Request::new(http::Method::PATCH, "/api/v1/coupons/{coupon_id}")
-            .with_path_param("coupon_id", coupon_id)
+            .with_path_param(
+                "coupon_id",
+                Into::<crate::models::CouponId>::into(coupon_id),
+            )
             .with_body_param(update_coupon_request)
             .with_options(&self.options)
             .json(&self.cfg)
@@ -186,9 +254,12 @@ impl Coupons {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
-    pub fn archive(&self, coupon_id: &str) -> crate::api::Call<()> {
+    pub fn archive(&self, coupon_id: impl Into<crate::models::CouponId>) -> crate::api::Call<()> {
         crate::request::Request::new(http::Method::POST, "/api/v1/coupons/{coupon_id}/archive")
-            .with_path_param("coupon_id", coupon_id)
+            .with_path_param(
+                "coupon_id",
+                Into::<crate::models::CouponId>::into(coupon_id),
+            )
             .with_options(&self.options)
             .empty(&self.cfg)
     }
@@ -200,9 +271,12 @@ impl Coupons {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
-    pub fn disable(&self, coupon_id: &str) -> crate::api::Call<()> {
+    pub fn disable(&self, coupon_id: impl Into<crate::models::CouponId>) -> crate::api::Call<()> {
         crate::request::Request::new(http::Method::POST, "/api/v1/coupons/{coupon_id}/disable")
-            .with_path_param("coupon_id", coupon_id)
+            .with_path_param(
+                "coupon_id",
+                Into::<crate::models::CouponId>::into(coupon_id),
+            )
             .with_options(&self.options)
             .empty(&self.cfg)
     }
@@ -214,9 +288,12 @@ impl Coupons {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
-    pub fn enable(&self, coupon_id: &str) -> crate::api::Call<()> {
+    pub fn enable(&self, coupon_id: impl Into<crate::models::CouponId>) -> crate::api::Call<()> {
         crate::request::Request::new(http::Method::POST, "/api/v1/coupons/{coupon_id}/enable")
-            .with_path_param("coupon_id", coupon_id)
+            .with_path_param(
+                "coupon_id",
+                Into::<crate::models::CouponId>::into(coupon_id),
+            )
             .with_options(&self.options)
             .empty(&self.cfg)
     }
@@ -228,9 +305,12 @@ impl Coupons {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
-    pub fn unarchive(&self, coupon_id: &str) -> crate::api::Call<()> {
+    pub fn unarchive(&self, coupon_id: impl Into<crate::models::CouponId>) -> crate::api::Call<()> {
         crate::request::Request::new(http::Method::POST, "/api/v1/coupons/{coupon_id}/unarchive")
-            .with_path_param("coupon_id", coupon_id)
+            .with_path_param(
+                "coupon_id",
+                Into::<crate::models::CouponId>::into(coupon_id),
+            )
             .with_options(&self.options)
             .empty(&self.cfg)
     }

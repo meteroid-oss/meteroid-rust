@@ -1,5 +1,6 @@
 // this file is @generated
 #![allow(clippy::doc_markdown, clippy::default_trait_access)]
+
 #[allow(unused_imports, clippy::wildcard_imports)]
 use crate::{error::Result, models::*, Configuration};
 
@@ -46,10 +47,24 @@ impl InvoicesListOptions {
         self
     }
 
+    /// Sets the `customer_id` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_customer_id(mut self, customer_id: Option<String>) -> Self {
+        self.customer_id = customer_id;
+        self
+    }
+
     /// Sets the `subscription_id` query parameter.
     #[must_use]
     pub fn subscription_id(mut self, subscription_id: impl Into<SubscriptionId>) -> Self {
         self.subscription_id = Some(subscription_id.into());
+        self
+    }
+
+    /// Sets the `subscription_id` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_subscription_id(mut self, subscription_id: Option<SubscriptionId>) -> Self {
+        self.subscription_id = subscription_id;
         self
     }
 
@@ -60,10 +75,24 @@ impl InvoicesListOptions {
         self
     }
 
+    /// Sets the `statuses` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_statuses(mut self, statuses: Option<Vec<InvoiceStatus>>) -> Self {
+        self.statuses = statuses;
+        self
+    }
+
     /// Sets the `einvoicing_status` query parameter.
     #[must_use]
     pub fn einvoicing_status(mut self, einvoicing_status: impl Into<EInvoicingStatus>) -> Self {
         self.einvoicing_status = Some(einvoicing_status.into());
+        self
+    }
+
+    /// Sets the `einvoicing_status` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_einvoicing_status(mut self, einvoicing_status: Option<EInvoicingStatus>) -> Self {
+        self.einvoicing_status = einvoicing_status;
         self
     }
 
@@ -74,6 +103,13 @@ impl InvoicesListOptions {
         self
     }
 
+    /// Sets the `order_by` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_order_by(mut self, order_by: Option<String>) -> Self {
+        self.order_by = order_by;
+        self
+    }
+
     /// Sets the `page` query parameter.
     #[must_use]
     pub fn page(mut self, page: impl Into<i32>) -> Self {
@@ -81,10 +117,24 @@ impl InvoicesListOptions {
         self
     }
 
+    /// Sets the `page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_page(mut self, page: Option<i32>) -> Self {
+        self.page = page;
+        self
+    }
+
     /// Sets the `per_page` query parameter.
     #[must_use]
     pub fn per_page(mut self, per_page: impl Into<i32>) -> Self {
         self.per_page = Some(per_page.into());
+        self
+    }
+
+    /// Sets the `per_page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_per_page(mut self, per_page: Option<i32>) -> Self {
+        self.per_page = per_page;
         self
     }
 }
@@ -121,14 +171,7 @@ impl Invoices {
         self
     }
 
-    /// List invoices with optional filtering by customer, subscription, or status.
-    ///
-    /// `GET /api/v1/invoices`.
-    ///
-    /// # Errors
-    ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429, 500).
-    pub fn list(
+    fn list_request(
         &self,
         options: impl Into<Option<InvoicesListOptions>>,
     ) -> crate::api::Call<crate::models::InvoiceListResponse> {
@@ -154,6 +197,36 @@ impl Invoices {
             .json(&self.cfg)
     }
 
+    /// List invoices with optional filtering by customer, subscription, or status.
+    ///
+    /// `GET /api/v1/invoices`, a page at a time: awaiting the call gives the first
+    /// [`Page`](crate::api::Page), [`items`](crate::api::PageCall::items) every
+    /// [`Invoice`](crate::models::Invoice) across pages
+    /// and [`pages`](crate::api::PageCall::pages) every page.
+    ///
+    /// # Errors
+    ///
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429, 500).
+    pub fn list(
+        &self,
+        options: impl Into<Option<InvoicesListOptions>>,
+    ) -> crate::api::PageCall<crate::models::InvoiceListResponse, crate::models::Invoice> {
+        static WALK: crate::api::pagination::Walk<InvoicesListOptions> =
+            crate::api::pagination::Walk::Page {
+                first: 0,
+                get: |options| options.page.map(i64::from),
+                set: |options, position| options.page = i32::try_from(position).ok(),
+            };
+        let this = self.clone();
+        let call = move |options: InvoicesListOptions| this.list_request(options);
+        crate::api::PageCall::new(
+            options.into().unwrap_or_default(),
+            WALK,
+            crate::api::pages::INVOICES_LIST,
+            call,
+        )
+    }
+
     /// Get invoice
     ///
     /// Retrieve a single invoice with its payment transactions.
@@ -163,9 +236,15 @@ impl Invoices {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429, 500).
-    pub fn retrieve(&self, invoice_id: &str) -> crate::api::Call<crate::models::Invoice> {
+    pub fn retrieve(
+        &self,
+        invoice_id: impl Into<crate::models::InvoiceId>,
+    ) -> crate::api::Call<crate::models::Invoice> {
         crate::request::Request::new(http::Method::GET, "/api/v1/invoices/{invoice_id}")
-            .with_path_param("invoice_id", invoice_id)
+            .with_path_param(
+                "invoice_id",
+                Into::<crate::models::InvoiceId>::into(invoice_id),
+            )
             .with_options(&self.options)
             .json(&self.cfg)
     }
@@ -184,14 +263,17 @@ impl Invoices {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429, 500).
     pub fn update_custom_properties(
         &self,
-        invoice_id: &str,
+        invoice_id: impl Into<crate::models::InvoiceId>,
         invoice_custom_properties_request: crate::models::InvoiceCustomPropertiesRequest,
     ) -> crate::api::Call<crate::models::Invoice> {
         crate::request::Request::new(
             http::Method::PATCH,
             "/api/v1/invoices/{invoice_id}/custom-properties",
         )
-        .with_path_param("invoice_id", invoice_id)
+        .with_path_param(
+            "invoice_id",
+            Into::<crate::models::InvoiceId>::into(invoice_id),
+        )
         .with_body_param(invoice_custom_properties_request)
         .with_options(&self.options)
         .json(&self.cfg)
@@ -206,9 +288,15 @@ impl Invoices {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429, 500).
-    pub fn download(&self, invoice_id: &str) -> crate::api::Call<bytes::Bytes> {
+    pub fn download(
+        &self,
+        invoice_id: impl Into<crate::models::InvoiceId>,
+    ) -> crate::api::Call<bytes::Bytes> {
         crate::request::Request::new(http::Method::GET, "/api/v1/invoices/{invoice_id}/download")
-            .with_path_param("invoice_id", invoice_id)
+            .with_path_param(
+                "invoice_id",
+                Into::<crate::models::InvoiceId>::into(invoice_id),
+            )
             .with_options(&self.options)
             .binary(&self.cfg)
     }
@@ -225,9 +313,15 @@ impl Invoices {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429, 500).
-    pub fn refresh(&self, invoice_id: &str) -> crate::api::Call<crate::models::Invoice> {
+    pub fn refresh(
+        &self,
+        invoice_id: impl Into<crate::models::InvoiceId>,
+    ) -> crate::api::Call<crate::models::Invoice> {
         crate::request::Request::new(http::Method::POST, "/api/v1/invoices/{invoice_id}/refresh")
-            .with_path_param("invoice_id", invoice_id)
+            .with_path_param(
+                "invoice_id",
+                Into::<crate::models::InvoiceId>::into(invoice_id),
+            )
             .with_options(&self.options)
             .json(&self.cfg)
     }
@@ -242,9 +336,15 @@ impl Invoices {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429, 500).
-    pub fn download_xml(&self, invoice_id: &str) -> crate::api::Call<bytes::Bytes> {
+    pub fn download_xml(
+        &self,
+        invoice_id: impl Into<crate::models::InvoiceId>,
+    ) -> crate::api::Call<bytes::Bytes> {
         crate::request::Request::new(http::Method::GET, "/api/v1/invoices/{invoice_id}/xml")
-            .with_path_param("invoice_id", invoice_id)
+            .with_path_param(
+                "invoice_id",
+                Into::<crate::models::InvoiceId>::into(invoice_id),
+            )
             .with_options(&self.options)
             .binary(&self.cfg)
     }

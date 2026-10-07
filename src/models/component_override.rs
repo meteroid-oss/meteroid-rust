@@ -20,12 +20,12 @@ impl ComponentOverride {
     /// Creates a value from its required fields.
     #[must_use]
     pub fn new(
-        component_id: PriceComponentId,
+        component_id: impl Into<PriceComponentId>,
         name: impl Into<String>,
         price_entry: PriceEntry,
     ) -> Self {
         Self {
-            component_id,
+            component_id: component_id.into(),
             name: name.into(),
             price_entry,
             extra: serde_json::Map::new(),

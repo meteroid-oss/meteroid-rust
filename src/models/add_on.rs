@@ -46,10 +46,10 @@ impl AddOn {
     #[must_use]
     pub fn new(
         created_at: chrono::DateTime<chrono::Utc>,
-        id: AddOnId,
+        id: impl Into<AddOnId>,
         name: impl Into<String>,
-        price_id: PriceId,
-        product_id: ProductId,
+        price_id: impl Into<PriceId>,
+        product_id: impl Into<ProductId>,
         self_serviceable: bool,
     ) -> Self {
         Self {
@@ -58,11 +58,11 @@ impl AddOn {
             description: None,
             entitlements: None,
             fee_type: None,
-            id,
+            id: id.into(),
             max_instances_per_subscription: None,
             name: name.into(),
-            price_id,
-            product_id,
+            price_id: price_id.into(),
+            product_id: product_id.into(),
             self_serviceable,
             extra: serde_json::Map::new(),
         }

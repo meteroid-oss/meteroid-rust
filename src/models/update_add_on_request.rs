@@ -58,4 +58,77 @@ impl UpdateAddOnRequest {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `description`.
+    #[must_use]
+    pub fn description(mut self, description: impl Into<String>) -> Self {
+        self.description = Some(Some(description.into()));
+        self
+    }
+
+    /// Sends `description` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_description(mut self) -> Self {
+        self.description = Some(None);
+        self
+    }
+
+    /// Sets `max_instances_per_subscription`.
+    #[must_use]
+    pub fn max_instances_per_subscription(
+        mut self,
+        max_instances_per_subscription: impl Into<i32>,
+    ) -> Self {
+        self.max_instances_per_subscription = Some(Some(max_instances_per_subscription.into()));
+        self
+    }
+
+    /// Sends `max_instances_per_subscription` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_max_instances_per_subscription(mut self) -> Self {
+        self.max_instances_per_subscription = Some(None);
+        self
+    }
+
+    /// Sets `name`.
+    #[must_use]
+    pub fn name(mut self, name: impl Into<String>) -> Self {
+        self.name = Some(Some(name.into()));
+        self
+    }
+
+    /// Sends `name` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_name(mut self) -> Self {
+        self.name = Some(None);
+        self
+    }
+
+    /// Sets `price_id`.
+    #[must_use]
+    pub fn price_id(mut self, price_id: impl Into<PriceId>) -> Self {
+        self.price_id = Some(Some(price_id.into()));
+        self
+    }
+
+    /// Sends `price_id` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_price_id(mut self) -> Self {
+        self.price_id = Some(None);
+        self
+    }
+
+    /// Sets `self_serviceable`.
+    #[must_use]
+    pub fn self_serviceable(mut self, self_serviceable: impl Into<bool>) -> Self {
+        self.self_serviceable = Some(Some(self_serviceable.into()));
+        self
+    }
+
+    /// Sends `self_serviceable` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_self_serviceable(mut self) -> Self {
+        self.self_serviceable = Some(None);
+        self
+    }
 }

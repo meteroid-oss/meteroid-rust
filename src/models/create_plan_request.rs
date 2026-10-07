@@ -63,7 +63,7 @@ impl CreatePlanRequest {
         currency: impl Into<String>,
         name: impl Into<String>,
         plan_type: PlanTypeEnum,
-        product_family_id: ProductFamilyId,
+        product_family_id: impl Into<ProductFamilyId>,
         status: PlanStatusEnum,
     ) -> Self {
         Self {
@@ -75,12 +75,61 @@ impl CreatePlanRequest {
             entitlements: None,
             name: name.into(),
             plan_type,
-            product_family_id,
+            product_family_id: product_family_id.into(),
             self_service_rank: None,
             status,
             tax_inclusive: None,
             trial: None,
             extra: serde_json::Map::new(),
         }
+    }
+
+    /// Sets `add_ons`.
+    #[must_use]
+    pub fn add_ons(mut self, add_ons: impl Into<Vec<PlanAddOnInput>>) -> Self {
+        self.add_ons = Some(add_ons.into());
+        self
+    }
+
+    /// Sets `billing`.
+    #[must_use]
+    pub fn billing(mut self, billing: impl Into<BillingConfig>) -> Self {
+        self.billing = Some(billing.into());
+        self
+    }
+
+    /// Sets `description`.
+    #[must_use]
+    pub fn description(mut self, description: impl Into<String>) -> Self {
+        self.description = Some(description.into());
+        self
+    }
+
+    /// Sets `entitlements`.
+    #[must_use]
+    pub fn entitlements(mut self, entitlements: impl Into<Vec<EntitlementSpecRequest>>) -> Self {
+        self.entitlements = Some(entitlements.into());
+        self
+    }
+
+    /// Sets `self_service_rank`.
+    #[must_use]
+    pub fn self_service_rank(mut self, self_service_rank: impl Into<i32>) -> Self {
+        self.self_service_rank = Some(self_service_rank.into());
+        self
+    }
+
+    /// Sets `tax_inclusive`.
+    #[must_use]
+    pub fn tax_inclusive(mut self, tax_inclusive: impl Into<bool>) -> Self {
+        self.tax_inclusive = Some(tax_inclusive.into());
+        self
+    }
+
+    /// Sets `trial`.
+    #[must_use]
+    pub fn trial(mut self, trial: impl Into<TrialConfig>) -> Self {
+        self.trial = Some(trial.into());
+        self
     }
 }

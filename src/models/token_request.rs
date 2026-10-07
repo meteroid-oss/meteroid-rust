@@ -51,4 +51,46 @@ impl TokenRequest {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `client_id`.
+    #[must_use]
+    pub fn client_id(mut self, client_id: impl Into<String>) -> Self {
+        self.client_id = Some(client_id.into());
+        self
+    }
+
+    /// Sets `client_secret`.
+    #[must_use]
+    pub fn client_secret(mut self, client_secret: impl Into<String>) -> Self {
+        self.client_secret = Some(client_secret.into());
+        self
+    }
+
+    /// Sets `code`.
+    #[must_use]
+    pub fn code(mut self, code: impl Into<String>) -> Self {
+        self.code = Some(code.into());
+        self
+    }
+
+    /// Sets `code_verifier`.
+    #[must_use]
+    pub fn code_verifier(mut self, code_verifier: impl Into<String>) -> Self {
+        self.code_verifier = Some(code_verifier.into());
+        self
+    }
+
+    /// Sets `redirect_uri`.
+    #[must_use]
+    pub fn redirect_uri(mut self, redirect_uri: impl Into<String>) -> Self {
+        self.redirect_uri = Some(redirect_uri.into());
+        self
+    }
+
+    /// Sets `refresh_token`.
+    #[must_use]
+    pub fn refresh_token(mut self, refresh_token: impl Into<String>) -> Self {
+        self.refresh_token = Some(refresh_token.into());
+        self
+    }
 }

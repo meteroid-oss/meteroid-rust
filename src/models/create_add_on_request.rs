@@ -28,15 +28,43 @@ pub struct CreateAddOnRequest {
 impl CreateAddOnRequest {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(name: impl Into<String>, price_id: PriceId, product_id: ProductId) -> Self {
+    pub fn new(
+        name: impl Into<String>,
+        price_id: impl Into<PriceId>,
+        product_id: impl Into<ProductId>,
+    ) -> Self {
         Self {
             description: None,
             max_instances_per_subscription: None,
             name: name.into(),
-            price_id,
-            product_id,
+            price_id: price_id.into(),
+            product_id: product_id.into(),
             self_serviceable: None,
             extra: serde_json::Map::new(),
         }
+    }
+
+    /// Sets `description`.
+    #[must_use]
+    pub fn description(mut self, description: impl Into<String>) -> Self {
+        self.description = Some(description.into());
+        self
+    }
+
+    /// Sets `max_instances_per_subscription`.
+    #[must_use]
+    pub fn max_instances_per_subscription(
+        mut self,
+        max_instances_per_subscription: impl Into<i32>,
+    ) -> Self {
+        self.max_instances_per_subscription = Some(max_instances_per_subscription.into());
+        self
+    }
+
+    /// Sets `self_serviceable`.
+    #[must_use]
+    pub fn self_serviceable(mut self, self_serviceable: impl Into<bool>) -> Self {
+        self.self_serviceable = Some(self_serviceable.into());
+        self
     }
 }

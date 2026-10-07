@@ -1,5 +1,6 @@
 // this file is @generated
 #![allow(clippy::doc_markdown, clippy::default_trait_access)]
+
 #[allow(unused_imports, clippy::wildcard_imports)]
 use crate::{error::Result, models::*, Configuration};
 
@@ -42,10 +43,24 @@ impl AddOnsListOptions {
         self
     }
 
+    /// Sets the `search` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_search(mut self, search: Option<String>) -> Self {
+        self.search = search;
+        self
+    }
+
     /// Sets the `currency` query parameter.
     #[must_use]
     pub fn currency(mut self, currency: impl Into<String>) -> Self {
         self.currency = Some(currency.into());
+        self
+    }
+
+    /// Sets the `currency` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_currency(mut self, currency: Option<String>) -> Self {
+        self.currency = currency;
         self
     }
 
@@ -56,10 +71,24 @@ impl AddOnsListOptions {
         self
     }
 
+    /// Sets the `include_archived` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_include_archived(mut self, include_archived: Option<bool>) -> Self {
+        self.include_archived = include_archived;
+        self
+    }
+
     /// Sets the `order_by` query parameter.
     #[must_use]
     pub fn order_by(mut self, order_by: impl Into<String>) -> Self {
         self.order_by = Some(order_by.into());
+        self
+    }
+
+    /// Sets the `order_by` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_order_by(mut self, order_by: Option<String>) -> Self {
+        self.order_by = order_by;
         self
     }
 
@@ -70,10 +99,24 @@ impl AddOnsListOptions {
         self
     }
 
+    /// Sets the `page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_page(mut self, page: Option<i32>) -> Self {
+        self.page = page;
+        self
+    }
+
     /// Sets the `per_page` query parameter.
     #[must_use]
     pub fn per_page(mut self, per_page: impl Into<i32>) -> Self {
         self.per_page = Some(per_page.into());
+        self
+    }
+
+    /// Sets the `per_page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_per_page(mut self, per_page: Option<i32>) -> Self {
+        self.per_page = per_page;
         self
     }
 }
@@ -110,14 +153,7 @@ impl AddOns {
         self
     }
 
-    /// List add-ons
-    ///
-    /// `GET /api/v1/addons`.
-    ///
-    /// # Errors
-    ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429).
-    pub fn list(
+    fn list_request(
         &self,
         options: impl Into<Option<AddOnsListOptions>>,
     ) -> crate::api::Call<crate::models::AddOnListResponse> {
@@ -139,6 +175,36 @@ impl AddOns {
             .with_optional_query_param("per_page", per_page)
             .with_options(&self.options)
             .json(&self.cfg)
+    }
+
+    /// List add-ons
+    ///
+    /// `GET /api/v1/addons`, a page at a time: awaiting the call gives the first
+    /// [`Page`](crate::api::Page), [`items`](crate::api::PageCall::items) every
+    /// [`AddOn`](crate::models::AddOn) across pages
+    /// and [`pages`](crate::api::PageCall::pages) every page.
+    ///
+    /// # Errors
+    ///
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429).
+    pub fn list(
+        &self,
+        options: impl Into<Option<AddOnsListOptions>>,
+    ) -> crate::api::PageCall<crate::models::AddOnListResponse, crate::models::AddOn> {
+        static WALK: crate::api::pagination::Walk<AddOnsListOptions> =
+            crate::api::pagination::Walk::Page {
+                first: 0,
+                get: |options| options.page.map(i64::from),
+                set: |options, position| options.page = i32::try_from(position).ok(),
+            };
+        let this = self.clone();
+        let call = move |options: AddOnsListOptions| this.list_request(options);
+        crate::api::PageCall::new(
+            options.into().unwrap_or_default(),
+            WALK,
+            crate::api::pages::ADD_ONS_LIST,
+            call,
+        )
     }
 
     /// Create an add-on
@@ -165,9 +231,12 @@ impl AddOns {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
-    pub fn retrieve(&self, addon_id: &str) -> crate::api::Call<crate::models::AddOn> {
+    pub fn retrieve(
+        &self,
+        addon_id: impl Into<crate::models::AddOnId>,
+    ) -> crate::api::Call<crate::models::AddOn> {
         crate::request::Request::new(http::Method::GET, "/api/v1/addons/{addon_id}")
-            .with_path_param("addon_id", addon_id)
+            .with_path_param("addon_id", Into::<crate::models::AddOnId>::into(addon_id))
             .with_options(&self.options)
             .json(&self.cfg)
     }
@@ -181,11 +250,11 @@ impl AddOns {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429).
     pub fn update(
         &self,
-        addon_id: &str,
+        addon_id: impl Into<crate::models::AddOnId>,
         update_add_on_request: crate::models::UpdateAddOnRequest,
     ) -> crate::api::Call<crate::models::AddOn> {
         crate::request::Request::new(http::Method::PATCH, "/api/v1/addons/{addon_id}")
-            .with_path_param("addon_id", addon_id)
+            .with_path_param("addon_id", Into::<crate::models::AddOnId>::into(addon_id))
             .with_body_param(update_add_on_request)
             .with_options(&self.options)
             .json(&self.cfg)
@@ -198,9 +267,9 @@ impl AddOns {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
-    pub fn archive(&self, addon_id: &str) -> crate::api::Call<()> {
+    pub fn archive(&self, addon_id: impl Into<crate::models::AddOnId>) -> crate::api::Call<()> {
         crate::request::Request::new(http::Method::POST, "/api/v1/addons/{addon_id}/archive")
-            .with_path_param("addon_id", addon_id)
+            .with_path_param("addon_id", Into::<crate::models::AddOnId>::into(addon_id))
             .with_options(&self.options)
             .empty(&self.cfg)
     }
@@ -214,10 +283,10 @@ impl AddOns {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
     pub fn list_entitlements(
         &self,
-        addon_id: &str,
+        addon_id: impl Into<crate::models::AddOnId>,
     ) -> crate::api::Call<crate::models::ResolvedEntitlementListResponse> {
         crate::request::Request::new(http::Method::GET, "/api/v1/addons/{addon_id}/entitlements")
-            .with_path_param("addon_id", addon_id)
+            .with_path_param("addon_id", Into::<crate::models::AddOnId>::into(addon_id))
             .with_options(&self.options)
             .json(&self.cfg)
     }
@@ -233,11 +302,11 @@ impl AddOns {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429).
     pub fn create_entitlement(
         &self,
-        addon_id: &str,
+        addon_id: impl Into<crate::models::AddOnId>,
         create_entitlements_request: crate::models::CreateEntitlementsRequest,
     ) -> crate::api::Call<crate::models::EntitlementListResponse> {
         crate::request::Request::new(http::Method::POST, "/api/v1/addons/{addon_id}/entitlements")
-            .with_path_param("addon_id", addon_id)
+            .with_path_param("addon_id", Into::<crate::models::AddOnId>::into(addon_id))
             .with_body_param(create_entitlements_request)
             .with_options(&self.options)
             .json(&self.cfg)
@@ -250,9 +319,9 @@ impl AddOns {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
-    pub fn unarchive(&self, addon_id: &str) -> crate::api::Call<()> {
+    pub fn unarchive(&self, addon_id: impl Into<crate::models::AddOnId>) -> crate::api::Call<()> {
         crate::request::Request::new(http::Method::POST, "/api/v1/addons/{addon_id}/unarchive")
-            .with_path_param("addon_id", addon_id)
+            .with_path_param("addon_id", Into::<crate::models::AddOnId>::into(addon_id))
             .with_options(&self.options)
             .empty(&self.cfg)
     }

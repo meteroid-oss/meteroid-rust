@@ -71,9 +71,9 @@ impl CheckoutSession {
     pub fn new(
         checkout_type: CheckoutType,
         created_at: chrono::DateTime<chrono::Utc>,
-        customer_id: CustomerId,
-        id: CheckoutSessionId,
-        plan_version_id: PlanVersionId,
+        customer_id: impl Into<CustomerId>,
+        id: impl Into<CheckoutSessionId>,
+        plan_version_id: impl Into<PlanVersionId>,
         status: CheckoutSessionStatus,
     ) -> Self {
         Self {
@@ -85,12 +85,12 @@ impl CheckoutSession {
             completed_at: None,
             coupon_code: None,
             created_at,
-            customer_id,
+            customer_id: customer_id.into(),
             expires_at: None,
-            id,
+            id: id.into(),
             net_terms: None,
             payment_methods_config: None,
-            plan_version_id,
+            plan_version_id: plan_version_id.into(),
             status,
             subscription_id: None,
             success_url: None,

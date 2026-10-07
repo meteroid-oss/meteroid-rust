@@ -42,7 +42,7 @@ impl SubscriptionCoupon {
         description: impl Into<String>,
         disabled: bool,
         discount: CouponDiscount,
-        id: CouponId,
+        id: impl Into<CouponId>,
         reusable: bool,
     ) -> Self {
         Self {
@@ -51,7 +51,7 @@ impl SubscriptionCoupon {
             disabled,
             discount,
             expires_at: None,
-            id,
+            id: id.into(),
             recurring_value: None,
             redemption_limit: None,
             reusable,

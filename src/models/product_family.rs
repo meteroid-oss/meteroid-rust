@@ -18,9 +18,9 @@ pub struct ProductFamily {
 impl ProductFamily {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(id: ProductFamilyId, name: impl Into<String>) -> Self {
+    pub fn new(id: impl Into<ProductFamilyId>, name: impl Into<String>) -> Self {
         Self {
-            id,
+            id: id.into(),
             name: name.into(),
             extra: serde_json::Map::new(),
         }

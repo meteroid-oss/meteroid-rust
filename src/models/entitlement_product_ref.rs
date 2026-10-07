@@ -19,9 +19,9 @@ pub struct EntitlementProductRef {
 impl EntitlementProductRef {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(id: ProductId, name: impl Into<String>) -> Self {
+    pub fn new(id: impl Into<ProductId>, name: impl Into<String>) -> Self {
         Self {
-            id,
+            id: id.into(),
             name: name.into(),
             extra: serde_json::Map::new(),
         }

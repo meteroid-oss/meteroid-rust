@@ -43,7 +43,7 @@ impl Feature {
         code: impl Into<String>,
         created_at: chrono::DateTime<chrono::Utc>,
         feature_type: FeatureType,
-        id: FeatureId,
+        id: impl Into<FeatureId>,
         name: impl Into<String>,
         status: FeatureStatus,
     ) -> Self {
@@ -53,7 +53,7 @@ impl Feature {
             description: None,
             entitlement: None,
             feature_type,
-            id,
+            id: id.into(),
             name: name.into(),
             product: None,
             status,

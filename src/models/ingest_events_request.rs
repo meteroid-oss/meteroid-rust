@@ -34,4 +34,18 @@ impl IngestEventsRequest {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `allow_backfilling`.
+    #[must_use]
+    pub fn allow_backfilling(mut self, allow_backfilling: impl Into<bool>) -> Self {
+        self.allow_backfilling = Some(allow_backfilling.into());
+        self
+    }
+
+    /// Sets `allow_partial_failures`.
+    #[must_use]
+    pub fn allow_partial_failures(mut self, allow_partial_failures: impl Into<bool>) -> Self {
+        self.allow_partial_failures = Some(allow_partial_failures.into());
+        self
+    }
 }

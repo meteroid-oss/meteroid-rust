@@ -28,4 +28,11 @@ impl PriceComponentInput {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `product_id`.
+    #[must_use]
+    pub fn product_id(mut self, product_id: impl Into<ProductId>) -> Self {
+        self.product_id = Some(product_id.into());
+        self
+    }
 }

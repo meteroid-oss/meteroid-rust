@@ -23,12 +23,29 @@ pub struct CreateSubscriptionAddOn {
 impl CreateSubscriptionAddOn {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(add_on_id: AddOnId) -> Self {
+    pub fn new(add_on_id: impl Into<AddOnId>) -> Self {
         Self {
-            add_on_id,
+            add_on_id: add_on_id.into(),
             customization: None,
             quantity: None,
             extra: serde_json::Map::new(),
         }
+    }
+
+    /// Sets `customization`.
+    #[must_use]
+    pub fn customization(
+        mut self,
+        customization: impl Into<SubscriptionAddOnCustomization>,
+    ) -> Self {
+        self.customization = Some(customization.into());
+        self
+    }
+
+    /// Sets `quantity`.
+    #[must_use]
+    pub fn quantity(mut self, quantity: impl Into<i32>) -> Self {
+        self.quantity = Some(quantity.into());
+        self
     }
 }

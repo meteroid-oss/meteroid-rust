@@ -26,4 +26,18 @@ impl UpdateEntitlementRequest {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `value`.
+    #[must_use]
+    pub fn value(mut self, value: impl Into<EntitlementValue>) -> Self {
+        self.value = Some(Some(value.into()));
+        self
+    }
+
+    /// Sends `value` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_value(mut self) -> Self {
+        self.value = Some(None);
+        self
+    }
 }

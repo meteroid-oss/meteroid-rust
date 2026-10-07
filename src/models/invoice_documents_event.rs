@@ -49,24 +49,24 @@ impl InvoiceDocumentsEvent {
     /// Creates a value from its required fields.
     #[must_use]
     pub fn new(
-        customer_id: CustomerId,
+        customer_id: impl Into<CustomerId>,
         einvoicing_findings: Vec<EInvoicingFinding>,
-        invoice_id: InvoiceId,
+        invoice_id: impl Into<InvoiceId>,
         pdf_document_id: impl Into<String>,
-        id: EventId,
+        id: impl Into<EventId>,
         timestamp: chrono::DateTime<chrono::Utc>,
         r#type: EventType,
     ) -> Self {
         Self {
-            customer_id,
+            customer_id: customer_id.into(),
             einvoicing_error: None,
             einvoicing_findings,
             einvoicing_profile: None,
             einvoicing_status: None,
-            invoice_id,
+            invoice_id: invoice_id.into(),
             pdf_document_id: pdf_document_id.into(),
             xml_document_id: None,
-            id,
+            id: id.into(),
             timestamp,
             r#type,
             extra: serde_json::Map::new(),

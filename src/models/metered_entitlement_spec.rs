@@ -23,11 +23,15 @@ pub struct MeteredEntitlementSpec {
 impl MeteredEntitlementSpec {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(enabled: bool, metric_id: BillableMetricId, reset_period: ResetPeriod) -> Self {
+    pub fn new(
+        enabled: bool,
+        metric_id: impl Into<BillableMetricId>,
+        reset_period: ResetPeriod,
+    ) -> Self {
         Self {
             enabled,
             limit: None,
-            metric_id,
+            metric_id: metric_id.into(),
             reset_period,
             extra: serde_json::Map::new(),
         }

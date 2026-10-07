@@ -42,4 +42,46 @@ impl Address {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `city`.
+    #[must_use]
+    pub fn city(mut self, city: impl Into<String>) -> Self {
+        self.city = Some(city.into());
+        self
+    }
+
+    /// Sets `country`.
+    #[must_use]
+    pub fn country(mut self, country: impl Into<CountryCode>) -> Self {
+        self.country = Some(country.into());
+        self
+    }
+
+    /// Sets `line1`.
+    #[must_use]
+    pub fn line1(mut self, line1: impl Into<String>) -> Self {
+        self.line1 = Some(line1.into());
+        self
+    }
+
+    /// Sets `line2`.
+    #[must_use]
+    pub fn line2(mut self, line2: impl Into<String>) -> Self {
+        self.line2 = Some(line2.into());
+        self
+    }
+
+    /// Sets `state`.
+    #[must_use]
+    pub fn state(mut self, state: impl Into<String>) -> Self {
+        self.state = Some(state.into());
+        self
+    }
+
+    /// Sets `zip_code`.
+    #[must_use]
+    pub fn zip_code(mut self, zip_code: impl Into<String>) -> Self {
+        self.zip_code = Some(zip_code.into());
+        self
+    }
 }

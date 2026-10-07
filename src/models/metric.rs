@@ -59,9 +59,9 @@ impl Metric {
         aggregation_type: BillingMetricAggregateEnum,
         code: impl Into<String>,
         created_at: chrono::DateTime<chrono::Utc>,
-        id: BillableMetricId,
+        id: impl Into<BillableMetricId>,
         name: impl Into<String>,
-        product_family_id: ProductFamilyId,
+        product_family_id: impl Into<ProductFamilyId>,
     ) -> Self {
         Self {
             aggregation_key: None,
@@ -71,9 +71,9 @@ impl Metric {
             created_at,
             description: None,
             filters: None,
-            id,
+            id: id.into(),
             name: name.into(),
-            product_family_id,
+            product_family_id: product_family_id.into(),
             product_id: None,
             segmentation_matrix: None,
             unit_conversion: None,

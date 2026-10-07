@@ -28,4 +28,11 @@ impl MatrixRow {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `dimension2`.
+    #[must_use]
+    pub fn dimension2(mut self, dimension2: impl Into<MatrixDimension>) -> Self {
+        self.dimension2 = Some(dimension2.into());
+        self
+    }
 }

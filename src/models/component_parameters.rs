@@ -30,4 +30,25 @@ impl ComponentParameters {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `billing_period`.
+    #[must_use]
+    pub fn billing_period(mut self, billing_period: impl Into<BillingPeriodEnum>) -> Self {
+        self.billing_period = Some(billing_period.into());
+        self
+    }
+
+    /// Sets `committed_capacity`.
+    #[must_use]
+    pub fn committed_capacity(mut self, committed_capacity: impl Into<i64>) -> Self {
+        self.committed_capacity = Some(committed_capacity.into());
+        self
+    }
+
+    /// Sets `initial_slot_count`.
+    #[must_use]
+    pub fn initial_slot_count(mut self, initial_slot_count: impl Into<i32>) -> Self {
+        self.initial_slot_count = Some(initial_slot_count.into());
+        self
+    }
 }

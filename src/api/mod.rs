@@ -18,7 +18,7 @@ pub(crate) mod auth_schemes;
 pub use auth_schemes::{BasicAuth, TokenProvider};
 #[path = "../pagination.rs"]
 pub(crate) mod pagination;
-pub use pagination::{Page, Pages, Paginator};
+pub use pagination::{Page, PageCall, Pages, Paginator};
 #[path = "../request_options.rs"]
 mod request_options;
 pub use request_options::RequestOptions;
@@ -77,3 +77,155 @@ pub use self::{
         UsageRetrieveSummaryOptions,
     },
 };
+
+/// Typed accessors of the paging fields of each paginated operation's response.
+pub(crate) mod pages {
+    use super::pagination::Fields;
+    use crate::models;
+    pub(crate) static ADD_ONS_LIST: Fields<models::AddOnListResponse, models::AddOn> = Fields {
+        items: |page| Some(&page.data),
+        items_mut: |page| Some(&mut page.data),
+        next_cursor: None,
+        item_cursor: None,
+        has_more: None,
+        total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+    };
+    pub(crate) static BATCH_JOBS_LIST: Fields<
+        models::BatchJobListResponse,
+        models::BatchJobResponse,
+    > = Fields {
+        items: |page| Some(&page.data),
+        items_mut: |page| Some(&mut page.data),
+        next_cursor: None,
+        item_cursor: None,
+        has_more: None,
+        total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+    };
+    pub(crate) static BATCH_JOBS_LIST_FAILURES: Fields<
+        models::BatchJobFailuresResponse,
+        models::BatchJobItemFailureResponse,
+    > = Fields {
+        items: |page| Some(&page.data),
+        items_mut: |page| Some(&mut page.data),
+        next_cursor: None,
+        item_cursor: None,
+        has_more: None,
+        total: Some(|page| Some(page.total_count)),
+    };
+    pub(crate) static COUPONS_LIST: Fields<models::CouponListResponse, models::Coupon> = Fields {
+        items: |page| Some(&page.data),
+        items_mut: |page| Some(&mut page.data),
+        next_cursor: None,
+        item_cursor: None,
+        has_more: None,
+        total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+    };
+    pub(crate) static CREDIT_NOTES_LIST: Fields<
+        models::CreditNoteListResponse,
+        models::CreditNote,
+    > = Fields {
+        items: |page| Some(&page.data),
+        items_mut: |page| Some(&mut page.data),
+        next_cursor: None,
+        item_cursor: None,
+        has_more: None,
+        total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+    };
+    pub(crate) static CUSTOM_PROPERTIES_LIST_CUSTOM_PROPERTY_DEFINITIONS: Fields<
+        models::CustomPropertyDefinitionListResponse,
+        models::CustomPropertyDefinition,
+    > = Fields {
+        items: |page| Some(&page.data),
+        items_mut: |page| Some(&mut page.data),
+        next_cursor: None,
+        item_cursor: None,
+        has_more: None,
+        total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+    };
+    pub(crate) static CUSTOMERS_LIST: Fields<models::CustomerListResponse, models::Customer> =
+        Fields {
+            items: |page| Some(&page.data),
+            items_mut: |page| Some(&mut page.data),
+            next_cursor: None,
+            item_cursor: None,
+            has_more: None,
+            total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+        };
+    pub(crate) static FEATURES_LIST: Fields<models::FeatureListResponse, models::Feature> =
+        Fields {
+            items: |page| Some(&page.data),
+            items_mut: |page| Some(&mut page.data),
+            next_cursor: None,
+            item_cursor: None,
+            has_more: None,
+            total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+        };
+    pub(crate) static INVOICES_LIST: Fields<models::InvoiceListResponse, models::Invoice> =
+        Fields {
+            items: |page| Some(&page.data),
+            items_mut: |page| Some(&mut page.data),
+            next_cursor: None,
+            item_cursor: None,
+            has_more: None,
+            total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+        };
+    pub(crate) static METRICS_LIST: Fields<models::MetricListResponse, models::MetricSummary> =
+        Fields {
+            items: |page| Some(&page.data),
+            items_mut: |page| Some(&mut page.data),
+            next_cursor: None,
+            item_cursor: None,
+            has_more: None,
+            total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+        };
+    pub(crate) static PLANS_LIST: Fields<models::PlanListResponse, models::Plan> = Fields {
+        items: |page| Some(&page.data),
+        items_mut: |page| Some(&mut page.data),
+        next_cursor: None,
+        item_cursor: None,
+        has_more: None,
+        total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+    };
+    pub(crate) static PLANS_LIST_VERSIONS: Fields<
+        models::PlanVersionListResponse,
+        models::PlanVersionSummary,
+    > = Fields {
+        items: |page| Some(&page.data),
+        items_mut: |page| Some(&mut page.data),
+        next_cursor: None,
+        item_cursor: None,
+        has_more: None,
+        total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+    };
+    pub(crate) static PRODUCT_FAMILIES_LIST: Fields<
+        models::ProductFamilyListResponse,
+        models::ProductFamily,
+    > = Fields {
+        items: |page| Some(&page.data),
+        items_mut: |page| Some(&mut page.data),
+        next_cursor: None,
+        item_cursor: None,
+        has_more: None,
+        total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+    };
+    pub(crate) static PRODUCTS_LIST: Fields<models::ProductListResponse, models::Product> =
+        Fields {
+            items: |page| Some(&page.data),
+            items_mut: |page| Some(&mut page.data),
+            next_cursor: None,
+            item_cursor: None,
+            has_more: None,
+            total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+        };
+    pub(crate) static SUBSCRIPTIONS_LIST: Fields<
+        models::SubscriptionListResponse,
+        models::Subscription,
+    > = Fields {
+        items: |page| Some(&page.data),
+        items_mut: |page| Some(&mut page.data),
+        next_cursor: None,
+        item_cursor: None,
+        has_more: None,
+        total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+    };
+}

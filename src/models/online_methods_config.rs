@@ -26,4 +26,18 @@ impl OnlineMethodsConfig {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `card`.
+    #[must_use]
+    pub fn card(mut self, card: impl Into<OnlineMethodConfig>) -> Self {
+        self.card = Some(card.into());
+        self
+    }
+
+    /// Sets `direct_debit`.
+    #[must_use]
+    pub fn direct_debit(mut self, direct_debit: impl Into<OnlineMethodConfig>) -> Self {
+        self.direct_debit = Some(direct_debit.into());
+        self
+    }
 }

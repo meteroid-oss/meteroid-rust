@@ -1,5 +1,6 @@
 // this file is @generated
 #![allow(clippy::doc_markdown, clippy::default_trait_access)]
+
 #[allow(unused_imports, clippy::wildcard_imports)]
 use crate::{error::Result, models::*, Configuration};
 
@@ -42,9 +43,15 @@ impl Entitlements {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
-    pub fn retrieve(&self, entitlement_id: &str) -> crate::api::Call<crate::models::Entitlement> {
+    pub fn retrieve(
+        &self,
+        entitlement_id: impl Into<crate::models::EntitlementId>,
+    ) -> crate::api::Call<crate::models::Entitlement> {
         crate::request::Request::new(http::Method::GET, "/api/v1/entitlements/{entitlement_id}")
-            .with_path_param("entitlement_id", entitlement_id)
+            .with_path_param(
+                "entitlement_id",
+                Into::<crate::models::EntitlementId>::into(entitlement_id),
+            )
             .with_options(&self.options)
             .json(&self.cfg)
     }
@@ -56,12 +63,18 @@ impl Entitlements {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
-    pub fn delete(&self, entitlement_id: &str) -> crate::api::Call<()> {
+    pub fn delete(
+        &self,
+        entitlement_id: impl Into<crate::models::EntitlementId>,
+    ) -> crate::api::Call<()> {
         crate::request::Request::new(
             http::Method::DELETE,
             "/api/v1/entitlements/{entitlement_id}",
         )
-        .with_path_param("entitlement_id", entitlement_id)
+        .with_path_param(
+            "entitlement_id",
+            Into::<crate::models::EntitlementId>::into(entitlement_id),
+        )
         .with_options(&self.options)
         .empty(&self.cfg)
     }
@@ -77,11 +90,14 @@ impl Entitlements {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429).
     pub fn update(
         &self,
-        entitlement_id: &str,
+        entitlement_id: impl Into<crate::models::EntitlementId>,
         update_entitlement_request: crate::models::UpdateEntitlementRequest,
     ) -> crate::api::Call<crate::models::Entitlement> {
         crate::request::Request::new(http::Method::PATCH, "/api/v1/entitlements/{entitlement_id}")
-            .with_path_param("entitlement_id", entitlement_id)
+            .with_path_param(
+                "entitlement_id",
+                Into::<crate::models::EntitlementId>::into(entitlement_id),
+            )
             .with_body_param(update_entitlement_request)
             .with_options(&self.options)
             .json(&self.cfg)

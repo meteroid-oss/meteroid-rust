@@ -25,4 +25,18 @@ impl CancelSubscriptionRequest {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `effective_date`.
+    #[must_use]
+    pub fn effective_date(mut self, effective_date: impl Into<chrono::NaiveDate>) -> Self {
+        self.effective_date = Some(effective_date.into());
+        self
+    }
+
+    /// Sets `reason`.
+    #[must_use]
+    pub fn reason(mut self, reason: impl Into<String>) -> Self {
+        self.reason = Some(reason.into());
+        self
+    }
 }

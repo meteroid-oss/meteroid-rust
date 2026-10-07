@@ -4,8 +4,10 @@
 Every operation of the API, as a method of a `Meteroid` client (`client` below), by
 resource. A `Call<T>` resolves to `Result<T>` when awaited, and to the status and headers too
 with `.with_response()`; `with_options(RequestOptions)` on a resource sets the headers, timeout,
-retries or idempotency key of its calls. Models are in [`src/models`](src/models), and the
-options structs next to their resource.
+retries or idempotency key of its calls. A paginated list returns a `PageCall<Body, Item>`:
+awaited, a `Page` that dereferences to the body (`page.field`) and lists `page.items()`, with
+`next_page()`; `.items()` streams every item across pages and `.pages()` every page. Models are
+in [`src/models`](src/models), and the options structs next to their resource.
 
 [Add ons](#add-ons) · [Batch jobs](#batch-jobs) · [Checkout sessions](#checkout-sessions) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Product families](#product-families) · [Products](#products) · [Subscriptions](#subscriptions) · [Usage](#usage)
 
@@ -15,7 +17,7 @@ options structs next to their resource.
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.add_ons().list(options: impl Into<Option<AddOnsListOptions>>) -> Call<AddOnListResponse>` | `GET /api/v1/addons` | [`AddOnListResponse`](src/models/add_on_list_response.rs) |
+| `client.add_ons().list(options: impl Into<Option<AddOnsListOptions>>) -> PageCall<AddOnListResponse, AddOn>` | `GET /api/v1/addons` | [`AddOnListResponse`](src/models/add_on_list_response.rs) page of [`AddOn`](src/models/add_on.rs) |
 | `client.add_ons().create(create_add_on_request: CreateAddOnRequest) -> Call<AddOn>` | `POST /api/v1/addons` | [`AddOn`](src/models/add_on.rs) |
 | `client.add_ons().retrieve(addon_id: &str) -> Call<AddOn>` | `GET /api/v1/addons/{addon_id}` | [`AddOn`](src/models/add_on.rs) |
 | `client.add_ons().update(addon_id: &str, update_add_on_request: UpdateAddOnRequest) -> Call<AddOn>` | `PATCH /api/v1/addons/{addon_id}` | [`AddOn`](src/models/add_on.rs) |
@@ -30,9 +32,9 @@ options structs next to their resource.
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.batch_jobs().list(options: impl Into<Option<BatchJobsListOptions>>) -> Call<BatchJobListResponse>` | `GET /api/v1/batch-jobs` | [`BatchJobListResponse`](src/models/batch_job_list_response.rs) |
+| `client.batch_jobs().list(options: impl Into<Option<BatchJobsListOptions>>) -> PageCall<BatchJobListResponse, BatchJobResponse>` | `GET /api/v1/batch-jobs` | [`BatchJobListResponse`](src/models/batch_job_list_response.rs) page of [`BatchJobResponse`](src/models/batch_job_response.rs) |
 | `client.batch_jobs().retrieve(batch_job_id: &str) -> Call<BatchJobDetailResponse>` | `GET /api/v1/batch-jobs/{batch_job_id}` | [`BatchJobDetailResponse`](src/models/batch_job_detail_response.rs) |
-| `client.batch_jobs().list_failures(batch_job_id: &str, options: impl Into<Option<BatchJobsListFailuresOptions>>) -> Call<BatchJobFailuresResponse>` | `GET /api/v1/batch-jobs/{batch_job_id}/failures` | [`BatchJobFailuresResponse`](src/models/batch_job_failures_response.rs) |
+| `client.batch_jobs().list_failures(batch_job_id: &str, options: impl Into<Option<BatchJobsListFailuresOptions>>) -> PageCall<BatchJobFailuresResponse, BatchJobItemFailureResponse>` | `GET /api/v1/batch-jobs/{batch_job_id}/failures` | [`BatchJobFailuresResponse`](src/models/batch_job_failures_response.rs) page of [`BatchJobItemFailureResponse`](src/models/batch_job_item_failure_response.rs) |
 
 ## Checkout sessions
 
@@ -63,7 +65,7 @@ options structs next to their resource.
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.coupons().list(options: impl Into<Option<CouponsListOptions>>) -> Call<CouponListResponse>` | `GET /api/v1/coupons` | [`CouponListResponse`](src/models/coupon_list_response.rs) |
+| `client.coupons().list(options: impl Into<Option<CouponsListOptions>>) -> PageCall<CouponListResponse, Coupon>` | `GET /api/v1/coupons` | [`CouponListResponse`](src/models/coupon_list_response.rs) page of [`Coupon`](src/models/coupon.rs) |
 | `client.coupons().create(create_coupon_request: CreateCouponRequest) -> Call<Coupon>` | `POST /api/v1/coupons` | [`Coupon`](src/models/coupon.rs) |
 | `client.coupons().retrieve(coupon_id: &str) -> Call<Coupon>` | `GET /api/v1/coupons/{coupon_id}` | [`Coupon`](src/models/coupon.rs) |
 | `client.coupons().update(coupon_id: &str, update_coupon_request: UpdateCouponRequest) -> Call<Coupon>` | `PATCH /api/v1/coupons/{coupon_id}` | [`Coupon`](src/models/coupon.rs) |
@@ -78,7 +80,7 @@ options structs next to their resource.
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.credit_notes().list(options: impl Into<Option<CreditNotesListOptions>>) -> Call<CreditNoteListResponse>` | `GET /api/v1/credit-notes` | [`CreditNoteListResponse`](src/models/credit_note_list_response.rs) |
+| `client.credit_notes().list(options: impl Into<Option<CreditNotesListOptions>>) -> PageCall<CreditNoteListResponse, CreditNote>` | `GET /api/v1/credit-notes` | [`CreditNoteListResponse`](src/models/credit_note_list_response.rs) page of [`CreditNote`](src/models/credit_note.rs) |
 | `client.credit_notes().retrieve(credit_note_id: &str) -> Call<CreditNote>` | `GET /api/v1/credit-notes/{credit_note_id}` | [`CreditNote`](src/models/credit_note.rs) |
 | `client.credit_notes().update_custom_properties(credit_note_id: &str, credit_note_custom_properties_request: CreditNoteCustomPropertiesRequest) -> Call<CreditNote>` | `PATCH /api/v1/credit-notes/{credit_note_id}/custom-properties` | [`CreditNote`](src/models/credit_note.rs) |
 | `client.credit_notes().download(credit_note_id: &str) -> Call<Bytes>` | `GET /api/v1/credit-notes/{credit_note_id}/download` | bytes |
@@ -90,7 +92,7 @@ options structs next to their resource.
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.custom_properties().list_custom_property_definitions(options: impl Into<Option<CustomPropertiesListCustomPropertyDefinitionsOptions>>) -> Call<CustomPropertyDefinitionListResponse>` | `GET /api/v1/custom-property-definitions` | [`CustomPropertyDefinitionListResponse`](src/models/custom_property_definition_list_response.rs) |
+| `client.custom_properties().list_custom_property_definitions(options: impl Into<Option<CustomPropertiesListCustomPropertyDefinitionsOptions>>) -> PageCall<CustomPropertyDefinitionListResponse, CustomPropertyDefinition>` | `GET /api/v1/custom-property-definitions` | [`CustomPropertyDefinitionListResponse`](src/models/custom_property_definition_list_response.rs) page of [`CustomPropertyDefinition`](src/models/custom_property_definition.rs) |
 | `client.custom_properties().create_custom_property_definition(custom_property_definition_create_request: CustomPropertyDefinitionCreateRequest) -> Call<CustomPropertyDefinition>` | `POST /api/v1/custom-property-definitions` | [`CustomPropertyDefinition`](src/models/custom_property_definition.rs) |
 | `client.custom_properties().retrieve_custom_property_definition(id: &str) -> Call<CustomPropertyDefinition>` | `GET /api/v1/custom-property-definitions/{id}` | [`CustomPropertyDefinition`](src/models/custom_property_definition.rs) |
 | `client.custom_properties().update_custom_property_definition(id: &str, custom_property_definition_update_request: CustomPropertyDefinitionUpdateRequest) -> Call<CustomPropertyDefinition>` | `PUT /api/v1/custom-property-definitions/{id}` | [`CustomPropertyDefinition`](src/models/custom_property_definition.rs) |
@@ -102,7 +104,7 @@ options structs next to their resource.
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.customers().list(options: impl Into<Option<CustomersListOptions>>) -> Call<CustomerListResponse>` | `GET /api/v1/customers` | [`CustomerListResponse`](src/models/customer_list_response.rs) |
+| `client.customers().list(options: impl Into<Option<CustomersListOptions>>) -> PageCall<CustomerListResponse, Customer>` | `GET /api/v1/customers` | [`CustomerListResponse`](src/models/customer_list_response.rs) page of [`Customer`](src/models/customer.rs) |
 | `client.customers().create(customer_create_request: CustomerCreateRequest) -> Call<Customer>` | `POST /api/v1/customers` | [`Customer`](src/models/customer.rs) |
 | `client.customers().retrieve(id_or_alias: &str) -> Call<Customer>` | `GET /api/v1/customers/{id_or_alias}` | [`Customer`](src/models/customer.rs) |
 | `client.customers().replace(id_or_alias: &str, customer_update_request: CustomerUpdateRequest) -> Call<Customer>` | `PUT /api/v1/customers/{id_or_alias}` | [`Customer`](src/models/customer.rs) |
@@ -136,7 +138,7 @@ options structs next to their resource.
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.features().list(options: impl Into<Option<FeaturesListOptions>>) -> Call<FeatureListResponse>` | `GET /api/v1/features` | [`FeatureListResponse`](src/models/feature_list_response.rs) |
+| `client.features().list(options: impl Into<Option<FeaturesListOptions>>) -> PageCall<FeatureListResponse, Feature>` | `GET /api/v1/features` | [`FeatureListResponse`](src/models/feature_list_response.rs) page of [`Feature`](src/models/feature.rs) |
 | `client.features().create(create_feature_request: CreateFeatureRequest) -> Call<Feature>` | `POST /api/v1/features` | [`Feature`](src/models/feature.rs) |
 | `client.features().retrieve(id_or_code: &str) -> Call<Feature>` | `GET /api/v1/features/{id_or_code}` | [`Feature`](src/models/feature.rs) |
 | `client.features().update(id_or_code: &str, update_feature_request: UpdateFeatureRequest) -> Call<Feature>` | `PATCH /api/v1/features/{id_or_code}` | [`Feature`](src/models/feature.rs) |
@@ -149,7 +151,7 @@ options structs next to their resource.
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.invoices().list(options: impl Into<Option<InvoicesListOptions>>) -> Call<InvoiceListResponse>` | `GET /api/v1/invoices` | [`InvoiceListResponse`](src/models/invoice_list_response.rs) |
+| `client.invoices().list(options: impl Into<Option<InvoicesListOptions>>) -> PageCall<InvoiceListResponse, Invoice>` | `GET /api/v1/invoices` | [`InvoiceListResponse`](src/models/invoice_list_response.rs) page of [`Invoice`](src/models/invoice.rs) |
 | `client.invoices().retrieve(invoice_id: &str) -> Call<Invoice>` | `GET /api/v1/invoices/{invoice_id}` | [`Invoice`](src/models/invoice.rs) |
 | `client.invoices().update_custom_properties(invoice_id: &str, invoice_custom_properties_request: InvoiceCustomPropertiesRequest) -> Call<Invoice>` | `PATCH /api/v1/invoices/{invoice_id}/custom-properties` | [`Invoice`](src/models/invoice.rs) |
 | `client.invoices().download(invoice_id: &str) -> Call<Bytes>` | `GET /api/v1/invoices/{invoice_id}/download` | bytes |
@@ -162,7 +164,7 @@ options structs next to their resource.
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.metrics().list(options: impl Into<Option<MetricsListOptions>>) -> Call<MetricListResponse>` | `GET /api/v1/metrics` | [`MetricListResponse`](src/models/metric_list_response.rs) |
+| `client.metrics().list(options: impl Into<Option<MetricsListOptions>>) -> PageCall<MetricListResponse, MetricSummary>` | `GET /api/v1/metrics` | [`MetricListResponse`](src/models/metric_list_response.rs) page of [`MetricSummary`](src/models/metric_summary.rs) |
 | `client.metrics().create(create_metric_request: CreateMetricRequest) -> Call<Metric>` | `POST /api/v1/metrics` | [`Metric`](src/models/metric.rs) |
 | `client.metrics().retrieve(metric_id: &str) -> Call<Metric>` | `GET /api/v1/metrics/{metric_id}` | [`Metric`](src/models/metric.rs) |
 | `client.metrics().update(metric_id: &str, update_metric_request: UpdateMetricRequest) -> Call<Metric>` | `PATCH /api/v1/metrics/{metric_id}` | [`Metric`](src/models/metric.rs) |
@@ -199,7 +201,7 @@ options structs next to their resource.
 | --- | --- | --- |
 | `client.plans().list_plan_version_entitlements(plan_version_id: &str) -> Call<ResolvedEntitlementListResponse>` | `GET /api/v1/plan-versions/{plan_version_id}/entitlements` | [`ResolvedEntitlementListResponse`](src/models/resolved_entitlement_list_response.rs) |
 | `client.plans().create_plan_version_entitlement(plan_version_id: &str, create_entitlements_request: CreateEntitlementsRequest) -> Call<EntitlementListResponse>` | `POST /api/v1/plan-versions/{plan_version_id}/entitlements` | [`EntitlementListResponse`](src/models/entitlement_list_response.rs) |
-| `client.plans().list(options: impl Into<Option<PlansListOptions>>) -> Call<PlanListResponse>` | `GET /api/v1/plans` | [`PlanListResponse`](src/models/plan_list_response.rs) |
+| `client.plans().list(options: impl Into<Option<PlansListOptions>>) -> PageCall<PlanListResponse, Plan>` | `GET /api/v1/plans` | [`PlanListResponse`](src/models/plan_list_response.rs) page of [`Plan`](src/models/plan.rs) |
 | `client.plans().create(create_plan_request: CreatePlanRequest) -> Call<Plan>` | `POST /api/v1/plans` | [`Plan`](src/models/plan.rs) |
 | `client.plans().update_version_minimum(plan_version_id: &str, minimum_commitment: MinimumCommitment) -> Call<MinimumCommitment>` | `PUT /api/v1/plans/versions/{plan_version_id}/minimum` | [`MinimumCommitment`](src/models/minimum_commitment.rs) |
 | `client.plans().delete_version_minimum(plan_version_id: &str) -> Call<()>` | `DELETE /api/v1/plans/versions/{plan_version_id}/minimum` | nothing |
@@ -209,7 +211,7 @@ options structs next to their resource.
 | `client.plans().archive(plan_id: &str) -> Call<()>` | `POST /api/v1/plans/{plan_id}/archive` | nothing |
 | `client.plans().publish(plan_id: &str) -> Call<Plan>` | `POST /api/v1/plans/{plan_id}/publish` | [`Plan`](src/models/plan.rs) |
 | `client.plans().unarchive(plan_id: &str) -> Call<()>` | `POST /api/v1/plans/{plan_id}/unarchive` | nothing |
-| `client.plans().list_versions(plan_id: &str, options: impl Into<Option<PlansListVersionsOptions>>) -> Call<PlanVersionListResponse>` | `GET /api/v1/plans/{plan_id}/versions` | [`PlanVersionListResponse`](src/models/plan_version_list_response.rs) |
+| `client.plans().list_versions(plan_id: &str, options: impl Into<Option<PlansListVersionsOptions>>) -> PageCall<PlanVersionListResponse, PlanVersionSummary>` | `GET /api/v1/plans/{plan_id}/versions` | [`PlanVersionListResponse`](src/models/plan_version_list_response.rs) page of [`PlanVersionSummary`](src/models/plan_version_summary.rs) |
 
 ## Product families
 
@@ -217,7 +219,7 @@ options structs next to their resource.
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.product_families().list(options: impl Into<Option<ProductFamiliesListOptions>>) -> Call<ProductFamilyListResponse>` | `GET /api/v1/product_families` | [`ProductFamilyListResponse`](src/models/product_family_list_response.rs) |
+| `client.product_families().list(options: impl Into<Option<ProductFamiliesListOptions>>) -> PageCall<ProductFamilyListResponse, ProductFamily>` | `GET /api/v1/product_families` | [`ProductFamilyListResponse`](src/models/product_family_list_response.rs) page of [`ProductFamily`](src/models/product_family.rs) |
 | `client.product_families().create(product_family_create_request: ProductFamilyCreateRequest) -> Call<ProductFamily>` | `POST /api/v1/product_families` | [`ProductFamily`](src/models/product_family.rs) |
 | `client.product_families().retrieve(id_or_alias: &str) -> Call<ProductFamily>` | `GET /api/v1/product_families/{id_or_alias}` | [`ProductFamily`](src/models/product_family.rs) |
 
@@ -227,7 +229,7 @@ options structs next to their resource.
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.products().list(options: impl Into<Option<ProductsListOptions>>) -> Call<ProductListResponse>` | `GET /api/v1/products` | [`ProductListResponse`](src/models/product_list_response.rs) |
+| `client.products().list(options: impl Into<Option<ProductsListOptions>>) -> PageCall<ProductListResponse, Product>` | `GET /api/v1/products` | [`ProductListResponse`](src/models/product_list_response.rs) page of [`Product`](src/models/product.rs) |
 | `client.products().create(create_product_request: CreateProductRequest) -> Call<Product>` | `POST /api/v1/products` | [`Product`](src/models/product.rs) |
 | `client.products().retrieve(product_id: &str) -> Call<Product>` | `GET /api/v1/products/{product_id}` | [`Product`](src/models/product.rs) |
 | `client.products().update(product_id: &str, update_product_request: UpdateProductRequest) -> Call<Product>` | `PATCH /api/v1/products/{product_id}` | [`Product`](src/models/product.rs) |
@@ -242,7 +244,7 @@ options structs next to their resource.
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.subscriptions().list(options: impl Into<Option<SubscriptionsListOptions>>) -> Call<SubscriptionListResponse>` | `GET /api/v1/subscriptions` | [`SubscriptionListResponse`](src/models/subscription_list_response.rs) |
+| `client.subscriptions().list(options: impl Into<Option<SubscriptionsListOptions>>) -> PageCall<SubscriptionListResponse, Subscription>` | `GET /api/v1/subscriptions` | [`SubscriptionListResponse`](src/models/subscription_list_response.rs) page of [`Subscription`](src/models/subscription.rs) |
 | `client.subscriptions().create(subscription_create_request: SubscriptionCreateRequest) -> Call<SubscriptionDetails>` | `POST /api/v1/subscriptions` | [`SubscriptionDetails`](src/models/subscription_details.rs) |
 | `client.subscriptions().retrieve(subscription_id: &str) -> Call<SubscriptionDetails>` | `GET /api/v1/subscriptions/{subscription_id}` | [`SubscriptionDetails`](src/models/subscription_details.rs) |
 | `client.subscriptions().update(subscription_id: &str, subscription_update_request: SubscriptionUpdateRequest) -> Call<SubscriptionUpdateResponse>` | `PATCH /api/v1/subscriptions/{subscription_id}` | [`SubscriptionUpdateResponse`](src/models/subscription_update_response.rs) |

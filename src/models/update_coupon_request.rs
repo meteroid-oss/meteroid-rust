@@ -42,4 +42,46 @@ impl UpdateCouponRequest {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `description`.
+    #[must_use]
+    pub fn description(mut self, description: impl Into<String>) -> Self {
+        self.description = Some(Some(description.into()));
+        self
+    }
+
+    /// Sends `description` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_description(mut self) -> Self {
+        self.description = Some(None);
+        self
+    }
+
+    /// Sets `discount`.
+    #[must_use]
+    pub fn discount(mut self, discount: impl Into<CouponDiscount>) -> Self {
+        self.discount = Some(Some(discount.into()));
+        self
+    }
+
+    /// Sends `discount` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_discount(mut self) -> Self {
+        self.discount = Some(None);
+        self
+    }
+
+    /// Sets `plan_ids`.
+    #[must_use]
+    pub fn plan_ids(mut self, plan_ids: impl Into<Vec<PlanId>>) -> Self {
+        self.plan_ids = Some(Some(plan_ids.into()));
+        self
+    }
+
+    /// Sends `plan_ids` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_plan_ids(mut self) -> Self {
+        self.plan_ids = Some(None);
+        self
+    }
 }

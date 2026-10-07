@@ -18,9 +18,9 @@ pub struct EntitlementSpecRequest {
 impl EntitlementSpecRequest {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(feature_id: FeatureId, value: EntitlementValue) -> Self {
+    pub fn new(feature_id: impl Into<FeatureId>, value: EntitlementValue) -> Self {
         Self {
-            feature_id,
+            feature_id: feature_id.into(),
             value,
             extra: serde_json::Map::new(),
         }

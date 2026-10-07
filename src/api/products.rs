@@ -1,5 +1,6 @@
 // this file is @generated
 #![allow(clippy::doc_markdown, clippy::default_trait_access)]
+
 #[allow(unused_imports, clippy::wildcard_imports)]
 use crate::{error::Result, models::*, Configuration};
 
@@ -39,10 +40,24 @@ impl ProductsListOptions {
         self
     }
 
+    /// Sets the `product_family_id` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_product_family_id(mut self, product_family_id: Option<ProductFamilyId>) -> Self {
+        self.product_family_id = product_family_id;
+        self
+    }
+
     /// Sets the `search` query parameter.
     #[must_use]
     pub fn search(mut self, search: impl Into<String>) -> Self {
         self.search = Some(search.into());
+        self
+    }
+
+    /// Sets the `search` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_search(mut self, search: Option<String>) -> Self {
+        self.search = search;
         self
     }
 
@@ -53,6 +68,13 @@ impl ProductsListOptions {
         self
     }
 
+    /// Sets the `order_by` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_order_by(mut self, order_by: Option<String>) -> Self {
+        self.order_by = order_by;
+        self
+    }
+
     /// Sets the `page` query parameter.
     #[must_use]
     pub fn page(mut self, page: impl Into<i32>) -> Self {
@@ -60,10 +82,24 @@ impl ProductsListOptions {
         self
     }
 
+    /// Sets the `page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_page(mut self, page: Option<i32>) -> Self {
+        self.page = page;
+        self
+    }
+
     /// Sets the `per_page` query parameter.
     #[must_use]
     pub fn per_page(mut self, per_page: impl Into<i32>) -> Self {
         self.per_page = Some(per_page.into());
+        self
+    }
+
+    /// Sets the `per_page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_per_page(mut self, per_page: Option<i32>) -> Self {
+        self.per_page = per_page;
         self
     }
 }
@@ -100,14 +136,7 @@ impl Products {
         self
     }
 
-    /// List products
-    ///
-    /// `GET /api/v1/products`.
-    ///
-    /// # Errors
-    ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429).
-    pub fn list(
+    fn list_request(
         &self,
         options: impl Into<Option<ProductsListOptions>>,
     ) -> crate::api::Call<crate::models::ProductListResponse> {
@@ -127,6 +156,36 @@ impl Products {
             .with_optional_query_param("per_page", per_page)
             .with_options(&self.options)
             .json(&self.cfg)
+    }
+
+    /// List products
+    ///
+    /// `GET /api/v1/products`, a page at a time: awaiting the call gives the first
+    /// [`Page`](crate::api::Page), [`items`](crate::api::PageCall::items) every
+    /// [`Product`](crate::models::Product) across pages
+    /// and [`pages`](crate::api::PageCall::pages) every page.
+    ///
+    /// # Errors
+    ///
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429).
+    pub fn list(
+        &self,
+        options: impl Into<Option<ProductsListOptions>>,
+    ) -> crate::api::PageCall<crate::models::ProductListResponse, crate::models::Product> {
+        static WALK: crate::api::pagination::Walk<ProductsListOptions> =
+            crate::api::pagination::Walk::Page {
+                first: 0,
+                get: |options| options.page.map(i64::from),
+                set: |options, position| options.page = i32::try_from(position).ok(),
+            };
+        let this = self.clone();
+        let call = move |options: ProductsListOptions| this.list_request(options);
+        crate::api::PageCall::new(
+            options.into().unwrap_or_default(),
+            WALK,
+            crate::api::pages::PRODUCTS_LIST,
+            call,
+        )
     }
 
     /// Create a product
@@ -153,9 +212,15 @@ impl Products {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
-    pub fn retrieve(&self, product_id: &str) -> crate::api::Call<crate::models::Product> {
+    pub fn retrieve(
+        &self,
+        product_id: impl Into<crate::models::ProductId>,
+    ) -> crate::api::Call<crate::models::Product> {
         crate::request::Request::new(http::Method::GET, "/api/v1/products/{product_id}")
-            .with_path_param("product_id", product_id)
+            .with_path_param(
+                "product_id",
+                Into::<crate::models::ProductId>::into(product_id),
+            )
             .with_options(&self.options)
             .json(&self.cfg)
     }
@@ -171,11 +236,14 @@ impl Products {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429).
     pub fn update(
         &self,
-        product_id: &str,
+        product_id: impl Into<crate::models::ProductId>,
         update_product_request: crate::models::UpdateProductRequest,
     ) -> crate::api::Call<crate::models::Product> {
         crate::request::Request::new(http::Method::PATCH, "/api/v1/products/{product_id}")
-            .with_path_param("product_id", product_id)
+            .with_path_param(
+                "product_id",
+                Into::<crate::models::ProductId>::into(product_id),
+            )
             .with_body_param(update_product_request)
             .with_options(&self.options)
             .json(&self.cfg)
@@ -188,9 +256,12 @@ impl Products {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
-    pub fn archive(&self, product_id: &str) -> crate::api::Call<()> {
+    pub fn archive(&self, product_id: impl Into<crate::models::ProductId>) -> crate::api::Call<()> {
         crate::request::Request::new(http::Method::POST, "/api/v1/products/{product_id}/archive")
-            .with_path_param("product_id", product_id)
+            .with_path_param(
+                "product_id",
+                Into::<crate::models::ProductId>::into(product_id),
+            )
             .with_options(&self.options)
             .empty(&self.cfg)
     }
@@ -204,13 +275,16 @@ impl Products {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
     pub fn list_entitlements(
         &self,
-        product_id: &str,
+        product_id: impl Into<crate::models::ProductId>,
     ) -> crate::api::Call<crate::models::ResolvedEntitlementListResponse> {
         crate::request::Request::new(
             http::Method::GET,
             "/api/v1/products/{product_id}/entitlements",
         )
-        .with_path_param("product_id", product_id)
+        .with_path_param(
+            "product_id",
+            Into::<crate::models::ProductId>::into(product_id),
+        )
         .with_options(&self.options)
         .json(&self.cfg)
     }
@@ -232,14 +306,17 @@ impl Products {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429).
     pub fn create_entitlement(
         &self,
-        product_id: &str,
+        product_id: impl Into<crate::models::ProductId>,
         create_entitlements_request: crate::models::CreateEntitlementsRequest,
     ) -> crate::api::Call<crate::models::EntitlementListResponse> {
         crate::request::Request::new(
             http::Method::POST,
             "/api/v1/products/{product_id}/entitlements",
         )
-        .with_path_param("product_id", product_id)
+        .with_path_param(
+            "product_id",
+            Into::<crate::models::ProductId>::into(product_id),
+        )
         .with_body_param(create_entitlements_request)
         .with_options(&self.options)
         .json(&self.cfg)
@@ -252,12 +329,18 @@ impl Products {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
-    pub fn unarchive(&self, product_id: &str) -> crate::api::Call<()> {
+    pub fn unarchive(
+        &self,
+        product_id: impl Into<crate::models::ProductId>,
+    ) -> crate::api::Call<()> {
         crate::request::Request::new(
             http::Method::POST,
             "/api/v1/products/{product_id}/unarchive",
         )
-        .with_path_param("product_id", product_id)
+        .with_path_param(
+            "product_id",
+            Into::<crate::models::ProductId>::into(product_id),
+        )
         .with_options(&self.options)
         .empty(&self.cfg)
     }

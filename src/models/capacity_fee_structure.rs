@@ -15,9 +15,9 @@ pub struct CapacityFeeStructure {
 impl CapacityFeeStructure {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(metric_id: BillableMetricId) -> Self {
+    pub fn new(metric_id: impl Into<BillableMetricId>) -> Self {
         Self {
-            metric_id,
+            metric_id: metric_id.into(),
             extra: serde_json::Map::new(),
         }
     }

@@ -26,4 +26,11 @@ impl CreateOAuthAppRequest {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `scopes`.
+    #[must_use]
+    pub fn scopes(mut self, scopes: impl Into<Vec<String>>) -> Self {
+        self.scopes = Some(scopes.into());
+        self
+    }
 }
