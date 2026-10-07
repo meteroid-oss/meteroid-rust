@@ -24,10 +24,10 @@ pub struct FeatureRef {
 impl FeatureRef {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(code: impl Into<String>, id: FeatureId, name: impl Into<String>) -> Self {
+    pub fn new(code: impl Into<String>, id: impl Into<FeatureId>, name: impl Into<String>) -> Self {
         Self {
             code: code.into(),
-            id,
+            id: id.into(),
             name: name.into(),
             product: None,
             extra: serde_json::Map::new(),

@@ -30,4 +30,18 @@ impl TierRow {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `flat_cap`.
+    #[must_use]
+    pub fn flat_cap(mut self, flat_cap: impl Into<rust_decimal::Decimal>) -> Self {
+        self.flat_cap = Some(flat_cap.into());
+        self
+    }
+
+    /// Sets `flat_fee`.
+    #[must_use]
+    pub fn flat_fee(mut self, flat_fee: impl Into<rust_decimal::Decimal>) -> Self {
+        self.flat_fee = Some(flat_fee.into());
+        self
+    }
 }

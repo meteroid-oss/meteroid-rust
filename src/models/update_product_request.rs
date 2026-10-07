@@ -42,4 +42,46 @@ impl UpdateProductRequest {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `description`.
+    #[must_use]
+    pub fn description(mut self, description: impl Into<String>) -> Self {
+        self.description = Some(Some(description.into()));
+        self
+    }
+
+    /// Sends `description` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_description(mut self) -> Self {
+        self.description = Some(None);
+        self
+    }
+
+    /// Sets `fee_structure`.
+    #[must_use]
+    pub fn fee_structure(mut self, fee_structure: impl Into<ProductFeeStructure>) -> Self {
+        self.fee_structure = Some(Some(fee_structure.into()));
+        self
+    }
+
+    /// Sends `fee_structure` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_fee_structure(mut self) -> Self {
+        self.fee_structure = Some(None);
+        self
+    }
+
+    /// Sets `name`.
+    #[must_use]
+    pub fn name(mut self, name: impl Into<String>) -> Self {
+        self.name = Some(Some(name.into()));
+        self
+    }
+
+    /// Sends `name` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_name(mut self) -> Self {
+        self.name = Some(None);
+        self
+    }
 }

@@ -63,9 +63,9 @@ impl ConnectedAccount {
     pub fn new(
         connection_type: ConnectionType,
         created_at: chrono::DateTime<chrono::Utc>,
-        id: ConnectedAccountId,
+        id: impl Into<ConnectedAccountId>,
         onboarding_mode: OnboardingMode,
-        platform_organization_id: OrganizationId,
+        platform_organization_id: impl Into<OrganizationId>,
         status: ConnectionStatus,
     ) -> Self {
         Self {
@@ -73,7 +73,7 @@ impl ConnectedAccount {
             connected_tenant_id: None,
             connection_type,
             created_at,
-            id,
+            id: id.into(),
             metadata: None,
             onboarding_completed_at: None,
             onboarding_mode,
@@ -81,7 +81,7 @@ impl ConnectedAccount {
             pending_email: None,
             pending_organization_name: None,
             platform_customer_id: None,
-            platform_organization_id,
+            platform_organization_id: platform_organization_id.into(),
             revoked_at: None,
             status,
             extra: serde_json::Map::new(),

@@ -1,5 +1,6 @@
 // this file is @generated
 #![allow(clippy::doc_markdown, clippy::default_trait_access)]
+
 #[allow(unused_imports, clippy::wildcard_imports)]
 use crate::{error::Result, models::*, Configuration};
 
@@ -30,10 +31,24 @@ impl CheckoutSessionsListOptions {
         self
     }
 
+    /// Sets the `customer_id` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_customer_id(mut self, customer_id: Option<CustomerId>) -> Self {
+        self.customer_id = customer_id;
+        self
+    }
+
     /// Sets the `status` query parameter.
     #[must_use]
     pub fn status(mut self, status: impl Into<CheckoutSessionStatus>) -> Self {
         self.status = Some(status.into());
+        self
+    }
+
+    /// Sets the `status` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_status(mut self, status: Option<CheckoutSessionStatus>) -> Self {
+        self.status = status;
         self
     }
 }
@@ -119,10 +134,10 @@ impl CheckoutSessions {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429, 500).
     pub fn retrieve(
         &self,
-        id: &str,
+        id: impl Into<crate::models::CheckoutSessionId>,
     ) -> crate::api::Call<crate::models::GetCheckoutSessionResponse> {
         crate::request::Request::new(http::Method::GET, "/api/v1/checkout-sessions/{id}")
-            .with_path_param("id", id)
+            .with_path_param("id", Into::<crate::models::CheckoutSessionId>::into(id))
             .with_options(&self.options)
             .json(&self.cfg)
     }
@@ -136,10 +151,10 @@ impl CheckoutSessions {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429, 500).
     pub fn cancel(
         &self,
-        id: &str,
+        id: impl Into<crate::models::CheckoutSessionId>,
     ) -> crate::api::Call<crate::models::CancelCheckoutSessionResponse> {
         crate::request::Request::new(http::Method::POST, "/api/v1/checkout-sessions/{id}/cancel")
-            .with_path_param("id", id)
+            .with_path_param("id", Into::<crate::models::CheckoutSessionId>::into(id))
             .with_options(&self.options)
             .json(&self.cfg)
     }

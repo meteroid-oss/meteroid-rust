@@ -42,9 +42,9 @@ impl Product {
         created_at: chrono::DateTime<chrono::Utc>,
         fee_structure: ProductFeeStructure,
         fee_type: ProductFeeTypeEnum,
-        id: ProductId,
+        id: impl Into<ProductId>,
         name: impl Into<String>,
-        product_family_id: ProductFamilyId,
+        product_family_id: impl Into<ProductFamilyId>,
     ) -> Self {
         Self {
             archived_at: None,
@@ -53,9 +53,9 @@ impl Product {
             description: None,
             fee_structure,
             fee_type,
-            id,
+            id: id.into(),
             name: name.into(),
-            product_family_id,
+            product_family_id: product_family_id.into(),
             extra: serde_json::Map::new(),
         }
     }

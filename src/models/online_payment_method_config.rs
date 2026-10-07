@@ -22,4 +22,11 @@ impl OnlinePaymentMethodConfig {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `config`.
+    #[must_use]
+    pub fn config(mut self, config: impl Into<OnlineMethodsConfig>) -> Self {
+        self.config = Some(config.into());
+        self
+    }
 }

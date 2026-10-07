@@ -18,9 +18,9 @@ pub struct UsageFee {
 impl UsageFee {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(metric_id: BillableMetricId, model: UsagePricingModel) -> Self {
+    pub fn new(metric_id: impl Into<BillableMetricId>, model: UsagePricingModel) -> Self {
         Self {
-            metric_id,
+            metric_id: metric_id.into(),
             model,
             extra: serde_json::Map::new(),
         }

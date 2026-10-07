@@ -27,4 +27,18 @@ impl SlotPricing {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `max_slots`.
+    #[must_use]
+    pub fn max_slots(mut self, max_slots: impl Into<i32>) -> Self {
+        self.max_slots = Some(max_slots.into());
+        self
+    }
+
+    /// Sets `min_slots`.
+    #[must_use]
+    pub fn min_slots(mut self, min_slots: impl Into<i32>) -> Self {
+        self.min_slots = Some(min_slots.into());
+        self
+    }
 }

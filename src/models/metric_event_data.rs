@@ -56,9 +56,9 @@ impl MetricEventData {
         aggregation_type: BillingMetricAggregateEnum,
         code: impl Into<String>,
         created_at: chrono::DateTime<chrono::Utc>,
-        metric_id: BillableMetricId,
+        metric_id: impl Into<BillableMetricId>,
         name: impl Into<String>,
-        product_family_id: ProductFamilyId,
+        product_family_id: impl Into<ProductFamilyId>,
     ) -> Self {
         Self {
             aggregation_key: None,
@@ -66,9 +66,9 @@ impl MetricEventData {
             code: code.into(),
             created_at,
             description: None,
-            metric_id,
+            metric_id: metric_id.into(),
             name: name.into(),
-            product_family_id,
+            product_family_id: product_family_id.into(),
             product_id: None,
             segmentation_matrix: None,
             unit_conversion_factor: None,

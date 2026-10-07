@@ -47,19 +47,19 @@ impl CouponEvent {
     #[must_use]
     pub fn new(
         code: impl Into<String>,
-        coupon_id: CouponId,
+        coupon_id: impl Into<CouponId>,
         created_at: chrono::DateTime<chrono::Utc>,
         description: impl Into<String>,
         disabled: bool,
         discount: CouponDiscount,
         reusable: bool,
-        id: EventId,
+        id: impl Into<EventId>,
         timestamp: chrono::DateTime<chrono::Utc>,
         r#type: EventType,
     ) -> Self {
         Self {
             code: code.into(),
-            coupon_id,
+            coupon_id: coupon_id.into(),
             created_at,
             description: description.into(),
             disabled,
@@ -68,7 +68,7 @@ impl CouponEvent {
             recurring_value: None,
             redemption_limit: None,
             reusable,
-            id,
+            id: id.into(),
             timestamp,
             r#type,
             extra: serde_json::Map::new(),

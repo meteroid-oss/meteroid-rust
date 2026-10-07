@@ -1,5 +1,6 @@
 // this file is @generated
 #![allow(clippy::doc_markdown, clippy::default_trait_access)]
+
 #[allow(unused_imports, clippy::wildcard_imports)]
 use crate::{error::Result, models::*, Configuration};
 
@@ -45,10 +46,24 @@ impl CreditNotesListOptions {
         self
     }
 
+    /// Sets the `customer_id` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_customer_id(mut self, customer_id: Option<CustomerId>) -> Self {
+        self.customer_id = customer_id;
+        self
+    }
+
     /// Sets the `invoice_id` query parameter.
     #[must_use]
     pub fn invoice_id(mut self, invoice_id: impl Into<InvoiceId>) -> Self {
         self.invoice_id = Some(invoice_id.into());
+        self
+    }
+
+    /// Sets the `invoice_id` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_invoice_id(mut self, invoice_id: Option<InvoiceId>) -> Self {
+        self.invoice_id = invoice_id;
         self
     }
 
@@ -59,10 +74,24 @@ impl CreditNotesListOptions {
         self
     }
 
+    /// Sets the `status` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_status(mut self, status: Option<CreditNoteStatus>) -> Self {
+        self.status = status;
+        self
+    }
+
     /// Sets the `search` query parameter.
     #[must_use]
     pub fn search(mut self, search: impl Into<String>) -> Self {
         self.search = Some(search.into());
+        self
+    }
+
+    /// Sets the `search` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_search(mut self, search: Option<String>) -> Self {
+        self.search = search;
         self
     }
 
@@ -73,6 +102,13 @@ impl CreditNotesListOptions {
         self
     }
 
+    /// Sets the `order_by` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_order_by(mut self, order_by: Option<String>) -> Self {
+        self.order_by = order_by;
+        self
+    }
+
     /// Sets the `page` query parameter.
     #[must_use]
     pub fn page(mut self, page: impl Into<i32>) -> Self {
@@ -80,10 +116,24 @@ impl CreditNotesListOptions {
         self
     }
 
+    /// Sets the `page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_page(mut self, page: Option<i32>) -> Self {
+        self.page = page;
+        self
+    }
+
     /// Sets the `per_page` query parameter.
     #[must_use]
     pub fn per_page(mut self, per_page: impl Into<i32>) -> Self {
         self.per_page = Some(per_page.into());
+        self
+    }
+
+    /// Sets the `per_page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_per_page(mut self, per_page: Option<i32>) -> Self {
+        self.per_page = per_page;
         self
     }
 }
@@ -120,16 +170,7 @@ impl CreditNotes {
         self
     }
 
-    /// List credit notes
-    ///
-    /// List a tenant's credit notes, optionally filtered by customer, invoice or status.
-    ///
-    /// `GET /api/v1/credit-notes`.
-    ///
-    /// # Errors
-    ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429, 500).
-    pub fn list(
+    fn list_request(
         &self,
         options: impl Into<Option<CreditNotesListOptions>>,
     ) -> crate::api::Call<crate::models::CreditNoteListResponse> {
@@ -155,6 +196,39 @@ impl CreditNotes {
             .json(&self.cfg)
     }
 
+    /// List credit notes
+    ///
+    /// List a tenant's credit notes, optionally filtered by customer, invoice or status.
+    ///
+    /// `GET /api/v1/credit-notes`, a page at a time: awaiting the call gives the first
+    /// [`Page`](crate::api::Page), [`items`](crate::api::PageCall::items) every
+    /// [`CreditNote`](crate::models::CreditNote) across pages
+    /// and [`pages`](crate::api::PageCall::pages) every page.
+    ///
+    /// # Errors
+    ///
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429, 500).
+    pub fn list(
+        &self,
+        options: impl Into<Option<CreditNotesListOptions>>,
+    ) -> crate::api::PageCall<crate::models::CreditNoteListResponse, crate::models::CreditNote>
+    {
+        static WALK: crate::api::pagination::Walk<CreditNotesListOptions> =
+            crate::api::pagination::Walk::Page {
+                first: 0,
+                get: |options| options.page.map(i64::from),
+                set: |options, position| options.page = i32::try_from(position).ok(),
+            };
+        let this = self.clone();
+        let call = move |options: CreditNotesListOptions| this.list_request(options);
+        crate::api::PageCall::new(
+            options.into().unwrap_or_default(),
+            WALK,
+            crate::api::pages::CREDIT_NOTES_LIST,
+            call,
+        )
+    }
+
     /// Get credit note
     ///
     /// Retrieve a single credit note by ID.
@@ -164,9 +238,15 @@ impl CreditNotes {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429, 500).
-    pub fn retrieve(&self, credit_note_id: &str) -> crate::api::Call<crate::models::CreditNote> {
+    pub fn retrieve(
+        &self,
+        credit_note_id: impl Into<crate::models::CreditNoteId>,
+    ) -> crate::api::Call<crate::models::CreditNote> {
         crate::request::Request::new(http::Method::GET, "/api/v1/credit-notes/{credit_note_id}")
-            .with_path_param("credit_note_id", credit_note_id)
+            .with_path_param(
+                "credit_note_id",
+                Into::<crate::models::CreditNoteId>::into(credit_note_id),
+            )
             .with_options(&self.options)
             .json(&self.cfg)
     }
@@ -185,14 +265,17 @@ impl CreditNotes {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429, 500).
     pub fn update_custom_properties(
         &self,
-        credit_note_id: &str,
+        credit_note_id: impl Into<crate::models::CreditNoteId>,
         credit_note_custom_properties_request: crate::models::CreditNoteCustomPropertiesRequest,
     ) -> crate::api::Call<crate::models::CreditNote> {
         crate::request::Request::new(
             http::Method::PATCH,
             "/api/v1/credit-notes/{credit_note_id}/custom-properties",
         )
-        .with_path_param("credit_note_id", credit_note_id)
+        .with_path_param(
+            "credit_note_id",
+            Into::<crate::models::CreditNoteId>::into(credit_note_id),
+        )
         .with_body_param(credit_note_custom_properties_request)
         .with_options(&self.options)
         .json(&self.cfg)
@@ -203,12 +286,18 @@ impl CreditNotes {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429, 500).
-    pub fn download(&self, credit_note_id: &str) -> crate::api::Call<bytes::Bytes> {
+    pub fn download(
+        &self,
+        credit_note_id: impl Into<crate::models::CreditNoteId>,
+    ) -> crate::api::Call<bytes::Bytes> {
         crate::request::Request::new(
             http::Method::GET,
             "/api/v1/credit-notes/{credit_note_id}/download",
         )
-        .with_path_param("credit_note_id", credit_note_id)
+        .with_path_param(
+            "credit_note_id",
+            Into::<crate::models::CreditNoteId>::into(credit_note_id),
+        )
         .with_options(&self.options)
         .binary(&self.cfg)
     }
@@ -223,12 +312,18 @@ impl CreditNotes {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429, 500).
-    pub fn download_xml(&self, credit_note_id: &str) -> crate::api::Call<bytes::Bytes> {
+    pub fn download_xml(
+        &self,
+        credit_note_id: impl Into<crate::models::CreditNoteId>,
+    ) -> crate::api::Call<bytes::Bytes> {
         crate::request::Request::new(
             http::Method::GET,
             "/api/v1/credit-notes/{credit_note_id}/xml",
         )
-        .with_path_param("credit_note_id", credit_note_id)
+        .with_path_param(
+            "credit_note_id",
+            Into::<crate::models::CreditNoteId>::into(credit_note_id),
+        )
         .with_options(&self.options)
         .binary(&self.cfg)
     }

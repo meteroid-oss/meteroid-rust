@@ -25,12 +25,12 @@ impl CapacityPlanFee {
     #[must_use]
     pub fn new(
         cadence: BillingPeriodEnum,
-        metric_id: BillableMetricId,
+        metric_id: impl Into<BillableMetricId>,
         thresholds: Vec<CapacityThreshold>,
     ) -> Self {
         Self {
             cadence,
-            metric_id,
+            metric_id: metric_id.into(),
             thresholds,
             extra: serde_json::Map::new(),
         }

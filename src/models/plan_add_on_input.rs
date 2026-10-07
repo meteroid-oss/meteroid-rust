@@ -24,13 +24,34 @@ pub struct PlanAddOnInput {
 impl PlanAddOnInput {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(add_on_id: AddOnId) -> Self {
+    pub fn new(add_on_id: impl Into<AddOnId>) -> Self {
         Self {
-            add_on_id,
+            add_on_id: add_on_id.into(),
             max_instances: None,
             price_id: None,
             self_serviceable: None,
             extra: serde_json::Map::new(),
         }
+    }
+
+    /// Sets `max_instances`.
+    #[must_use]
+    pub fn max_instances(mut self, max_instances: impl Into<i32>) -> Self {
+        self.max_instances = Some(max_instances.into());
+        self
+    }
+
+    /// Sets `price_id`.
+    #[must_use]
+    pub fn price_id(mut self, price_id: impl Into<PriceId>) -> Self {
+        self.price_id = Some(price_id.into());
+        self
+    }
+
+    /// Sets `self_serviceable`.
+    #[must_use]
+    pub fn self_serviceable(mut self, self_serviceable: impl Into<bool>) -> Self {
+        self.self_serviceable = Some(self_serviceable.into());
+        self
     }
 }

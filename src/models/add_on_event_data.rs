@@ -39,22 +39,22 @@ impl AddOnEventData {
     /// Creates a value from its required fields.
     #[must_use]
     pub fn new(
-        add_on_id: AddOnId,
+        add_on_id: impl Into<AddOnId>,
         created_at: chrono::DateTime<chrono::Utc>,
         name: impl Into<String>,
-        price_id: PriceId,
-        product_id: ProductId,
+        price_id: impl Into<PriceId>,
+        product_id: impl Into<ProductId>,
         self_serviceable: bool,
     ) -> Self {
         Self {
-            add_on_id,
+            add_on_id: add_on_id.into(),
             created_at,
             description: None,
             fee_type: None,
             max_instances_per_subscription: None,
             name: name.into(),
-            price_id,
-            product_id,
+            price_id: price_id.into(),
+            product_id: product_id.into(),
             self_serviceable,
             extra: serde_json::Map::new(),
         }

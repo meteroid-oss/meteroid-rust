@@ -73,7 +73,7 @@ impl Transaction {
         amount_refunded: i64,
         amount_reversed: i64,
         currency: impl Into<String>,
-        id: PaymentTransactionId,
+        id: impl Into<PaymentTransactionId>,
         payment_type: PaymentTypeEnum,
         status: PaymentStatusEnum,
     ) -> Self {
@@ -84,7 +84,7 @@ impl Transaction {
             credit_note_id: None,
             currency: currency.into(),
             error: None,
-            id,
+            id: id.into(),
             parent_transaction_id: None,
             payment_method_id: None,
             payment_method_info: None,

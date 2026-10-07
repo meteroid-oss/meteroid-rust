@@ -1,5 +1,6 @@
 // this file is @generated
 #![allow(clippy::doc_markdown, clippy::default_trait_access)]
+
 #[allow(unused_imports, clippy::wildcard_imports)]
 use crate::{error::Result, models::*, Configuration};
 
@@ -39,10 +40,24 @@ impl FeaturesListOptions {
         self
     }
 
+    /// Sets the `statuses` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_statuses(mut self, statuses: Option<Vec<FeatureStatus>>) -> Self {
+        self.statuses = statuses;
+        self
+    }
+
     /// Sets the `product_id` query parameter.
     #[must_use]
     pub fn product_id(mut self, product_id: impl Into<ProductId>) -> Self {
         self.product_id = Some(product_id.into());
+        self
+    }
+
+    /// Sets the `product_id` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_product_id(mut self, product_id: Option<ProductId>) -> Self {
+        self.product_id = product_id;
         self
     }
 
@@ -53,6 +68,13 @@ impl FeaturesListOptions {
         self
     }
 
+    /// Sets the `search` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_search(mut self, search: Option<String>) -> Self {
+        self.search = search;
+        self
+    }
+
     /// Sets the `page` query parameter.
     #[must_use]
     pub fn page(mut self, page: impl Into<i32>) -> Self {
@@ -60,10 +82,24 @@ impl FeaturesListOptions {
         self
     }
 
+    /// Sets the `page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_page(mut self, page: Option<i32>) -> Self {
+        self.page = page;
+        self
+    }
+
     /// Sets the `per_page` query parameter.
     #[must_use]
     pub fn per_page(mut self, per_page: impl Into<i32>) -> Self {
         self.per_page = Some(per_page.into());
+        self
+    }
+
+    /// Sets the `per_page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_per_page(mut self, per_page: Option<i32>) -> Self {
+        self.per_page = per_page;
         self
     }
 }
@@ -100,14 +136,7 @@ impl Features {
         self
     }
 
-    /// List features
-    ///
-    /// `GET /api/v1/features`.
-    ///
-    /// # Errors
-    ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429).
-    pub fn list(
+    fn list_request(
         &self,
         options: impl Into<Option<FeaturesListOptions>>,
     ) -> crate::api::Call<crate::models::FeatureListResponse> {
@@ -127,6 +156,36 @@ impl Features {
             .with_optional_query_param("per_page", per_page)
             .with_options(&self.options)
             .json(&self.cfg)
+    }
+
+    /// List features
+    ///
+    /// `GET /api/v1/features`, a page at a time: awaiting the call gives the first
+    /// [`Page`](crate::api::Page), [`items`](crate::api::PageCall::items) every
+    /// [`Feature`](crate::models::Feature) across pages
+    /// and [`pages`](crate::api::PageCall::pages) every page.
+    ///
+    /// # Errors
+    ///
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429).
+    pub fn list(
+        &self,
+        options: impl Into<Option<FeaturesListOptions>>,
+    ) -> crate::api::PageCall<crate::models::FeatureListResponse, crate::models::Feature> {
+        static WALK: crate::api::pagination::Walk<FeaturesListOptions> =
+            crate::api::pagination::Walk::Page {
+                first: 0,
+                get: |options| options.page.map(i64::from),
+                set: |options, position| options.page = i32::try_from(position).ok(),
+            };
+        let this = self.clone();
+        let call = move |options: FeaturesListOptions| this.list_request(options);
+        crate::api::PageCall::new(
+            options.into().unwrap_or_default(),
+            WALK,
+            crate::api::pages::FEATURES_LIST,
+            call,
+        )
     }
 
     /// Create a feature

@@ -47,4 +47,25 @@ impl CreateFeatureRequest {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `description`.
+    #[must_use]
+    pub fn description(mut self, description: impl Into<String>) -> Self {
+        self.description = Some(description.into());
+        self
+    }
+
+    /// Sets `entitlement`.
+    #[must_use]
+    pub fn entitlement(mut self, entitlement: impl Into<EntitlementValue>) -> Self {
+        self.entitlement = Some(entitlement.into());
+        self
+    }
+
+    /// Sets `product_id`.
+    #[must_use]
+    pub fn product_id(mut self, product_id: impl Into<ProductId>) -> Self {
+        self.product_id = Some(product_id.into());
+        self
+    }
 }

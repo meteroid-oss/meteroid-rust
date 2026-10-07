@@ -39,7 +39,7 @@ impl MetricSummary {
         aggregation_type: BillingMetricAggregateEnum,
         code: impl Into<String>,
         created_at: chrono::DateTime<chrono::Utc>,
-        id: BillableMetricId,
+        id: impl Into<BillableMetricId>,
         name: impl Into<String>,
     ) -> Self {
         Self {
@@ -49,7 +49,7 @@ impl MetricSummary {
             code: code.into(),
             created_at,
             description: None,
-            id,
+            id: id.into(),
             name: name.into(),
             extra: serde_json::Map::new(),
         }

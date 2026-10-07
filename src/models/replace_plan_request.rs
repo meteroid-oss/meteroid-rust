@@ -75,4 +75,63 @@ impl ReplacePlanRequest {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `add_ons`.
+    #[must_use]
+    pub fn add_ons(mut self, add_ons: impl Into<Vec<PlanAddOnInput>>) -> Self {
+        self.add_ons = Some(add_ons.into());
+        self
+    }
+
+    /// Sets `billing`.
+    #[must_use]
+    pub fn billing(mut self, billing: impl Into<BillingConfig>) -> Self {
+        self.billing = Some(billing.into());
+        self
+    }
+
+    /// Sets `description`.
+    #[must_use]
+    pub fn description(mut self, description: impl Into<String>) -> Self {
+        self.description = Some(description.into());
+        self
+    }
+
+    /// Sets `entitlements`.
+    #[must_use]
+    pub fn entitlements(mut self, entitlements: impl Into<Vec<EntitlementSpecRequest>>) -> Self {
+        self.entitlements = Some(entitlements.into());
+        self
+    }
+
+    /// Sets `minimum_commitment`.
+    #[must_use]
+    pub fn minimum_commitment(
+        mut self,
+        minimum_commitment: impl Into<MinimumCommitmentInput>,
+    ) -> Self {
+        self.minimum_commitment = Some(minimum_commitment.into());
+        self
+    }
+
+    /// Sets `status`.
+    #[must_use]
+    pub fn status(mut self, status: impl Into<PlanStatusEnum>) -> Self {
+        self.status = Some(status.into());
+        self
+    }
+
+    /// Sets `tax_inclusive`.
+    #[must_use]
+    pub fn tax_inclusive(mut self, tax_inclusive: impl Into<bool>) -> Self {
+        self.tax_inclusive = Some(tax_inclusive.into());
+        self
+    }
+
+    /// Sets `trial`.
+    #[must_use]
+    pub fn trial(mut self, trial: impl Into<TrialConfig>) -> Self {
+        self.trial = Some(trial.into());
+        self
+    }
 }

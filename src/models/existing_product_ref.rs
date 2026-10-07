@@ -15,9 +15,9 @@ pub struct ExistingProductRef {
 impl ExistingProductRef {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(id: ProductId) -> Self {
+    pub fn new(id: impl Into<ProductId>) -> Self {
         Self {
-            id,
+            id: id.into(),
             extra: serde_json::Map::new(),
         }
     }

@@ -1,5 +1,6 @@
 // this file is @generated
 #![allow(clippy::doc_markdown, clippy::default_trait_access)]
+
 #[allow(unused_imports, clippy::wildcard_imports)]
 use crate::{error::Result, models::*, Configuration};
 
@@ -83,10 +84,10 @@ impl Connect {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (429).
     pub fn retrieve_connected_account(
         &self,
-        id: &str,
+        id: impl Into<crate::models::ConnectedAccountId>,
     ) -> crate::api::Call<crate::models::ConnectedAccount> {
         crate::request::Request::new(http::Method::GET, "/api/v1/connected-accounts/{id}")
-            .with_path_param("id", id)
+            .with_path_param("id", Into::<crate::models::ConnectedAccountId>::into(id))
             .with_options(&self.options)
             .json(&self.cfg)
     }
@@ -100,9 +101,12 @@ impl Connect {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (429).
-    pub fn disconnect_account(&self, id: &str) -> crate::api::Call<()> {
+    pub fn disconnect_account(
+        &self,
+        id: impl Into<crate::models::ConnectedAccountId>,
+    ) -> crate::api::Call<()> {
         crate::request::Request::new(http::Method::DELETE, "/api/v1/connected-accounts/{id}")
-            .with_path_param("id", id)
+            .with_path_param("id", Into::<crate::models::ConnectedAccountId>::into(id))
             .with_options(&self.options)
             .empty(&self.cfg)
     }
@@ -119,14 +123,14 @@ impl Connect {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (429).
     pub fn create_onboarding_link(
         &self,
-        id: &str,
+        id: impl Into<crate::models::ConnectedAccountId>,
         create_onboarding_link_request: crate::models::CreateOnboardingLinkRequest,
     ) -> crate::api::Call<crate::models::OnboardingLinkResponse> {
         crate::request::Request::new(
             http::Method::POST,
             "/api/v1/connected-accounts/{id}/onboarding",
         )
-        .with_path_param("id", id)
+        .with_path_param("id", Into::<crate::models::ConnectedAccountId>::into(id))
         .with_body_param(create_onboarding_link_request)
         .with_options(&self.options)
         .json(&self.cfg)

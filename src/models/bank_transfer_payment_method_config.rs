@@ -22,4 +22,11 @@ impl BankTransferPaymentMethodConfig {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `account_id`.
+    #[must_use]
+    pub fn account_id(mut self, account_id: impl Into<BankAccountId>) -> Self {
+        self.account_id = Some(account_id.into());
+        self
+    }
 }

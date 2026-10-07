@@ -1,5 +1,6 @@
 // this file is @generated
 #![allow(clippy::doc_markdown, clippy::default_trait_access)]
+
 #[allow(unused_imports, clippy::wildcard_imports)]
 use crate::{error::Result, models::*, Configuration};
 
@@ -79,9 +80,12 @@ impl OauthApps {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (429).
-    pub fn retrieve(&self, id: &str) -> crate::api::Call<crate::models::OAuthApp> {
+    pub fn retrieve(
+        &self,
+        id: impl Into<crate::models::OAuthAppId>,
+    ) -> crate::api::Call<crate::models::OAuthApp> {
         crate::request::Request::new(http::Method::GET, "/api/v1/oauth-apps/{id}")
-            .with_path_param("id", id)
+            .with_path_param("id", Into::<crate::models::OAuthAppId>::into(id))
             .with_options(&self.options)
             .json(&self.cfg)
     }
@@ -95,9 +99,9 @@ impl OauthApps {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (429).
-    pub fn delete(&self, id: &str) -> crate::api::Call<()> {
+    pub fn delete(&self, id: impl Into<crate::models::OAuthAppId>) -> crate::api::Call<()> {
         crate::request::Request::new(http::Method::DELETE, "/api/v1/oauth-apps/{id}")
-            .with_path_param("id", id)
+            .with_path_param("id", Into::<crate::models::OAuthAppId>::into(id))
             .with_options(&self.options)
             .empty(&self.cfg)
     }
@@ -112,9 +116,12 @@ impl OauthApps {
     /// # Errors
     ///
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (429).
-    pub fn rotate(&self, id: &str) -> crate::api::Call<crate::models::RotatedSecret> {
+    pub fn rotate(
+        &self,
+        id: impl Into<crate::models::OAuthAppId>,
+    ) -> crate::api::Call<crate::models::RotatedSecret> {
         crate::request::Request::new(http::Method::POST, "/api/v1/oauth-apps/{id}/rotate")
-            .with_path_param("id", id)
+            .with_path_param("id", Into::<crate::models::OAuthAppId>::into(id))
             .with_options(&self.options)
             .json(&self.cfg)
     }

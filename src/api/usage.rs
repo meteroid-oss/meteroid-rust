@@ -1,5 +1,6 @@
 // this file is @generated
 #![allow(clippy::doc_markdown, clippy::default_trait_access)]
+
 #[allow(unused_imports, clippy::wildcard_imports)]
 use crate::{error::Result, models::*, Configuration};
 
@@ -36,6 +37,13 @@ impl UsageRetrieveCustomerOptions {
         self.metric_id = Some(metric_id.into());
         self
     }
+
+    /// Sets the `metric_id` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_metric_id(mut self, metric_id: Option<BillableMetricId>) -> Self {
+        self.metric_id = metric_id;
+        self
+    }
 }
 
 /// Query and header parameters of [`Usage::retrieve_subscription`].
@@ -68,6 +76,13 @@ impl UsageRetrieveSubscriptionOptions {
         self
     }
 
+    /// Sets the `start_date` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_start_date(mut self, start_date: Option<chrono::NaiveDate>) -> Self {
+        self.start_date = start_date;
+        self
+    }
+
     /// Sets the `end_date` query parameter.
     #[must_use]
     pub fn end_date(mut self, end_date: impl Into<chrono::NaiveDate>) -> Self {
@@ -75,10 +90,24 @@ impl UsageRetrieveSubscriptionOptions {
         self
     }
 
+    /// Sets the `end_date` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_end_date(mut self, end_date: Option<chrono::NaiveDate>) -> Self {
+        self.end_date = end_date;
+        self
+    }
+
     /// Sets the `metric_id` query parameter.
     #[must_use]
     pub fn metric_id(mut self, metric_id: impl Into<BillableMetricId>) -> Self {
         self.metric_id = Some(metric_id.into());
+        self
+    }
+
+    /// Sets the `metric_id` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_metric_id(mut self, metric_id: Option<BillableMetricId>) -> Self {
+        self.metric_id = metric_id;
         self
     }
 }
@@ -114,6 +143,13 @@ impl UsageRetrieveSummaryOptions {
     #[must_use]
     pub fn metric_id(mut self, metric_id: impl Into<BillableMetricId>) -> Self {
         self.metric_id = Some(metric_id.into());
+        self
+    }
+
+    /// Sets the `metric_id` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_metric_id(mut self, metric_id: Option<BillableMetricId>) -> Self {
+        self.metric_id = metric_id;
         self
     }
 }
@@ -191,7 +227,7 @@ impl Usage {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429, 500).
     pub fn retrieve_subscription(
         &self,
-        subscription_id: &str,
+        subscription_id: impl Into<crate::models::SubscriptionId>,
         options: impl Into<Option<UsageRetrieveSubscriptionOptions>>,
     ) -> crate::api::Call<crate::models::UsageResponse> {
         let UsageRetrieveSubscriptionOptions {
@@ -204,7 +240,10 @@ impl Usage {
             http::Method::GET,
             "/api/v1/usage/subscription/{subscription_id}",
         )
-        .with_path_param("subscription_id", subscription_id)
+        .with_path_param(
+            "subscription_id",
+            Into::<crate::models::SubscriptionId>::into(subscription_id),
+        )
         .with_optional_query_param("start_date", start_date)
         .with_optional_query_param("end_date", end_date)
         .with_optional_query_param("metric_id", metric_id)

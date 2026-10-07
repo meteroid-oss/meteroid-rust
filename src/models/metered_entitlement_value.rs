@@ -32,4 +32,25 @@ impl MeteredEntitlementValue {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `enabled`.
+    #[must_use]
+    pub fn enabled(mut self, enabled: impl Into<bool>) -> Self {
+        self.enabled = Some(enabled.into());
+        self
+    }
+
+    /// Sets `limit`.
+    #[must_use]
+    pub fn limit(mut self, limit: impl Into<rust_decimal::Decimal>) -> Self {
+        self.limit = Some(limit.into());
+        self
+    }
+
+    /// Sets `reset_period`.
+    #[must_use]
+    pub fn reset_period(mut self, reset_period: impl Into<ResetPeriod>) -> Self {
+        self.reset_period = Some(reset_period.into());
+        self
+    }
 }

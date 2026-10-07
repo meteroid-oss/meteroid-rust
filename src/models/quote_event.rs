@@ -31,17 +31,17 @@ impl QuoteEvent {
     /// Creates a value from its required fields.
     #[must_use]
     pub fn new(
-        customer_id: CustomerId,
-        quote_id: QuoteId,
-        id: EventId,
+        customer_id: impl Into<CustomerId>,
+        quote_id: impl Into<QuoteId>,
+        id: impl Into<EventId>,
         timestamp: chrono::DateTime<chrono::Utc>,
         r#type: EventType,
     ) -> Self {
         Self {
-            customer_id,
-            quote_id,
+            customer_id: customer_id.into(),
+            quote_id: quote_id.into(),
             subscription_id: None,
-            id,
+            id: id.into(),
             timestamp,
             r#type,
             extra: serde_json::Map::new(),

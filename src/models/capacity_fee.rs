@@ -24,13 +24,13 @@ impl CapacityFee {
     #[must_use]
     pub fn new(
         included: i64,
-        metric_id: BillableMetricId,
+        metric_id: impl Into<BillableMetricId>,
         overage_rate: rust_decimal::Decimal,
         rate: rust_decimal::Decimal,
     ) -> Self {
         Self {
             included,
-            metric_id,
+            metric_id: metric_id.into(),
             overage_rate,
             rate,
             extra: serde_json::Map::new(),

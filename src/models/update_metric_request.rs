@@ -62,4 +62,77 @@ impl UpdateMetricRequest {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `description`.
+    #[must_use]
+    pub fn description(mut self, description: impl Into<String>) -> Self {
+        self.description = Some(Some(description.into()));
+        self
+    }
+
+    /// Sends `description` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_description(mut self) -> Self {
+        self.description = Some(None);
+        self
+    }
+
+    /// Sets `filters`.
+    #[must_use]
+    pub fn filters(mut self, filters: impl Into<Vec<MetricFilter>>) -> Self {
+        self.filters = Some(Some(filters.into()));
+        self
+    }
+
+    /// Sends `filters` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_filters(mut self) -> Self {
+        self.filters = Some(None);
+        self
+    }
+
+    /// Sets `name`.
+    #[must_use]
+    pub fn name(mut self, name: impl Into<String>) -> Self {
+        self.name = Some(Some(name.into()));
+        self
+    }
+
+    /// Sends `name` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_name(mut self) -> Self {
+        self.name = Some(None);
+        self
+    }
+
+    /// Sets `segmentation_matrix`.
+    #[must_use]
+    pub fn segmentation_matrix(
+        mut self,
+        segmentation_matrix: impl Into<MetricSegmentationMatrix>,
+    ) -> Self {
+        self.segmentation_matrix = Some(Some(segmentation_matrix.into()));
+        self
+    }
+
+    /// Sends `segmentation_matrix` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_segmentation_matrix(mut self) -> Self {
+        self.segmentation_matrix = Some(None);
+        self
+    }
+
+    /// Sets `unit_conversion`.
+    #[must_use]
+    pub fn unit_conversion(mut self, unit_conversion: impl Into<UnitConversion>) -> Self {
+        self.unit_conversion = Some(Some(unit_conversion.into()));
+        self
+    }
+
+    /// Sends `unit_conversion` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_unit_conversion(mut self) -> Self {
+        self.unit_conversion = Some(None);
+        self
+    }
 }

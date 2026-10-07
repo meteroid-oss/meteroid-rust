@@ -29,15 +29,15 @@ impl Entitlement {
     #[must_use]
     pub fn new(
         created_at: chrono::DateTime<chrono::Utc>,
-        feature_id: FeatureId,
-        id: EntitlementId,
+        feature_id: impl Into<FeatureId>,
+        id: impl Into<EntitlementId>,
         updated_at: chrono::DateTime<chrono::Utc>,
         value: EntitlementValue,
     ) -> Self {
         Self {
             created_at,
-            feature_id,
-            id,
+            feature_id: feature_id.into(),
+            id: id.into(),
             updated_at,
             value,
             extra: serde_json::Map::new(),

@@ -21,10 +21,10 @@ pub struct QuoteEventData {
 impl QuoteEventData {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(customer_id: CustomerId, quote_id: QuoteId) -> Self {
+    pub fn new(customer_id: impl Into<CustomerId>, quote_id: impl Into<QuoteId>) -> Self {
         Self {
-            customer_id,
-            quote_id,
+            customer_id: customer_id.into(),
+            quote_id: quote_id.into(),
             subscription_id: None,
             extra: serde_json::Map::new(),
         }

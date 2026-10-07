@@ -30,4 +30,18 @@ impl CustomerPortalTokenRequest {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `expires_in_seconds`.
+    #[must_use]
+    pub fn expires_in_seconds(mut self, expires_in_seconds: impl Into<i32>) -> Self {
+        self.expires_in_seconds = Some(expires_in_seconds.into());
+        self
+    }
+
+    /// Sets `scopes`.
+    #[must_use]
+    pub fn scopes(mut self, scopes: impl Into<Vec<CustomerPortalScope>>) -> Self {
+        self.scopes = Some(scopes.into());
+        self
+    }
 }

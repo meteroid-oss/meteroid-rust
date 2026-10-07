@@ -23,4 +23,11 @@ impl SelectOption {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `label`.
+    #[must_use]
+    pub fn label(mut self, label: impl Into<String>) -> Self {
+        self.label = Some(label.into());
+        self
+    }
 }

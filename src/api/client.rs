@@ -14,7 +14,7 @@ use crate::{error::Error, request::Failure, Configuration};
 use super::auth_schemes::{Credentials, Scheme, Security};
 
 const CRATE_VERSION: &str = env!("CARGO_PKG_VERSION");
-const DEFAULT_BASE_URL: Option<&str> = None;
+const DEFAULT_BASE_URL: Option<&str> = Some("https://api.meteroid.com");
 const API_KEY_ENV: &str = "METEROID_API_KEY";
 const BASE_URL_ENV: &str = "METEROID_BASE_URL";
 static SECURITY_SCHEMES: &[(&str, Scheme)] = &[("bearer_auth", Scheme::Bearer)];
@@ -27,11 +27,10 @@ static DEFAULT_SECURITY: Security = &[&["bearer_auth"]];
 /// use meteroid_rs::api::Meteroid;
 ///
 /// # async fn example() -> Result<(), meteroid_rs::error::Error> {
-/// // The token from `METEROID_API_KEY`, the base URL from `METEROID_BASE_URL`
+/// // `METEROID_API_KEY` and `METEROID_BASE_URL`, when set
 /// let client = Meteroid::from_env()?;
 /// let client = Meteroid::builder()
 ///     .token("your-api-key")
-///     .base_url("https://api.example.com")
 ///     .timeout(std::time::Duration::from_secs(20))
 ///     .max_retries(3)
 ///     .build()?;
@@ -44,7 +43,7 @@ pub struct Meteroid {
 }
 
 impl Meteroid {
-    /// A client sending `token`, configured otherwise like [`from_env`](Self::from_env).
+    /// A client sending `token`, with the default settings.
     ///
     /// # Errors
     ///
@@ -54,17 +53,17 @@ impl Meteroid {
     }
 
     /// A client configured from the environment: the token from `METEROID_API_KEY`,
-    /// and the base URL from `METEROID_BASE_URL`.
+    /// and the base URL from `METEROID_BASE_URL` when set.
     ///
     /// # Errors
     ///
     /// See [`MeteroidBuilder::build`].
     pub fn from_env() -> Result<Self, Error> {
-        Self::builder().build()
+        MeteroidBuilder::from_env().build()
     }
 
     /// A builder of a client, to set its token, base URL, timeout, retries, headers or HTTP
-    /// client.
+    /// client. It reads no environment variable, unlike [`MeteroidBuilder::from_env`].
     pub fn builder() -> MeteroidBuilder {
         MeteroidBuilder::default()
     }
@@ -233,14 +232,28 @@ pub struct MeteroidBuilder {
 }
 
 impl MeteroidBuilder {
-    /// The token sent to the API. Defaults to `METEROID_API_KEY`.
+    /// A builder with the settings the environment holds: the token from `METEROID_API_KEY`,
+    /// the base URL from `METEROID_BASE_URL`. Empty variables are ignored.
+    pub fn from_env() -> Self {
+        let env = |name| {
+            std::env::var(name)
+                .ok()
+                .filter(|value: &String| !value.is_empty())
+        };
+        Self {
+            token: env(API_KEY_ENV),
+            base_url: env(BASE_URL_ENV),
+            ..Self::default()
+        }
+    }
+
+    /// The token sent to the API.
     pub fn token(mut self, token: impl Into<String>) -> Self {
         self.token = Some(token.into());
         self
     }
 
-    /// The URL the API is served at. Defaults to `METEROID_BASE_URL`; the API has no
-    /// default, so one of them is required.
+    /// The URL the API is served at. Defaults to `https://api.meteroid.com`.
     pub fn base_url(mut self, base_url: impl Into<String>) -> Self {
         self.base_url = Some(base_url.into());
         self
@@ -256,9 +269,9 @@ impl MeteroidBuilder {
     }
 
     /// How many times a failed request is retried: on connection errors, timeouts, and
-    /// 408, 429 and 5xx responses. Only idempotent requests are retried; POST requests are
-    /// made idempotent with an automatic `Idempotency-Key`. `Retry-After` is honored up to
-    /// a minute, otherwise delays grow from 500ms to 8s with jitter.
+    /// 408, 429 and 5xx responses. Only idempotent requests are retried, or those
+    /// with an `Idempotency-Key`.
+    /// `Retry-After` is honored up to a minute, otherwise delays grow from 500ms to 8s with jitter.
     ///
     /// Default: 2.
     pub fn max_retries(mut self, max_retries: u32) -> Self {
@@ -306,21 +319,14 @@ impl MeteroidBuilder {
     ///
     /// # Errors
     ///
-    /// Fails with [`Error::Request`] when the base URL is missing (neither
-    /// [`base_url`](Self::base_url) nor `METEROID_BASE_URL` is set) or not an absolute URL.
+    /// Fails with [`Error::Request`] when the base URL is not an absolute URL.
     pub fn build(self) -> Result<Meteroid, Error> {
-        let env = |name| {
-            std::env::var(name)
-                .ok()
-                .filter(|value: &String| !value.is_empty())
-        };
         let base_path = self
             .base_url
-            .or_else(|| env(BASE_URL_ENV))
             .or_else(|| DEFAULT_BASE_URL.map(str::to_owned))
             .ok_or_else(|| {
                 invalid(format!(
-                    "no base URL: call `base_url()` on the builder or set `{BASE_URL_ENV}`"
+                    "no base URL: call `base_url()` on the builder, or set `{BASE_URL_ENV}` for `from_env()`"
                 ))
             })?;
         let absolute = base_path.parse::<http::Uri>().ok().is_some_and(|uri| {
@@ -338,7 +344,7 @@ impl MeteroidBuilder {
                 .unwrap_or_else(|| super::http_client(crate::make_connector())),
             timeout: self.timeout,
             base_path,
-            bearer_access_token: self.token.or_else(|| env(API_KEY_ENV)),
+            bearer_access_token: self.token,
             max_retries: self.max_retries.unwrap_or(2),
             middleware: self.middleware.0,
             headers: self.headers,

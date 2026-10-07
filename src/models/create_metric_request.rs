@@ -51,7 +51,7 @@ impl CreateMetricRequest {
         aggregation_type: BillingMetricAggregateEnum,
         code: impl Into<String>,
         name: impl Into<String>,
-        product_family_id: ProductFamilyId,
+        product_family_id: impl Into<ProductFamilyId>,
     ) -> Self {
         Self {
             aggregation_key: None,
@@ -60,12 +60,64 @@ impl CreateMetricRequest {
             description: None,
             filters: None,
             name: name.into(),
-            product_family_id,
+            product_family_id: product_family_id.into(),
             product_id: None,
             segmentation_matrix: None,
             unit_conversion: None,
             usage_group_key: None,
             extra: serde_json::Map::new(),
         }
+    }
+
+    /// Sets `aggregation_key`.
+    #[must_use]
+    pub fn aggregation_key(mut self, aggregation_key: impl Into<String>) -> Self {
+        self.aggregation_key = Some(aggregation_key.into());
+        self
+    }
+
+    /// Sets `description`.
+    #[must_use]
+    pub fn description(mut self, description: impl Into<String>) -> Self {
+        self.description = Some(description.into());
+        self
+    }
+
+    /// Sets `filters`.
+    #[must_use]
+    pub fn filters(mut self, filters: impl Into<Vec<MetricFilter>>) -> Self {
+        self.filters = Some(filters.into());
+        self
+    }
+
+    /// Sets `product_id`.
+    #[must_use]
+    pub fn product_id(mut self, product_id: impl Into<ProductId>) -> Self {
+        self.product_id = Some(product_id.into());
+        self
+    }
+
+    /// Sets `segmentation_matrix`.
+    #[must_use]
+    pub fn segmentation_matrix(
+        mut self,
+        segmentation_matrix: impl Into<MetricSegmentationMatrix>,
+    ) -> Self {
+        self.segmentation_matrix = Some(segmentation_matrix.into());
+        self
+    }
+
+    /// Sets `unit_conversion`.
+    #[must_use]
+    pub fn unit_conversion(mut self, unit_conversion: impl Into<UnitConversion>) -> Self {
+        self.unit_conversion = Some(unit_conversion.into());
+        self
+    }
+
+    /// Sets `usage_group_key`.
+    #[must_use]
+    pub fn usage_group_key(mut self, usage_group_key: impl Into<String>) -> Self {
+        self.usage_group_key = Some(usage_group_key.into());
+        self
     }
 }

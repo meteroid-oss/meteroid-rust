@@ -74,7 +74,7 @@ impl Plan {
         available_parameters: AvailableParameters,
         created_at: chrono::DateTime<chrono::Utc>,
         currency: impl Into<String>,
-        id: PlanId,
+        id: impl Into<PlanId>,
         name: impl Into<String>,
         net_terms: i32,
         plan_type: PlanTypeEnum,
@@ -83,7 +83,7 @@ impl Plan {
         status: PlanStatusEnum,
         tax_inclusive: bool,
         version: i32,
-        version_id: PlanVersionId,
+        version_id: impl Into<PlanVersionId>,
     ) -> Self {
         Self {
             available_parameters,
@@ -92,7 +92,7 @@ impl Plan {
             currency: currency.into(),
             description: None,
             entitlements: None,
-            id,
+            id: id.into(),
             minimum_commitment: None,
             name: name.into(),
             net_terms,
@@ -105,7 +105,7 @@ impl Plan {
             tax_inclusive,
             trial: None,
             version,
-            version_id,
+            version_id: version_id.into(),
             extra: serde_json::Map::new(),
         }
     }

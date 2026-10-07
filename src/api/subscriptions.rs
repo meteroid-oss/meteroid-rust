@@ -1,5 +1,6 @@
 // this file is @generated
 #![allow(clippy::doc_markdown, clippy::default_trait_access)]
+
 #[allow(unused_imports, clippy::wildcard_imports)]
 use crate::{error::Result, models::*, Configuration};
 
@@ -42,10 +43,24 @@ impl SubscriptionsListOptions {
         self
     }
 
+    /// Sets the `customer_id` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_customer_id(mut self, customer_id: Option<String>) -> Self {
+        self.customer_id = customer_id;
+        self
+    }
+
     /// Sets the `plan_id` query parameter.
     #[must_use]
     pub fn plan_id(mut self, plan_id: impl Into<PlanId>) -> Self {
         self.plan_id = Some(plan_id.into());
+        self
+    }
+
+    /// Sets the `plan_id` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_plan_id(mut self, plan_id: Option<PlanId>) -> Self {
+        self.plan_id = plan_id;
         self
     }
 
@@ -56,10 +71,24 @@ impl SubscriptionsListOptions {
         self
     }
 
+    /// Sets the `statuses` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_statuses(mut self, statuses: Option<Vec<SubscriptionStatusEnum>>) -> Self {
+        self.statuses = statuses;
+        self
+    }
+
     /// Sets the `order_by` query parameter.
     #[must_use]
     pub fn order_by(mut self, order_by: impl Into<String>) -> Self {
         self.order_by = Some(order_by.into());
+        self
+    }
+
+    /// Sets the `order_by` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_order_by(mut self, order_by: Option<String>) -> Self {
+        self.order_by = order_by;
         self
     }
 
@@ -70,10 +99,24 @@ impl SubscriptionsListOptions {
         self
     }
 
+    /// Sets the `page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_page(mut self, page: Option<i32>) -> Self {
+        self.page = page;
+        self
+    }
+
     /// Sets the `per_page` query parameter.
     #[must_use]
     pub fn per_page(mut self, per_page: impl Into<i32>) -> Self {
         self.per_page = Some(per_page.into());
+        self
+    }
+
+    /// Sets the `per_page` query parameter, or unsets it with `None`.
+    #[must_use]
+    pub fn maybe_per_page(mut self, per_page: Option<i32>) -> Self {
+        self.per_page = per_page;
         self
     }
 }
@@ -110,14 +153,7 @@ impl Subscriptions {
         self
     }
 
-    /// List subscriptions with optional filtering by customer or plan.
-    ///
-    /// `GET /api/v1/subscriptions`.
-    ///
-    /// # Errors
-    ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429, 500).
-    pub fn list(
+    fn list_request(
         &self,
         options: impl Into<Option<SubscriptionsListOptions>>,
     ) -> crate::api::Call<crate::models::SubscriptionListResponse> {
@@ -139,6 +175,37 @@ impl Subscriptions {
             .with_optional_query_param("per_page", per_page)
             .with_options(&self.options)
             .json(&self.cfg)
+    }
+
+    /// List subscriptions with optional filtering by customer or plan.
+    ///
+    /// `GET /api/v1/subscriptions`, a page at a time: awaiting the call gives the first
+    /// [`Page`](crate::api::Page), [`items`](crate::api::PageCall::items) every
+    /// [`Subscription`](crate::models::Subscription) across pages
+    /// and [`pages`](crate::api::PageCall::pages) every page.
+    ///
+    /// # Errors
+    ///
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 429, 500).
+    pub fn list(
+        &self,
+        options: impl Into<Option<SubscriptionsListOptions>>,
+    ) -> crate::api::PageCall<crate::models::SubscriptionListResponse, crate::models::Subscription>
+    {
+        static WALK: crate::api::pagination::Walk<SubscriptionsListOptions> =
+            crate::api::pagination::Walk::Page {
+                first: 0,
+                get: |options| options.page.map(i64::from),
+                set: |options, position| options.page = i32::try_from(position).ok(),
+            };
+        let this = self.clone();
+        let call = move |options: SubscriptionsListOptions| this.list_request(options);
+        crate::api::PageCall::new(
+            options.into().unwrap_or_default(),
+            WALK,
+            crate::api::pages::SUBSCRIPTIONS_LIST,
+            call,
+        )
     }
 
     /// Create subscription
@@ -171,10 +238,13 @@ impl Subscriptions {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429, 500).
     pub fn retrieve(
         &self,
-        subscription_id: &str,
+        subscription_id: impl Into<crate::models::SubscriptionId>,
     ) -> crate::api::Call<crate::models::SubscriptionDetails> {
         crate::request::Request::new(http::Method::GET, "/api/v1/subscriptions/{subscription_id}")
-            .with_path_param("subscription_id", subscription_id)
+            .with_path_param(
+                "subscription_id",
+                Into::<crate::models::SubscriptionId>::into(subscription_id),
+            )
             .with_options(&self.options)
             .json(&self.cfg)
     }
@@ -188,14 +258,17 @@ impl Subscriptions {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429, 500).
     pub fn update(
         &self,
-        subscription_id: &str,
+        subscription_id: impl Into<crate::models::SubscriptionId>,
         subscription_update_request: crate::models::SubscriptionUpdateRequest,
     ) -> crate::api::Call<crate::models::SubscriptionUpdateResponse> {
         crate::request::Request::new(
             http::Method::PATCH,
             "/api/v1/subscriptions/{subscription_id}",
         )
-        .with_path_param("subscription_id", subscription_id)
+        .with_path_param(
+            "subscription_id",
+            Into::<crate::models::SubscriptionId>::into(subscription_id),
+        )
         .with_body_param(subscription_update_request)
         .with_options(&self.options)
         .json(&self.cfg)
@@ -212,14 +285,17 @@ impl Subscriptions {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429, 500).
     pub fn cancel(
         &self,
-        subscription_id: &str,
+        subscription_id: impl Into<crate::models::SubscriptionId>,
         cancel_subscription_request: crate::models::CancelSubscriptionRequest,
     ) -> crate::api::Call<crate::models::CancelSubscriptionResponse> {
         crate::request::Request::new(
             http::Method::POST,
             "/api/v1/subscriptions/{subscription_id}/cancel",
         )
-        .with_path_param("subscription_id", subscription_id)
+        .with_path_param(
+            "subscription_id",
+            Into::<crate::models::SubscriptionId>::into(subscription_id),
+        )
         .with_body_param(cancel_subscription_request)
         .with_options(&self.options)
         .json(&self.cfg)
@@ -234,13 +310,16 @@ impl Subscriptions {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
     pub fn list_entitlements(
         &self,
-        subscription_id: &str,
+        subscription_id: impl Into<crate::models::SubscriptionId>,
     ) -> crate::api::Call<crate::models::EffectiveEntitlementListResponse> {
         crate::request::Request::new(
             http::Method::GET,
             "/api/v1/subscriptions/{subscription_id}/entitlements",
         )
-        .with_path_param("subscription_id", subscription_id)
+        .with_path_param(
+            "subscription_id",
+            Into::<crate::models::SubscriptionId>::into(subscription_id),
+        )
         .with_options(&self.options)
         .json(&self.cfg)
     }
@@ -257,13 +336,16 @@ impl Subscriptions {
     /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429, 500).
     pub fn retrieve_summary(
         &self,
-        subscription_id: &str,
+        subscription_id: impl Into<crate::models::SubscriptionId>,
     ) -> crate::api::Call<crate::models::Subscription> {
         crate::request::Request::new(
             http::Method::GET,
             "/api/v1/subscriptions/{subscription_id}/summary",
         )
-        .with_path_param("subscription_id", subscription_id)
+        .with_path_param(
+            "subscription_id",
+            Into::<crate::models::SubscriptionId>::into(subscription_id),
+        )
         .with_options(&self.options)
         .json(&self.cfg)
     }

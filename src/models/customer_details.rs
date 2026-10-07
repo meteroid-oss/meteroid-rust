@@ -33,7 +33,7 @@ impl CustomerDetails {
     /// Creates a value from its required fields.
     #[must_use]
     pub fn new(
-        id: CustomerId,
+        id: impl Into<CustomerId>,
         name: impl Into<String>,
         snapshot_at: chrono::DateTime<chrono::Utc>,
     ) -> Self {
@@ -41,7 +41,7 @@ impl CustomerDetails {
             alias: None,
             billing_address: None,
             email: None,
-            id,
+            id: id.into(),
             name: name.into(),
             snapshot_at,
             vat_number: None,

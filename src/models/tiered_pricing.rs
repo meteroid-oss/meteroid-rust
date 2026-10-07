@@ -25,4 +25,11 @@ impl TieredPricing {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `block_size`.
+    #[must_use]
+    pub fn block_size(mut self, block_size: impl Into<i64>) -> Self {
+        self.block_size = Some(block_size.into());
+        self
+    }
 }

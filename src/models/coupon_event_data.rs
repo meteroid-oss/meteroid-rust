@@ -39,7 +39,7 @@ impl CouponEventData {
     #[must_use]
     pub fn new(
         code: impl Into<String>,
-        coupon_id: CouponId,
+        coupon_id: impl Into<CouponId>,
         created_at: chrono::DateTime<chrono::Utc>,
         description: impl Into<String>,
         disabled: bool,
@@ -48,7 +48,7 @@ impl CouponEventData {
     ) -> Self {
         Self {
             code: code.into(),
-            coupon_id,
+            coupon_id: coupon_id.into(),
             created_at,
             description: description.into(),
             disabled,

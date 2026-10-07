@@ -43,4 +43,14 @@ impl Event {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `properties`.
+    #[must_use]
+    pub fn properties(
+        mut self,
+        properties: impl Into<std::collections::HashMap<String, String>>,
+    ) -> Self {
+        self.properties = Some(properties.into());
+        self
+    }
 }

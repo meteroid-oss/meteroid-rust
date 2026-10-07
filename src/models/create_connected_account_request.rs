@@ -33,4 +33,25 @@ impl CreateConnectedAccountRequest {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `connection_type`.
+    #[must_use]
+    pub fn connection_type(mut self, connection_type: impl Into<ConnectionType>) -> Self {
+        self.connection_type = Some(connection_type.into());
+        self
+    }
+
+    /// Sets `metadata`.
+    #[must_use]
+    pub fn metadata(mut self, metadata: impl Into<serde_json::Value>) -> Self {
+        self.metadata = Some(metadata.into());
+        self
+    }
+
+    /// Sets `platform_customer_id`.
+    #[must_use]
+    pub fn platform_customer_id(mut self, platform_customer_id: impl Into<CustomerId>) -> Self {
+        self.platform_customer_id = Some(platform_customer_id.into());
+        self
+    }
 }

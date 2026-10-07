@@ -25,4 +25,11 @@ impl SubscriptionAddOnPriceOverride {
             extra: serde_json::Map::new(),
         }
     }
+
+    /// Sets `name`.
+    #[must_use]
+    pub fn name(mut self, name: impl Into<String>) -> Self {
+        self.name = Some(name.into());
+        self
+    }
 }

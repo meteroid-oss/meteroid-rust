@@ -27,14 +27,14 @@ impl MetricUsage {
     pub fn new(
         grouped_usage: Vec<GroupedUsage>,
         metric_code: impl Into<String>,
-        metric_id: BillableMetricId,
+        metric_id: impl Into<BillableMetricId>,
         metric_name: impl Into<String>,
         total_value: rust_decimal::Decimal,
     ) -> Self {
         Self {
             grouped_usage,
             metric_code: metric_code.into(),
-            metric_id,
+            metric_id: metric_id.into(),
             metric_name: metric_name.into(),
             total_value,
             extra: serde_json::Map::new(),

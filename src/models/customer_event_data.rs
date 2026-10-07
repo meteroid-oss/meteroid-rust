@@ -37,7 +37,7 @@ impl CustomerEventData {
     pub fn new(
         currency: impl Into<String>,
         custom_properties: serde_json::Value,
-        customer_id: CustomerId,
+        customer_id: impl Into<CustomerId>,
         invoicing_emails: Vec<String>,
         name: impl Into<String>,
     ) -> Self {
@@ -46,7 +46,7 @@ impl CustomerEventData {
             billing_email: None,
             currency: currency.into(),
             custom_properties,
-            customer_id,
+            customer_id: customer_id.into(),
             invoicing_emails,
             name: name.into(),
             phone: None,
