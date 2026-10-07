@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.28.0](https://github.com/meteroid-oss/meteroid-rust/compare/v0.27.1...v0.28.0) (2026-10-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** update SDKs to meteroid 0.1.0 ([#8](https://github.com/meteroid-oss/meteroid-rust/issues/8))
+
+### Features
+
+* **api:** update SDKs to meteroid 0.1.0 ([#8](https://github.com/meteroid-oss/meteroid-rust/issues/8)) ([d0a7f3d](https://github.com/meteroid-oss/meteroid-rust/commit/d0a7f3db998e1ffe7be043a35242deec6d0de0f7))
+
 ## [0.27.1](https://github.com/meteroid-oss/meteroid-rust/compare/v0.27.0...v0.27.1) (2026-10-06)
 
 
