@@ -153,6 +153,12 @@ impl AddOns {
         self
     }
 
+    /// The entitlements API, with the options of this one.
+    #[must_use]
+    pub fn entitlements(&self) -> super::AddOnsEntitlements {
+        super::AddOnsEntitlements::new(self.cfg.clone()).with_options(self.options.clone())
+    }
+
     fn list_request(
         &self,
         options: impl Into<Option<AddOnsListOptions>>,
@@ -272,44 +278,6 @@ impl AddOns {
             .with_path_param("addon_id", Into::<crate::models::AddOnId>::into(addon_id))
             .with_options(&self.options)
             .empty(&self.cfg)
-    }
-
-    /// List add-on entitlements
-    ///
-    /// `GET /api/v1/addons/{addon_id}/entitlements`.
-    ///
-    /// # Errors
-    ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
-    pub fn list_entitlements(
-        &self,
-        addon_id: impl Into<crate::models::AddOnId>,
-    ) -> crate::api::Call<crate::models::ResolvedEntitlementListResponse> {
-        crate::request::Request::new(http::Method::GET, "/api/v1/addons/{addon_id}/entitlements")
-            .with_path_param("addon_id", Into::<crate::models::AddOnId>::into(addon_id))
-            .with_options(&self.options)
-            .json(&self.cfg)
-    }
-
-    /// Create add-on entitlements
-    ///
-    /// Entitlements already present on this add-on are skipped.
-    ///
-    /// `POST /api/v1/addons/{addon_id}/entitlements`.
-    ///
-    /// # Errors
-    ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429).
-    pub fn create_entitlement(
-        &self,
-        addon_id: impl Into<crate::models::AddOnId>,
-        create_entitlements_request: crate::models::CreateEntitlementsRequest,
-    ) -> crate::api::Call<crate::models::EntitlementListResponse> {
-        crate::request::Request::new(http::Method::POST, "/api/v1/addons/{addon_id}/entitlements")
-            .with_path_param("addon_id", Into::<crate::models::AddOnId>::into(addon_id))
-            .with_body_param(create_entitlements_request)
-            .with_options(&self.options)
-            .json(&self.cfg)
     }
 
     /// Unarchive an add-on

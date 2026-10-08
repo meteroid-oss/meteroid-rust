@@ -31,6 +31,7 @@ pub use bytes::Bytes;
 pub type ErrorBody = crate::models::RestErrorResponse;
 
 mod add_ons;
+mod add_ons_entitlements;
 mod batch_jobs;
 mod checkout_sessions;
 mod connect;
@@ -46,13 +47,16 @@ mod metrics;
 mod oauth;
 mod oauth_apps;
 mod plans;
+mod plans_versions;
 mod product_families;
 mod products;
+mod products_entitlements;
 mod subscriptions;
 mod usage;
 
 pub use self::{
     add_ons::{AddOns, AddOnsListOptions},
+    add_ons_entitlements::AddOnsEntitlements,
     batch_jobs::{BatchJobs, BatchJobsListFailuresOptions, BatchJobsListOptions},
     checkout_sessions::{CheckoutSessions, CheckoutSessionsListOptions},
     client::{Meteroid, MeteroidBuilder},
@@ -68,9 +72,11 @@ pub use self::{
     metrics::{Metrics, MetricsListOptions},
     oauth::Oauth,
     oauth_apps::OauthApps,
-    plans::{Plans, PlansListOptions, PlansListVersionsOptions, PlansRetrieveOptions},
+    plans::{Plans, PlansListOptions, PlansRetrieveOptions},
+    plans_versions::{PlansVersions, PlansVersionsListOptions},
     product_families::{ProductFamilies, ProductFamiliesListOptions},
     products::{Products, ProductsListOptions},
+    products_entitlements::ProductsEntitlements,
     subscriptions::{Subscriptions, SubscriptionsListOptions},
     usage::{
         Usage, UsageRetrieveCustomerOptions, UsageRetrieveSubscriptionOptions,
@@ -186,7 +192,7 @@ pub(crate) mod pages {
         has_more: None,
         total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
     };
-    pub(crate) static PLANS_LIST_VERSIONS: Fields<
+    pub(crate) static PLANS_VERSIONS_LIST: Fields<
         models::PlanVersionListResponse,
         models::PlanVersionSummary,
     > = Fields {
