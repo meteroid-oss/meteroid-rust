@@ -2,6 +2,7 @@
 //! The generated tests: every call gets a canned response from a mock middleware.
 #![allow(deprecated)]
 mod add_ons;
+mod add_ons_entitlements;
 mod batch_jobs;
 mod checkout_sessions;
 mod connect;
@@ -17,8 +18,10 @@ mod metrics;
 mod oauth;
 mod oauth_apps;
 mod plans;
+mod plans_versions;
 mod product_families;
 mod products;
+mod products_entitlements;
 mod subscriptions;
 mod usage;
 

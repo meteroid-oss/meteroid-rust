@@ -9,7 +9,7 @@ awaited, a `Page` that dereferences to the body (`page.field`) and lists `page.i
 `next_page()`; `.items()` streams every item across pages and `.pages()` every page. Models are
 in [`src/models`](src/models), and the options structs next to their resource.
 
-[Add ons](#add-ons) · [Batch jobs](#batch-jobs) · [Checkout sessions](#checkout-sessions) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Product families](#product-families) · [Products](#products) · [Subscriptions](#subscriptions) · [Usage](#usage)
+[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Checkout sessions](#checkout-sessions) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage)
 
 ## Add ons
 
@@ -22,9 +22,16 @@ in [`src/models`](src/models), and the options structs next to their resource.
 | `client.add_ons().retrieve(addon_id: &str) -> Call<AddOn>` | `GET /api/v1/addons/{addon_id}` | [`AddOn`](src/models/add_on.rs) |
 | `client.add_ons().update(addon_id: &str, update_add_on_request: UpdateAddOnRequest) -> Call<AddOn>` | `PATCH /api/v1/addons/{addon_id}` | [`AddOn`](src/models/add_on.rs) |
 | `client.add_ons().archive(addon_id: &str) -> Call<()>` | `POST /api/v1/addons/{addon_id}/archive` | nothing |
-| `client.add_ons().list_entitlements(addon_id: &str) -> Call<ResolvedEntitlementListResponse>` | `GET /api/v1/addons/{addon_id}/entitlements` | [`ResolvedEntitlementListResponse`](src/models/resolved_entitlement_list_response.rs) |
-| `client.add_ons().create_entitlement(addon_id: &str, create_entitlements_request: CreateEntitlementsRequest) -> Call<EntitlementListResponse>` | `POST /api/v1/addons/{addon_id}/entitlements` | [`EntitlementListResponse`](src/models/entitlement_list_response.rs) |
 | `client.add_ons().unarchive(addon_id: &str) -> Call<()>` | `POST /api/v1/addons/{addon_id}/unarchive` | nothing |
+
+### Add ons entitlements
+
+[`client.add_ons().entitlements()`](src/api/add_ons_entitlements.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.add_ons().entitlements().list(addon_id: &str) -> Call<ResolvedEntitlementListResponse>` | `GET /api/v1/addons/{addon_id}/entitlements` | [`ResolvedEntitlementListResponse`](src/models/resolved_entitlement_list_response.rs) |
+| `client.add_ons().entitlements().create(addon_id: &str, create_entitlements_request: CreateEntitlementsRequest) -> Call<EntitlementListResponse>` | `POST /api/v1/addons/{addon_id}/entitlements` | [`EntitlementListResponse`](src/models/entitlement_list_response.rs) |
 
 ## Batch jobs
 
@@ -203,15 +210,22 @@ in [`src/models`](src/models), and the options structs next to their resource.
 | `client.plans().create_plan_version_entitlement(plan_version_id: &str, create_entitlements_request: CreateEntitlementsRequest) -> Call<EntitlementListResponse>` | `POST /api/v1/plan-versions/{plan_version_id}/entitlements` | [`EntitlementListResponse`](src/models/entitlement_list_response.rs) |
 | `client.plans().list(options: impl Into<Option<PlansListOptions>>) -> PageCall<PlanListResponse, Plan>` | `GET /api/v1/plans` | [`PlanListResponse`](src/models/plan_list_response.rs) page of [`Plan`](src/models/plan.rs) |
 | `client.plans().create(create_plan_request: CreatePlanRequest) -> Call<Plan>` | `POST /api/v1/plans` | [`Plan`](src/models/plan.rs) |
-| `client.plans().update_version_minimum(plan_version_id: &str, minimum_commitment: MinimumCommitment) -> Call<MinimumCommitment>` | `PUT /api/v1/plans/versions/{plan_version_id}/minimum` | [`MinimumCommitment`](src/models/minimum_commitment.rs) |
-| `client.plans().delete_version_minimum(plan_version_id: &str) -> Call<()>` | `DELETE /api/v1/plans/versions/{plan_version_id}/minimum` | nothing |
 | `client.plans().retrieve(plan_id: &str, options: impl Into<Option<PlansRetrieveOptions>>) -> Call<Plan>` | `GET /api/v1/plans/{plan_id}` | [`Plan`](src/models/plan.rs) |
 | `client.plans().replace(plan_id: &str, replace_plan_request: ReplacePlanRequest) -> Call<Plan>` | `PUT /api/v1/plans/{plan_id}` | [`Plan`](src/models/plan.rs) |
 | `client.plans().update(plan_id: &str, patch_plan_request: PatchPlanRequest) -> Call<Plan>` | `PATCH /api/v1/plans/{plan_id}` | [`Plan`](src/models/plan.rs) |
 | `client.plans().archive(plan_id: &str) -> Call<()>` | `POST /api/v1/plans/{plan_id}/archive` | nothing |
 | `client.plans().publish(plan_id: &str) -> Call<Plan>` | `POST /api/v1/plans/{plan_id}/publish` | [`Plan`](src/models/plan.rs) |
 | `client.plans().unarchive(plan_id: &str) -> Call<()>` | `POST /api/v1/plans/{plan_id}/unarchive` | nothing |
-| `client.plans().list_versions(plan_id: &str, options: impl Into<Option<PlansListVersionsOptions>>) -> PageCall<PlanVersionListResponse, PlanVersionSummary>` | `GET /api/v1/plans/{plan_id}/versions` | [`PlanVersionListResponse`](src/models/plan_version_list_response.rs) page of [`PlanVersionSummary`](src/models/plan_version_summary.rs) |
+
+### Plans versions
+
+[`client.plans().versions()`](src/api/plans_versions.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.plans().versions().update_minimum(plan_version_id: &str, minimum_commitment: MinimumCommitment) -> Call<MinimumCommitment>` | `PUT /api/v1/plans/versions/{plan_version_id}/minimum` | [`MinimumCommitment`](src/models/minimum_commitment.rs) |
+| `client.plans().versions().delete_minimum(plan_version_id: &str) -> Call<()>` | `DELETE /api/v1/plans/versions/{plan_version_id}/minimum` | nothing |
+| `client.plans().versions().list(plan_id: &str, options: impl Into<Option<PlansVersionsListOptions>>) -> PageCall<PlanVersionListResponse, PlanVersionSummary>` | `GET /api/v1/plans/{plan_id}/versions` | [`PlanVersionListResponse`](src/models/plan_version_list_response.rs) page of [`PlanVersionSummary`](src/models/plan_version_summary.rs) |
 
 ## Product families
 
@@ -234,9 +248,16 @@ in [`src/models`](src/models), and the options structs next to their resource.
 | `client.products().retrieve(product_id: &str) -> Call<Product>` | `GET /api/v1/products/{product_id}` | [`Product`](src/models/product.rs) |
 | `client.products().update(product_id: &str, update_product_request: UpdateProductRequest) -> Call<Product>` | `PATCH /api/v1/products/{product_id}` | [`Product`](src/models/product.rs) |
 | `client.products().archive(product_id: &str) -> Call<()>` | `POST /api/v1/products/{product_id}/archive` | nothing |
-| `client.products().list_entitlements(product_id: &str) -> Call<ResolvedEntitlementListResponse>` | `GET /api/v1/products/{product_id}/entitlements` | [`ResolvedEntitlementListResponse`](src/models/resolved_entitlement_list_response.rs) |
-| `client.products().create_entitlement(product_id: &str, create_entitlements_request: CreateEntitlementsRequest) -> Call<EntitlementListResponse>` | `POST /api/v1/products/{product_id}/entitlements` | [`EntitlementListResponse`](src/models/entitlement_list_response.rs) |
 | `client.products().unarchive(product_id: &str) -> Call<()>` | `POST /api/v1/products/{product_id}/unarchive` | nothing |
+
+### Products entitlements
+
+[`client.products().entitlements()`](src/api/products_entitlements.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.products().entitlements().list(product_id: &str) -> Call<ResolvedEntitlementListResponse>` | `GET /api/v1/products/{product_id}/entitlements` | [`ResolvedEntitlementListResponse`](src/models/resolved_entitlement_list_response.rs) |
+| `client.products().entitlements().create(product_id: &str, create_entitlements_request: CreateEntitlementsRequest) -> Call<EntitlementListResponse>` | `POST /api/v1/products/{product_id}/entitlements` | [`EntitlementListResponse`](src/models/entitlement_list_response.rs) |
 
 ## Subscriptions
 
