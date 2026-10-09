@@ -33,7 +33,8 @@ pub struct CustomerCreateRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<serde_json::Value>,
 
-    pub custom_taxes: Vec<CustomTaxRate>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub custom_taxes: Option<Vec<CustomTaxRate>>,
 
     /// `INDIVIDUAL` requires `first_name`, `last_name`, and a billing-address country.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -46,7 +47,8 @@ pub struct CustomerCreateRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub first_name: Option<String>,
 
-    pub invoicing_emails: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub invoicing_emails: Option<Vec<String>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub invoicing_entity_id: Option<InvoicingEntityId>,
@@ -94,11 +96,7 @@ pub struct CustomerCreateRequest {
 impl CustomerCreateRequest {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(
-        currency: Currency,
-        custom_taxes: Vec<CustomTaxRate>,
-        invoicing_emails: Vec<String>,
-    ) -> Self {
+    pub fn new(currency: Currency) -> Self {
         #[allow(deprecated)]
         Self {
             alias: None,
@@ -108,11 +106,11 @@ impl CustomerCreateRequest {
             connected_account_id: None,
             currency,
             custom_properties: None,
-            custom_taxes,
+            custom_taxes: None,
             customer_type: None,
             exemption_reason: None,
             first_name: None,
-            invoicing_emails,
+            invoicing_emails: None,
             invoicing_entity_id: None,
             invoicing_language: None,
             is_tax_exempt: None,
@@ -169,6 +167,13 @@ impl CustomerCreateRequest {
         self
     }
 
+    /// Sets `custom_taxes`.
+    #[must_use]
+    pub fn custom_taxes(mut self, custom_taxes: impl Into<Vec<CustomTaxRate>>) -> Self {
+        self.custom_taxes = Some(custom_taxes.into());
+        self
+    }
+
     /// Sets `customer_type`.
     #[must_use]
     pub fn customer_type(mut self, customer_type: impl Into<CustomerType>) -> Self {
@@ -187,6 +192,13 @@ impl CustomerCreateRequest {
     #[must_use]
     pub fn first_name(mut self, first_name: impl Into<String>) -> Self {
         self.first_name = Some(first_name.into());
+        self
+    }
+
+    /// Sets `invoicing_emails`.
+    #[must_use]
+    pub fn invoicing_emails(mut self, invoicing_emails: impl Into<Vec<String>>) -> Self {
+        self.invoicing_emails = Some(invoicing_emails.into());
         self
     }
 

@@ -24,6 +24,8 @@ mod products;
 mod products_entitlements;
 mod subscriptions;
 mod usage;
+mod webhook_endpoints;
+mod webhook_endpoints_endpoints;
 
 use std::sync::{Arc, Mutex};
 

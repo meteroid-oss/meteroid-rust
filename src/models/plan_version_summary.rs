@@ -1,14 +1,14 @@
 // this file is @generated
 use serde::{Deserialize, Serialize};
 
-use super::plan_version_id::PlanVersionId;
+use super::{currency::Currency, plan_version_id::PlanVersionId};
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[non_exhaustive]
 pub struct PlanVersionSummary {
     pub created_at: chrono::DateTime<chrono::Utc>,
 
-    pub currency: String,
+    pub currency: Currency,
 
     pub id: PlanVersionId,
 
@@ -26,14 +26,14 @@ impl PlanVersionSummary {
     #[must_use]
     pub fn new(
         created_at: chrono::DateTime<chrono::Utc>,
-        currency: impl Into<String>,
+        currency: Currency,
         id: impl Into<PlanVersionId>,
         is_draft: bool,
         version: i32,
     ) -> Self {
         Self {
             created_at,
-            currency: currency.into(),
+            currency,
             id: id.into(),
             is_draft,
             version,

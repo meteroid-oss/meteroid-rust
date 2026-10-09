@@ -2,7 +2,7 @@
 use serde::{Deserialize, Serialize};
 
 use super::{
-    available_parameters::AvailableParameters, entitlement::Entitlement,
+    available_parameters::AvailableParameters, currency::Currency, entitlement::Entitlement,
     minimum_commitment::MinimumCommitment, plan_id::PlanId, plan_status_enum::PlanStatusEnum,
     plan_type_enum::PlanTypeEnum, plan_version_id::PlanVersionId, price_component::PriceComponent,
     product_family::ProductFamily, trial_config::TrialConfig,
@@ -18,7 +18,7 @@ pub struct Plan {
 
     pub created_at: chrono::DateTime<chrono::Utc>,
 
-    pub currency: String,
+    pub currency: Currency,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -73,7 +73,7 @@ impl Plan {
     pub fn new(
         available_parameters: AvailableParameters,
         created_at: chrono::DateTime<chrono::Utc>,
-        currency: impl Into<String>,
+        currency: Currency,
         id: impl Into<PlanId>,
         name: impl Into<String>,
         net_terms: i32,
@@ -89,7 +89,7 @@ impl Plan {
             available_parameters,
             billing_cycles: None,
             created_at,
-            currency: currency.into(),
+            currency,
             description: None,
             entitlements: None,
             id: id.into(),

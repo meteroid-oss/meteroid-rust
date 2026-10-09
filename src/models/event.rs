@@ -18,7 +18,8 @@ pub struct Event {
 
     /// RFC 3339 timestamp. Defaults to ingestion time if omitted.
     /// Must be between 24 hours ago and 1 hour from now. Set `allow_backfilling` to remove the past limit.
-    pub timestamp: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub timestamp: Option<chrono::DateTime<chrono::Utc>>,
 
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
@@ -32,14 +33,13 @@ impl Event {
         code: impl Into<String>,
         customer_id: impl Into<String>,
         event_id: impl Into<String>,
-        timestamp: impl Into<String>,
     ) -> Self {
         Self {
             code: code.into(),
             customer_id: customer_id.into(),
             event_id: event_id.into(),
             properties: None,
-            timestamp: timestamp.into(),
+            timestamp: None,
             extra: serde_json::Map::new(),
         }
     }
@@ -51,6 +51,13 @@ impl Event {
         properties: impl Into<std::collections::HashMap<String, String>>,
     ) -> Self {
         self.properties = Some(properties.into());
+        self
+    }
+
+    /// Sets `timestamp`.
+    #[must_use]
+    pub fn timestamp(mut self, timestamp: impl Into<chrono::DateTime<chrono::Utc>>) -> Self {
+        self.timestamp = Some(timestamp.into());
         self
     }
 }

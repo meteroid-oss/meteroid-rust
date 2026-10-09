@@ -205,6 +205,12 @@ impl Meteroid {
     pub fn usage(&self) -> super::Usage {
         super::Usage::new(self.cfg.clone())
     }
+
+    /// The webhook endpoints API.
+    #[must_use]
+    pub fn webhook_endpoints(&self) -> super::WebhookEndpoints {
+        super::WebhookEndpoints::new(self.cfg.clone())
+    }
 }
 
 impl fmt::Debug for Meteroid {

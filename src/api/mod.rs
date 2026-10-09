@@ -53,6 +53,8 @@ mod products;
 mod products_entitlements;
 mod subscriptions;
 mod usage;
+mod webhook_endpoints;
+mod webhook_endpoints_endpoints;
 
 pub use self::{
     add_ons::{AddOns, AddOnsListOptions},
@@ -81,6 +83,10 @@ pub use self::{
     usage::{
         Usage, UsageRetrieveCustomerOptions, UsageRetrieveSubscriptionOptions,
         UsageRetrieveSummaryOptions,
+    },
+    webhook_endpoints::WebhookEndpoints,
+    webhook_endpoints_endpoints::{
+        WebhookEndpointsEndpoints, WebhookEndpointsEndpointsListDeliveriesOptions,
     },
 };
 
@@ -226,6 +232,17 @@ pub(crate) mod pages {
     pub(crate) static SUBSCRIPTIONS_LIST: Fields<
         models::SubscriptionListResponse,
         models::Subscription,
+    > = Fields {
+        items: |page| Some(&page.data),
+        items_mut: |page| Some(&mut page.data),
+        next_cursor: None,
+        item_cursor: None,
+        has_more: None,
+        total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+    };
+    pub(crate) static WEBHOOK_ENDPOINTS_ENDPOINTS_LIST_DELIVERIES: Fields<
+        models::WebhookDeliveryListResponse,
+        models::WebhookDelivery,
     > = Fields {
         items: |page| Some(&page.data),
         items_mut: |page| Some(&mut page.data),

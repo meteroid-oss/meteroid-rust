@@ -9,7 +9,7 @@ awaited, a `Page` that dereferences to the body (`page.field`) and lists `page.i
 `next_page()`; `.items()` streams every item across pages and `.pages()` every page. Models are
 in [`src/models`](src/models), and the options structs next to their resource.
 
-[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Checkout sessions](#checkout-sessions) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage)
+[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Checkout sessions](#checkout-sessions) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage) · [Webhook endpoints](#webhook-endpoints) · [Webhook endpoints endpoints](#webhook-endpoints-endpoints)
 
 ## Add ons
 
@@ -282,3 +282,26 @@ in [`src/models`](src/models), and the options structs next to their resource.
 | `client.usage().retrieve_customer(customer_id: &str, options: UsageRetrieveCustomerOptions) -> Call<UsageResponse>` | `GET /api/v1/usage/customer/{customer_id}` | [`UsageResponse`](src/models/usage_response.rs) |
 | `client.usage().retrieve_subscription(subscription_id: &str, options: impl Into<Option<UsageRetrieveSubscriptionOptions>>) -> Call<UsageResponse>` | `GET /api/v1/usage/subscription/{subscription_id}` | [`UsageResponse`](src/models/usage_response.rs) |
 | `client.usage().retrieve_summary(options: UsageRetrieveSummaryOptions) -> Call<UsageResponse>` | `GET /api/v1/usage/summary` | [`UsageResponse`](src/models/usage_response.rs) |
+
+## Webhook endpoints
+
+[`client.webhook_endpoints()`](src/api/webhook_endpoints.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.webhook_endpoints().resend_webhook_delivery(delivery_id: &str) -> Call<WebhookDelivery>` | `POST /api/v1/webhooks/deliveries/{delivery_id}/resend` | [`WebhookDelivery`](src/models/webhook_delivery.rs) |
+
+### Webhook endpoints endpoints
+
+[`client.webhook_endpoints().endpoints()`](src/api/webhook_endpoints_endpoints.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.webhook_endpoints().endpoints().list() -> Call<WebhookEndpointListResponse>` | `GET /api/v1/webhooks/endpoints` | [`WebhookEndpointListResponse`](src/models/webhook_endpoint_list_response.rs) |
+| `client.webhook_endpoints().endpoints().create(create_webhook_endpoint_request: CreateWebhookEndpointRequest) -> Call<CreatedWebhookEndpoint>` | `POST /api/v1/webhooks/endpoints` | [`CreatedWebhookEndpoint`](src/models/created_webhook_endpoint.rs) |
+| `client.webhook_endpoints().endpoints().retrieve(endpoint_id: &str) -> Call<WebhookEndpoint>` | `GET /api/v1/webhooks/endpoints/{endpoint_id}` | [`WebhookEndpoint`](src/models/webhook_endpoint.rs) |
+| `client.webhook_endpoints().endpoints().delete(endpoint_id: &str) -> Call<()>` | `DELETE /api/v1/webhooks/endpoints/{endpoint_id}` | nothing |
+| `client.webhook_endpoints().endpoints().update(endpoint_id: &str, update_webhook_endpoint_request: UpdateWebhookEndpointRequest) -> Call<WebhookEndpoint>` | `PATCH /api/v1/webhooks/endpoints/{endpoint_id}` | [`WebhookEndpoint`](src/models/webhook_endpoint.rs) |
+| `client.webhook_endpoints().endpoints().list_deliveries(endpoint_id: &str, options: impl Into<Option<WebhookEndpointsEndpointsListDeliveriesOptions>>) -> PageCall<WebhookDeliveryListResponse, WebhookDelivery>` | `GET /api/v1/webhooks/endpoints/{endpoint_id}/deliveries` | [`WebhookDeliveryListResponse`](src/models/webhook_delivery_list_response.rs) page of [`WebhookDelivery`](src/models/webhook_delivery.rs) |
+| `client.webhook_endpoints().endpoints().rotate_secret(endpoint_id: &str) -> Call<WebhookEndpointSecret>` | `POST /api/v1/webhooks/endpoints/{endpoint_id}/rotate-secret` | [`WebhookEndpointSecret`](src/models/webhook_endpoint_secret.rs) |
+| `client.webhook_endpoints().endpoints().retrieve_secret(endpoint_id: &str) -> Call<WebhookEndpointSecret>` | `GET /api/v1/webhooks/endpoints/{endpoint_id}/secret` | [`WebhookEndpointSecret`](src/models/webhook_endpoint_secret.rs) |
