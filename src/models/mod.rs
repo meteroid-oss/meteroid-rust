@@ -98,6 +98,8 @@ pub mod create_plan_request;
 pub mod create_product_request;
 pub mod create_subscription_add_on;
 pub mod create_subscription_components;
+pub mod create_webhook_endpoint_request;
+pub mod created_webhook_endpoint;
 pub mod credit_note;
 pub mod credit_note_custom_properties_request;
 pub mod credit_note_event;
@@ -346,6 +348,7 @@ pub mod update_entitlement_request;
 pub mod update_feature_request;
 pub mod update_metric_request;
 pub mod update_product_request;
+pub mod update_webhook_endpoint_request;
 pub mod usage_fee;
 pub mod usage_fee_structure;
 pub mod usage_model_enum;
@@ -355,6 +358,17 @@ pub mod usage_pricing_model;
 pub mod usage_response;
 pub mod volume_plan_pricing;
 pub mod volume_pricing;
+pub mod webhook_delivery;
+pub mod webhook_delivery_id;
+pub mod webhook_delivery_list_response;
+pub mod webhook_delivery_status;
+pub mod webhook_endpoint;
+pub mod webhook_endpoint_disabled_reason;
+pub mod webhook_endpoint_id;
+pub mod webhook_endpoint_list_response;
+pub mod webhook_endpoint_secret;
+pub mod webhook_header;
+pub mod webhook_header_input;
 pub use self::{
     add_on::AddOn, add_on_event::AddOnEvent, add_on_event_data::AddOnEventData, add_on_id::AddOnId,
     add_on_list_response::AddOnListResponse, address::Address,
@@ -405,7 +419,9 @@ pub use self::{
     create_onboarding_link_request::CreateOnboardingLinkRequest,
     create_plan_request::CreatePlanRequest, create_product_request::CreateProductRequest,
     create_subscription_add_on::CreateSubscriptionAddOn,
-    create_subscription_components::CreateSubscriptionComponents, credit_note::CreditNote,
+    create_subscription_components::CreateSubscriptionComponents,
+    create_webhook_endpoint_request::CreateWebhookEndpointRequest,
+    created_webhook_endpoint::CreatedWebhookEndpoint, credit_note::CreditNote,
     credit_note_custom_properties_request::CreditNoteCustomPropertiesRequest,
     credit_note_event::CreditNoteEvent, credit_note_event_data::CreditNoteEventData,
     credit_note_id::CreditNoteId, credit_note_list_response::CreditNoteListResponse,
@@ -537,11 +553,20 @@ pub use self::{
     update_add_on_request::UpdateAddOnRequest, update_coupon_request::UpdateCouponRequest,
     update_entitlement_request::UpdateEntitlementRequest,
     update_feature_request::UpdateFeatureRequest, update_metric_request::UpdateMetricRequest,
-    update_product_request::UpdateProductRequest, usage_fee::UsageFee,
+    update_product_request::UpdateProductRequest,
+    update_webhook_endpoint_request::UpdateWebhookEndpointRequest, usage_fee::UsageFee,
     usage_fee_structure::UsageFeeStructure, usage_model_enum::UsageModelEnum,
     usage_plan_fee::UsagePlanFee, usage_pricing::UsagePricing,
     usage_pricing_model::UsagePricingModel, usage_response::UsageResponse,
     volume_plan_pricing::VolumePlanPricing, volume_pricing::VolumePricing,
+    webhook_delivery::WebhookDelivery, webhook_delivery_id::WebhookDeliveryId,
+    webhook_delivery_list_response::WebhookDeliveryListResponse,
+    webhook_delivery_status::WebhookDeliveryStatus, webhook_endpoint::WebhookEndpoint,
+    webhook_endpoint_disabled_reason::WebhookEndpointDisabledReason,
+    webhook_endpoint_id::WebhookEndpointId,
+    webhook_endpoint_list_response::WebhookEndpointListResponse,
+    webhook_endpoint_secret::WebhookEndpointSecret, webhook_header::WebhookHeader,
+    webhook_header_input::WebhookHeaderInput,
 };
 
 impl crate::request::QueryParamValue for chrono::DateTime<chrono::Utc> {
