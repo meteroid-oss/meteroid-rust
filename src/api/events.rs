@@ -41,7 +41,7 @@ impl Events {
     /// Ingest usage events for metering and billing purposes.
     ///
     /// Events are deduplicated by `(event_id, customer_id)` — re-sending the same pair will not be
-    /// double-counted. If timestamps differ across duplicates, the event with the latest timestamp is used.
+    /// double-counted. The first copy received is kept and later copies are ignored, whatever they change.
     ///
     /// By default, any invalid event rejects the entire batch. Set `allow_partial_failures` to `true` to ingest valid events and receive per-event failure details in the response body.
     ///
