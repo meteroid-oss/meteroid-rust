@@ -7,6 +7,8 @@ pub struct FixedDiscount {
 
     pub currency: String,
 
+    pub r#type: String,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -19,6 +21,7 @@ impl FixedDiscount {
         Self {
             amount: amount.into(),
             currency: currency.into(),
+            r#type: "FIXED".into(),
             extra: serde_json::Map::new(),
         }
     }

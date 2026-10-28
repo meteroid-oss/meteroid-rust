@@ -12,6 +12,8 @@ pub struct RecurringFee {
 
     pub rate: rust_decimal::Decimal,
 
+    pub r#type: String,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -25,6 +27,7 @@ impl RecurringFee {
             billing_type,
             quantity,
             rate,
+            r#type: "RECURRING".into(),
             extra: serde_json::Map::new(),
         }
     }

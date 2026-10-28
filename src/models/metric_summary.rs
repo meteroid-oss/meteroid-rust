@@ -27,6 +27,14 @@ pub struct MetricSummary {
 
     pub name: String,
 
+    /// What several units of the metric are called, e.g. `tokens`.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub unit_plural: Option<String>,
+
+    /// What one unit of the metric is called, e.g. `token`.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub unit_singular: Option<String>,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -51,6 +59,8 @@ impl MetricSummary {
             description: None,
             id: id.into(),
             name: name.into(),
+            unit_plural: None,
+            unit_singular: None,
             extra: serde_json::Map::new(),
         }
     }

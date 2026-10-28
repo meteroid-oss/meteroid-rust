@@ -7,6 +7,8 @@ use super::usage_pricing_model::UsagePricingModel;
 pub struct UsagePricing {
     pub model: UsagePricingModel,
 
+    pub r#type: String,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -18,6 +20,7 @@ impl UsagePricing {
     pub fn new(model: UsagePricingModel) -> Self {
         Self {
             model,
+            r#type: "USAGE".into(),
             extra: serde_json::Map::new(),
         }
     }

@@ -2,9 +2,9 @@
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 use super::{
-    capacity_plan_fee::CapacityPlanFee, extra_recurring_plan_fee::ExtraRecurringPlanFee,
-    one_time_plan_fee::OneTimePlanFee, rate_plan_fee::RatePlanFee, slot_plan_fee::SlotPlanFee,
-    usage_plan_fee::UsagePlanFee,
+    capacity_plan_fee::CapacityPlanFee, credit_plan_fee::CreditPlanFee,
+    extra_recurring_plan_fee::ExtraRecurringPlanFee, one_time_plan_fee::OneTimePlanFee,
+    rate_plan_fee::RatePlanFee, slot_plan_fee::SlotPlanFee, usage_plan_fee::UsagePlanFee,
 };
 use crate::models::codec;
 
@@ -18,6 +18,7 @@ pub enum Fee {
     Usage(UsagePlanFee),
     ExtraRecurring(ExtraRecurringPlanFee),
     OneTime(OneTimePlanFee),
+    Credit(CreditPlanFee),
     /// A variant this version of the SDK does not know yet, as received.
     Unknown(serde_json::Value),
 }
@@ -33,6 +34,7 @@ impl Fee {
             Self::Usage(_) => Some("USAGE"),
             Self::ExtraRecurring(_) => Some("EXTRA_RECURRING"),
             Self::OneTime(_) => Some("ONE_TIME"),
+            Self::Credit(_) => Some("CREDIT"),
             Self::Unknown(value) => value.get("type")?.as_str(),
         }
     }
@@ -51,6 +53,7 @@ impl Serialize for Fee {
                 codec::internally_tagged(serializer, "type", "EXTRA_RECURRING", value)
             }
             Self::OneTime(value) => codec::internally_tagged(serializer, "type", "ONE_TIME", value),
+            Self::Credit(value) => codec::internally_tagged(serializer, "type", "CREDIT", value),
             Self::Unknown(value) => value.serialize(serializer),
         }
     }
@@ -66,6 +69,7 @@ impl<'de> Deserialize<'de> for Fee {
             "USAGE" => Self::Usage(codec::from_value(value)?),
             "EXTRA_RECURRING" => Self::ExtraRecurring(codec::from_value(value)?),
             "ONE_TIME" => Self::OneTime(codec::from_value(value)?),
+            "CREDIT" => Self::Credit(codec::from_value(value)?),
             _ => Self::Unknown(value),
         })
     }

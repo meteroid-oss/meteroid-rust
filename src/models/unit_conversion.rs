@@ -3,8 +3,13 @@ use serde::{Deserialize, Serialize};
 
 use super::unit_conversion_rounding_enum::UnitConversionRoundingEnum;
 
+/// Converts the aggregated usage into the unit prices are set in, e.g. tokens priced per 1M.
+/// The usage is divided by `factor`, then rounded. Rounding applies to each priced group's
+/// total for the billing period: each group of a segmented or grouped metric, and each matrix
+/// cell, is rounded on its own, never each event.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct UnitConversion {
+    /// Raw units per priced unit, e.g. `1000000` to price per 1M.
     pub factor: i32,
 
     pub rounding: UnitConversionRoundingEnum,

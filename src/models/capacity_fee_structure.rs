@@ -7,6 +7,8 @@ use super::billable_metric_id::BillableMetricId;
 pub struct CapacityFeeStructure {
     pub metric_id: BillableMetricId,
 
+    pub r#type: String,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -18,6 +20,7 @@ impl CapacityFeeStructure {
     pub fn new(metric_id: impl Into<BillableMetricId>) -> Self {
         Self {
             metric_id: metric_id.into(),
+            r#type: "CAPACITY".into(),
             extra: serde_json::Map::new(),
         }
     }

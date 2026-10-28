@@ -7,6 +7,8 @@ use super::product_id::ProductId;
 pub struct ExistingProductRef {
     pub id: ProductId,
 
+    pub r#type: String,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -18,6 +20,7 @@ impl ExistingProductRef {
     pub fn new(id: impl Into<ProductId>) -> Self {
         Self {
             id: id.into(),
+            r#type: "EXISTING".into(),
             extra: serde_json::Map::new(),
         }
     }

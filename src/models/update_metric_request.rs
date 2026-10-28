@@ -44,6 +44,24 @@ pub struct UpdateMetricRequest {
     )]
     pub unit_conversion: Option<Option<UnitConversion>>,
 
+    /// What several units of the metric are called, e.g. `tokens`. See `unit_singular`.
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::models::codec::nullable"
+    )]
+    pub unit_plural: Option<Option<String>>,
+
+    /// What one unit of the metric is called, e.g. `token`. Send `unit_singular` and
+    /// `unit_plural` together; omit both to leave the label unchanged, or send both as empty
+    /// strings to remove it. Trimmed; at most 32 characters.
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::models::codec::nullable"
+    )]
+    pub unit_singular: Option<Option<String>>,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -59,6 +77,8 @@ impl UpdateMetricRequest {
             name: None,
             segmentation_matrix: None,
             unit_conversion: None,
+            unit_plural: None,
+            unit_singular: None,
             extra: serde_json::Map::new(),
         }
     }
@@ -133,6 +153,34 @@ impl UpdateMetricRequest {
     #[must_use]
     pub fn clear_unit_conversion(mut self) -> Self {
         self.unit_conversion = Some(None);
+        self
+    }
+
+    /// Sets `unit_plural`.
+    #[must_use]
+    pub fn unit_plural(mut self, unit_plural: impl Into<String>) -> Self {
+        self.unit_plural = Some(Some(unit_plural.into()));
+        self
+    }
+
+    /// Sends `unit_plural` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_unit_plural(mut self) -> Self {
+        self.unit_plural = Some(None);
+        self
+    }
+
+    /// Sets `unit_singular`.
+    #[must_use]
+    pub fn unit_singular(mut self, unit_singular: impl Into<String>) -> Self {
+        self.unit_singular = Some(Some(unit_singular.into()));
+        self
+    }
+
+    /// Sends `unit_singular` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_unit_singular(mut self) -> Self {
+        self.unit_singular = Some(None);
         self
     }
 }

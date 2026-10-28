@@ -8,7 +8,8 @@ pub struct CreateWebhookEndpointRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
 
-    /// Event types to subscribe to. Omit or leave empty to receive every event type.
+    /// Event types to subscribe to. Omit or leave empty to receive every event type except Beta
+    /// ones, which are sent only to endpoints that list them.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub event_types: Option<Vec<String>>,
 

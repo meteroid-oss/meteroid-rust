@@ -4,6 +4,8 @@ use serde::{Deserialize, Serialize};
 /// A text config value.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct TextConfigValue {
+    pub kind: String,
+
     pub value: String,
 
     /// Properties this version of the SDK does not know, sent back as received.
@@ -16,6 +18,7 @@ impl TextConfigValue {
     #[must_use]
     pub fn new(value: impl Into<String>) -> Self {
         Self {
+            kind: "TEXT".into(),
             value: value.into(),
             extra: serde_json::Map::new(),
         }

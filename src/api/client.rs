@@ -98,10 +98,22 @@ impl Meteroid {
         super::BatchJobs::new(self.cfg.clone())
     }
 
+    /// The budgets API.
+    #[must_use]
+    pub fn budgets(&self) -> super::Budgets {
+        super::Budgets::new(self.cfg.clone())
+    }
+
     /// The checkout sessions API.
     #[must_use]
     pub fn checkout_sessions(&self) -> super::CheckoutSessions {
         super::CheckoutSessions::new(self.cfg.clone())
+    }
+
+    /// The checks API.
+    #[must_use]
+    pub fn checks(&self) -> super::Checks {
+        super::Checks::new(self.cfg.clone())
     }
 
     /// The connect API.
@@ -120,6 +132,18 @@ impl Meteroid {
     #[must_use]
     pub fn credit_notes(&self) -> super::CreditNotes {
         super::CreditNotes::new(self.cfg.clone())
+    }
+
+    /// The credit units API.
+    #[must_use]
+    pub fn credit_units(&self) -> super::CreditUnits {
+        super::CreditUnits::new(self.cfg.clone())
+    }
+
+    /// The credits API.
+    #[must_use]
+    pub fn credits(&self) -> super::Credits {
+        super::Credits::new(self.cfg.clone())
     }
 
     /// The custom properties API.
@@ -204,6 +228,12 @@ impl Meteroid {
     #[must_use]
     pub fn usage(&self) -> super::Usage {
         super::Usage::new(self.cfg.clone())
+    }
+
+    /// The usage costs API.
+    #[must_use]
+    pub fn usage_costs(&self) -> super::UsageCosts {
+        super::UsageCosts::new(self.cfg.clone())
     }
 
     /// The webhook endpoints API.

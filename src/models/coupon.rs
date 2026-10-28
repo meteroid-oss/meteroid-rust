@@ -9,6 +9,10 @@ pub struct Coupon {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub archived_at: Option<chrono::DateTime<chrono::Utc>>,
 
+    /// A promotional-credit (`CREDIT`) code is stored upper-case; other codes as written. A code
+    /// is redeemed by the coupon with exactly that code, else by the only live coupon equal to it
+    /// ignoring the case of ASCII letters; several such coupons and no exact match make it
+    /// ambiguous.
     pub code: String,
 
     pub created_at: chrono::DateTime<chrono::Utc>,

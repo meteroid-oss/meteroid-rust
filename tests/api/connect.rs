@@ -20,13 +20,13 @@ async fn create_connected_account() {
     let (client, requests) = mock(
         200,
         Some("application/json"),
-        r#"{"connection_type":"express","created_at":"2024-03-15T10:30:45.123+02:00","id":"connected_account_id_47","onboarding_mode":"express","platform_organization_id":"organization_id_83","status":"active"}"#,
+        r#"{"connection_type":"express","created_at":"2024-03-15T10:30:45.123+02:00","id":"connected_account_id_47","onboarding_mode":"express","platform_organization_id":"organization_id_83","status":"active","onboarding_link":{"expires_at":"2023-12-31T23:59:59.999-05:30","url":"sample"}}"#,
     );
     client
         .connect()
         .create_connected_account(
             decode::<meteroid_rs::models::CreateConnectedAccountRequest>(
-                r#"{"connected_organization_id":"00000000-0000-0000-0000-000000000000"}"#,
+                r#"{"email":"alice@example.com","organization_name":"sample"}"#,
             ),
         )
         .await

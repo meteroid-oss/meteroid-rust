@@ -44,6 +44,14 @@ pub struct Metric {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub unit_conversion: Option<UnitConversion>,
 
+    /// What several units of the metric are called, e.g. `tokens`.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub unit_plural: Option<String>,
+
+    /// What one unit of the metric is called, e.g. `token`. Set together with `unit_plural`.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub unit_singular: Option<String>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     pub usage_group_key: Option<String>,
 
@@ -77,6 +85,8 @@ impl Metric {
             product_id: None,
             segmentation_matrix: None,
             unit_conversion: None,
+            unit_plural: None,
+            unit_singular: None,
             usage_group_key: None,
             extra: serde_json::Map::new(),
         }

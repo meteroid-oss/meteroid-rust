@@ -6,6 +6,8 @@ use serde::{Deserialize, Serialize};
 pub struct ComponentsScope {
     pub component_names: Vec<String>,
 
+    pub r#type: String,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -17,6 +19,7 @@ impl ComponentsScope {
     pub fn new(component_names: Vec<String>) -> Self {
         Self {
             component_names,
+            r#type: "components".into(),
             extra: serde_json::Map::new(),
         }
     }

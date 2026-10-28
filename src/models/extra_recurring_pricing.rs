@@ -5,6 +5,8 @@ use serde::{Deserialize, Serialize};
 pub struct ExtraRecurringPricing {
     pub quantity: i32,
 
+    pub r#type: String,
+
     pub unit_price: rust_decimal::Decimal,
 
     /// Properties this version of the SDK does not know, sent back as received.
@@ -18,6 +20,7 @@ impl ExtraRecurringPricing {
     pub fn new(quantity: i32, unit_price: rust_decimal::Decimal) -> Self {
         Self {
             quantity,
+            r#type: "EXTRA_RECURRING".into(),
             unit_price,
             extra: serde_json::Map::new(),
         }

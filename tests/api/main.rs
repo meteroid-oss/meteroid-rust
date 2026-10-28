@@ -4,10 +4,17 @@
 mod add_ons;
 mod add_ons_entitlements;
 mod batch_jobs;
+mod budgets;
 mod checkout_sessions;
+mod checks;
 mod connect;
 mod coupons;
 mod credit_notes;
+mod credit_units;
+mod credit_units_prices;
+mod credits;
+mod credits_grants;
+mod credits_wallets;
 mod custom_properties;
 mod customers;
 mod entitlements;
@@ -24,6 +31,7 @@ mod products;
 mod products_entitlements;
 mod subscriptions;
 mod usage;
+mod usage_customer;
 mod webhook_endpoints;
 mod webhook_endpoints_endpoints;
 

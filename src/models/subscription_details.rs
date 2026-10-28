@@ -7,7 +7,7 @@ use super::{
     minimum_commitment::MinimumCommitment, payment_methods_config::PaymentMethodsConfig,
     plan_id::PlanId, plan_version_id::PlanVersionId, subscription_add_on::SubscriptionAddOn,
     subscription_component::SubscriptionComponent, subscription_id::SubscriptionId,
-    subscription_status_enum::SubscriptionStatusEnum,
+    subscription_status_enum::SubscriptionStatusEnum, usage_filter::UsageFilter,
 };
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
@@ -109,6 +109,14 @@ pub struct SubscriptionDetails {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub trial_duration: Option<i32>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub usage_filter: Option<UsageFilter>,
+
+    /// When the current usage filter, or its removal, started to apply: the start of the usage
+    /// neither this subscription nor the customer's others had invoiced when it was set.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub usage_filter_effective_from: Option<chrono::DateTime<chrono::Utc>>,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -178,6 +186,8 @@ impl SubscriptionDetails {
             status,
             tax_inclusive,
             trial_duration: None,
+            usage_filter: None,
+            usage_filter_effective_from: None,
             extra: serde_json::Map::new(),
         }
     }

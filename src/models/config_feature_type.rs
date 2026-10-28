@@ -10,6 +10,8 @@ pub struct ConfigFeatureType {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub options: Option<Vec<String>>,
 
+    pub r#type: String,
+
     /// The feature's value type, fixed at creation.
     pub value_type: ConfigValueType,
 
@@ -24,6 +26,7 @@ impl ConfigFeatureType {
     pub fn new(value_type: ConfigValueType) -> Self {
         Self {
             options: None,
+            r#type: "CONFIG".into(),
             value_type,
             extra: serde_json::Map::new(),
         }

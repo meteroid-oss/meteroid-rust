@@ -2,10 +2,11 @@
 use serde::{Deserialize, Serialize};
 
 use super::{
-    available_parameters::AvailableParameters, currency::Currency, entitlement::Entitlement,
-    minimum_commitment::MinimumCommitment, plan_id::PlanId, plan_status_enum::PlanStatusEnum,
-    plan_type_enum::PlanTypeEnum, plan_version_id::PlanVersionId, price_component::PriceComponent,
-    product_family::ProductFamily, trial_config::TrialConfig,
+    available_parameters::AvailableParameters, credit_exhausted_rule::CreditExhaustedRule,
+    currency::Currency, entitlement::Entitlement, minimum_commitment::MinimumCommitment,
+    plan_id::PlanId, plan_status_enum::PlanStatusEnum, plan_type_enum::PlanTypeEnum,
+    plan_version_id::PlanVersionId, price_component::PriceComponent, product_family::ProductFamily,
+    trial_config::TrialConfig,
 };
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
@@ -17,6 +18,9 @@ pub struct Plan {
     pub billing_cycles: Option<i32>,
 
     pub created_at: chrono::DateTime<chrono::Utc>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub credit_exhausted_rule: Option<CreditExhaustedRule>,
 
     pub currency: Currency,
 
@@ -89,6 +93,7 @@ impl Plan {
             available_parameters,
             billing_cycles: None,
             created_at,
+            credit_exhausted_rule: None,
             currency,
             description: None,
             entitlements: None,

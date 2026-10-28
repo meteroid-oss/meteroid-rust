@@ -7,6 +7,8 @@ pub struct LinkedSegmentationMatrix {
 
     pub dimension2_key: String,
 
+    pub r#type: String,
+
     pub values: std::collections::HashMap<String, Vec<String>>,
 
     /// Properties this version of the SDK does not know, sent back as received.
@@ -25,6 +27,7 @@ impl LinkedSegmentationMatrix {
         Self {
             dimension1_key: dimension1_key.into(),
             dimension2_key: dimension2_key.into(),
+            r#type: "LINKED".into(),
             values,
             extra: serde_json::Map::new(),
         }

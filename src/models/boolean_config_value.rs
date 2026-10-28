@@ -4,6 +4,8 @@ use serde::{Deserialize, Serialize};
 /// A boolean config value.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct BooleanConfigValue {
+    pub kind: String,
+
     pub value: bool,
 
     /// Properties this version of the SDK does not know, sent back as received.
@@ -16,6 +18,7 @@ impl BooleanConfigValue {
     #[must_use]
     pub fn new(value: bool) -> Self {
         Self {
+            kind: "BOOLEAN".into(),
             value,
             extra: serde_json::Map::new(),
         }

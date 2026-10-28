@@ -16,6 +16,8 @@ pub struct SlotPlanFee {
 
     pub slot_unit_name: String,
 
+    pub r#type: String,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -30,6 +32,7 @@ impl SlotPlanFee {
             quota: None,
             rates,
             slot_unit_name: slot_unit_name.into(),
+            r#type: "SLOT".into(),
             extra: serde_json::Map::new(),
         }
     }

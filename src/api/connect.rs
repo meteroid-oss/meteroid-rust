@@ -55,8 +55,8 @@ impl Connect {
 
     /// Create connected account
     ///
-    /// Create a new connected account (Express flow). Returns the account
-    /// and an onboarding link for the user to complete setup.
+    /// Create a new pending connected account (Express flow). Returns the
+    /// account and an onboarding link for the user to complete setup.
     ///
     /// `POST /api/v1/connected-accounts`.
     ///
@@ -66,7 +66,7 @@ impl Connect {
     pub fn create_connected_account(
         &self,
         create_connected_account_request: crate::models::CreateConnectedAccountRequest,
-    ) -> crate::api::Call<crate::models::ConnectedAccount> {
+    ) -> crate::api::Call<crate::models::CreateConnectedAccountResponse> {
         crate::request::Request::new(http::Method::POST, "/api/v1/connected-accounts")
             .with_body_param(create_connected_account_request)
             .with_options(&self.options)

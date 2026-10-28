@@ -8,6 +8,8 @@ use super::term_rate::TermRate;
 pub struct RatePlanFee {
     pub rates: Vec<TermRate>,
 
+    pub r#type: String,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -19,6 +21,7 @@ impl RatePlanFee {
     pub fn new(rates: Vec<TermRate>) -> Self {
         Self {
             rates,
+            r#type: "RATE".into(),
             extra: serde_json::Map::new(),
         }
     }

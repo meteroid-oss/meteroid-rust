@@ -4,6 +4,8 @@ use serde::{Deserialize, Serialize};
 /// A structured (JSON) config value — the "metadata" case, several fields in one entitlement.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct JsonConfigValue {
+    pub kind: String,
+
     pub value: serde_json::Value,
 
     /// Properties this version of the SDK does not know, sent back as received.
@@ -16,6 +18,7 @@ impl JsonConfigValue {
     #[must_use]
     pub fn new(value: serde_json::Value) -> Self {
         Self {
+            kind: "JSON".into(),
             value,
             extra: serde_json::Map::new(),
         }

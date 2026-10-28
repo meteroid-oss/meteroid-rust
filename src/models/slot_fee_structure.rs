@@ -12,6 +12,8 @@ pub struct SlotFeeStructure {
 
     pub slot_unit_name: String,
 
+    pub r#type: String,
+
     pub upgrade_policy: SlotUpgradePolicyEnum,
 
     /// Properties this version of the SDK does not know, sent back as received.
@@ -30,6 +32,7 @@ impl SlotFeeStructure {
         Self {
             downgrade_policy,
             slot_unit_name: slot_unit_name.into(),
+            r#type: "SLOT".into(),
             upgrade_policy,
             extra: serde_json::Map::new(),
         }

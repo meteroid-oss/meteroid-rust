@@ -23,7 +23,8 @@ pub struct WebhookEndpoint {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub disabled_reason: Option<WebhookEndpointDisabledReason>,
 
-    /// Subscribed event types. Empty means every event type.
+    /// Subscribed event types. Empty means every event type except Beta ones, which are sent
+    /// only to endpoints that list them.
     pub event_types: Vec<String>,
 
     /// Custom headers sent with every delivery.

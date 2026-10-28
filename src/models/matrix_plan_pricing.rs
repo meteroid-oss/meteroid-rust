@@ -7,6 +7,8 @@ use super::matrix_row::MatrixRow;
 pub struct MatrixPlanPricing {
     pub rates: Vec<MatrixRow>,
 
+    pub r#type: String,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -18,6 +20,7 @@ impl MatrixPlanPricing {
     pub fn new(rates: Vec<MatrixRow>) -> Self {
         Self {
             rates,
+            r#type: "MATRIX".into(),
             extra: serde_json::Map::new(),
         }
     }

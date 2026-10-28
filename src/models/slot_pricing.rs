@@ -9,6 +9,8 @@ pub struct SlotPricing {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub min_slots: Option<i32>,
 
+    pub r#type: String,
+
     pub unit_rate: rust_decimal::Decimal,
 
     /// Properties this version of the SDK does not know, sent back as received.
@@ -23,6 +25,7 @@ impl SlotPricing {
         Self {
             max_slots: None,
             min_slots: None,
+            r#type: "SLOT".into(),
             unit_rate,
             extra: serde_json::Map::new(),
         }

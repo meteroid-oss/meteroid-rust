@@ -1,20 +1,25 @@
 // this file is @generated
 use serde::{Deserialize, Serialize};
 
-use super::{connection_type::ConnectionType, customer_id::CustomerId};
+use super::{country_code::CountryCode, onboarding_mode::OnboardingMode};
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct CreateConnectedAccountRequest {
-    pub connected_organization_id: uuid::Uuid,
-
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub connection_type: Option<ConnectionType>,
+    pub country: Option<CountryCode>,
+
+    pub email: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub metadata: Option<serde_json::Value>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub platform_customer_id: Option<CustomerId>,
+    pub mode: Option<OnboardingMode>,
+
+    pub organization_name: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub redirect_url: Option<String>,
 
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
@@ -24,20 +29,22 @@ pub struct CreateConnectedAccountRequest {
 impl CreateConnectedAccountRequest {
     /// Creates a value from its required fields.
     #[must_use]
-    pub fn new(connected_organization_id: uuid::Uuid) -> Self {
+    pub fn new(email: impl Into<String>, organization_name: impl Into<String>) -> Self {
         Self {
-            connected_organization_id,
-            connection_type: None,
+            country: None,
+            email: email.into(),
             metadata: None,
-            platform_customer_id: None,
+            mode: None,
+            organization_name: organization_name.into(),
+            redirect_url: None,
             extra: serde_json::Map::new(),
         }
     }
 
-    /// Sets `connection_type`.
+    /// Sets `country`.
     #[must_use]
-    pub fn connection_type(mut self, connection_type: impl Into<ConnectionType>) -> Self {
-        self.connection_type = Some(connection_type.into());
+    pub fn country(mut self, country: impl Into<CountryCode>) -> Self {
+        self.country = Some(country.into());
         self
     }
 
@@ -48,10 +55,17 @@ impl CreateConnectedAccountRequest {
         self
     }
 
-    /// Sets `platform_customer_id`.
+    /// Sets `mode`.
     #[must_use]
-    pub fn platform_customer_id(mut self, platform_customer_id: impl Into<CustomerId>) -> Self {
-        self.platform_customer_id = Some(platform_customer_id.into());
+    pub fn mode(mut self, mode: impl Into<OnboardingMode>) -> Self {
+        self.mode = Some(mode.into());
+        self
+    }
+
+    /// Sets `redirect_url`.
+    #[must_use]
+    pub fn redirect_url(mut self, redirect_url: impl Into<String>) -> Self {
+        self.redirect_url = Some(redirect_url.into());
         self
     }
 }

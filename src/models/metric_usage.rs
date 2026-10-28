@@ -1,11 +1,18 @@
 // this file is @generated
 use serde::{Deserialize, Serialize};
 
-use super::{billable_metric_id::BillableMetricId, grouped_usage::GroupedUsage};
+use super::{
+    billable_metric_id::BillableMetricId, grouped_usage::GroupedUsage, usage_cost::UsageCost,
+};
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[non_exhaustive]
 pub struct MetricUsage {
+    /// Beta: what the metric's usage adds so far to the subscription's next invoice, per currency
+    /// or credit unit; empty while it bills nothing, as during a free trial or once cancelled.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub costs: Option<Vec<UsageCost>>,
+
     pub grouped_usage: Vec<GroupedUsage>,
 
     pub metric_code: String,
@@ -32,6 +39,7 @@ impl MetricUsage {
         total_value: rust_decimal::Decimal,
     ) -> Self {
         Self {
+            costs: None,
             grouped_usage,
             metric_code: metric_code.into(),
             metric_id: metric_id.into(),

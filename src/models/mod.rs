@@ -12,6 +12,8 @@ pub(crate) mod codec;
 #[path = "../unions.rs"]
 pub(crate) mod union_rules;
 
+pub mod actor;
+pub mod actor_type;
 pub mod add_on;
 pub mod add_on_event;
 pub mod add_on_event_data;
@@ -22,6 +24,16 @@ pub mod all_components_scope;
 pub mod applied_coupon;
 pub mod applied_coupon_detailed;
 pub mod applied_coupon_id;
+pub mod auto_top_up;
+pub mod auto_top_up_cap_reached_event;
+pub mod auto_top_up_cap_reached_event_data;
+pub mod auto_top_up_consent_changed_event;
+pub mod auto_top_up_consent_changed_event_data;
+pub mod auto_top_up_event;
+pub mod auto_top_up_event_data;
+pub mod auto_top_up_method;
+pub mod auto_top_up_status;
+pub mod auto_top_up_write_request;
 pub mod available_parameters;
 pub mod bank_account_id;
 pub mod bank_transfer_payment_method_config;
@@ -46,6 +58,11 @@ pub mod boolean_effective_entitlement_value;
 pub mod boolean_entitlement_value;
 pub mod boolean_feature_type;
 pub mod boolean_resolved_entitlement_value;
+pub mod budget;
+pub mod budget_author;
+pub mod budget_behavior;
+pub mod budget_list_response;
+pub mod budget_period;
 pub mod calendar_reset_period;
 pub mod calendar_unit;
 pub mod cancel_checkout_session_response;
@@ -77,6 +94,7 @@ pub mod connection_status;
 pub mod connection_type;
 pub mod country_code;
 pub mod coupon;
+pub mod coupon_credit_scope;
 pub mod coupon_discount;
 pub mod coupon_event;
 pub mod coupon_event_data;
@@ -85,10 +103,13 @@ pub mod coupon_id;
 pub mod coupon_line_item;
 pub mod coupon_list_response;
 pub mod create_add_on_request;
+pub mod create_budget_request;
 pub mod create_checkout_session_request;
 pub mod create_checkout_session_response;
 pub mod create_connected_account_request;
+pub mod create_connected_account_response;
 pub mod create_coupon_request;
+pub mod create_credit_grant_request;
 pub mod create_entitlements_request;
 pub mod create_feature_request;
 pub mod create_metric_request;
@@ -98,8 +119,31 @@ pub mod create_plan_request;
 pub mod create_product_request;
 pub mod create_subscription_add_on;
 pub mod create_subscription_components;
+pub mod create_top_up_request;
 pub mod create_webhook_endpoint_request;
 pub mod created_webhook_endpoint;
+pub mod credit_applies_to;
+pub mod credit_cap;
+pub mod credit_caps;
+pub mod credit_cost;
+pub mod credit_cost_request;
+pub mod credit_discount;
+pub mod credit_exhausted_rule;
+pub mod credit_exhausted_rule_invoice_variant;
+pub mod credit_exhausted_rule_pause_variant;
+pub mod credit_expiry_unit;
+pub mod credit_fee;
+pub mod credit_fee_structure;
+pub mod credit_grant;
+pub mod credit_grant_expired_event;
+pub mod credit_grant_expired_event_data;
+pub mod credit_grant_id;
+pub mod credit_grant_kind;
+pub mod credit_grant_lapse_reason;
+pub mod credit_grant_list_response;
+pub mod credit_grant_source;
+pub mod credit_grant_status;
+pub mod credit_grant_type;
 pub mod credit_note;
 pub mod credit_note_custom_properties_request;
 pub mod credit_note_event;
@@ -107,7 +151,18 @@ pub mod credit_note_event_data;
 pub mod credit_note_id;
 pub mod credit_note_list_response;
 pub mod credit_note_status;
+pub mod credit_pack_expiry;
+pub mod credit_pack_rollover;
+pub mod credit_pack_unit;
+pub mod credit_plan_fee;
 pub mod credit_type;
+pub mod credit_unit;
+pub mod credit_unit_create_request;
+pub mod credit_unit_list_response;
+pub mod credit_unit_price;
+pub mod credit_unit_price_list_response;
+pub mod credit_unit_price_set_request;
+pub mod credit_unit_update_request;
 pub mod currency;
 pub mod custom_property_definition;
 pub mod custom_property_definition_create_request;
@@ -139,8 +194,15 @@ pub mod effective_entitlement;
 pub mod effective_entitlement_list_response;
 pub mod effective_entitlement_value;
 pub mod entitlement;
+pub mod entitlement_check;
+pub mod entitlement_check_feature;
+pub mod entitlement_check_limit;
+pub mod entitlement_check_limit_behavior;
+pub mod entitlement_check_period;
+pub mod entitlement_check_reason;
 pub mod entitlement_id;
 pub mod entitlement_list_response;
+pub mod entitlement_overage_behavior;
 pub mod entitlement_product_ref;
 pub mod entitlement_spec_request;
 pub mod entitlement_value;
@@ -163,6 +225,7 @@ pub mod feature_ref;
 pub mod feature_status;
 pub mod feature_type;
 pub mod fee;
+pub mod fee_credit_unit;
 pub mod fixed_discount;
 pub mod fixed_window_reset_period;
 pub mod get_checkout_session_response;
@@ -178,6 +241,7 @@ pub mod invoice_documents_event_data;
 pub mod invoice_event;
 pub mod invoice_event_data;
 pub mod invoice_id;
+pub mod invoice_line_credit_unit;
 pub mod invoice_line_item;
 pub mod invoice_list_response;
 pub mod invoice_payment_status;
@@ -185,8 +249,14 @@ pub mod invoice_status;
 pub mod invoice_type;
 pub mod invoicing_entity_id;
 pub mod json_config_value;
+pub mod ledger_entry;
+pub mod ledger_entry_id;
+pub mod ledger_entry_type;
+pub mod ledger_list_response;
 pub mod linked_segmentation_matrix;
 pub mod list_checkout_sessions_response;
+pub mod list_customer_usage_costs_granularity;
+pub mod list_subscription_usage_costs_granularity;
 pub mod matrix_dimension;
 pub mod matrix_plan_pricing;
 pub mod matrix_pricing;
@@ -233,7 +303,9 @@ pub mod organization_id;
 pub mod package_plan_pricing;
 pub mod package_pricing;
 pub mod pagination_response;
+pub mod patch_budget_request;
 pub mod patch_plan_request;
+pub mod patch_wallet_request;
 pub mod payment_event;
 pub mod payment_method_info;
 pub mod payment_method_type_enum;
@@ -248,6 +320,7 @@ pub mod plan;
 pub mod plan_add_on_input;
 pub mod plan_event;
 pub mod plan_event_data;
+pub mod plan_fee_credit_unit;
 pub mod plan_id;
 pub mod plan_list_response;
 pub mod plan_status_enum;
@@ -316,6 +389,7 @@ pub mod subscription_add_on_price_override;
 pub mod subscription_component;
 pub mod subscription_coupon;
 pub mod subscription_create_request;
+pub mod subscription_credit;
 pub mod subscription_details;
 pub mod subscription_event;
 pub mod subscription_event_data;
@@ -338,8 +412,13 @@ pub mod tiered_pricing;
 pub mod token_introspection_response;
 pub mod token_request;
 pub mod token_response;
+pub mod top_up_collection;
+pub mod top_up_response;
+pub mod top_up_status;
 pub mod transaction;
 pub mod trial_config;
+pub mod unattributed_metric_usage;
+pub mod unattributed_usage_response;
 pub mod unit_conversion;
 pub mod unit_conversion_rounding_enum;
 pub mod update_add_on_request;
@@ -349,8 +428,17 @@ pub mod update_feature_request;
 pub mod update_metric_request;
 pub mod update_product_request;
 pub mod update_webhook_endpoint_request;
+pub mod usage_at_zero;
+pub mod usage_cost;
+pub mod usage_cost_list_response;
+pub mod usage_cost_row;
+pub mod usage_cost_unit;
+pub mod usage_event;
+pub mod usage_event_list_response;
 pub mod usage_fee;
 pub mod usage_fee_structure;
+pub mod usage_filter;
+pub mod usage_limit_id;
 pub mod usage_model_enum;
 pub mod usage_plan_fee;
 pub mod usage_pricing;
@@ -358,6 +446,23 @@ pub mod usage_pricing_model;
 pub mod usage_response;
 pub mod volume_plan_pricing;
 pub mod volume_pricing;
+pub mod wallet;
+pub mod wallet_balance_low_event;
+pub mod wallet_balance_low_event_data;
+pub mod wallet_check;
+pub mod wallet_credit_recovered_event;
+pub mod wallet_credit_recovered_event_data;
+pub mod wallet_credit_unrecovered_event;
+pub mod wallet_credit_unrecovered_event_data;
+pub mod wallet_debited_event;
+pub mod wallet_debited_event_data;
+pub mod wallet_depleted_event;
+pub mod wallet_depleted_event_data;
+pub mod wallet_funded_event;
+pub mod wallet_funded_event_data;
+pub mod wallet_list_response;
+pub mod wallet_recovered_event;
+pub mod wallet_recovered_event_data;
 pub mod webhook_delivery;
 pub mod webhook_delivery_id;
 pub mod webhook_delivery_list_response;
@@ -370,11 +475,18 @@ pub mod webhook_endpoint_secret;
 pub mod webhook_header;
 pub mod webhook_header_input;
 pub use self::{
-    add_on::AddOn, add_on_event::AddOnEvent, add_on_event_data::AddOnEventData, add_on_id::AddOnId,
-    add_on_list_response::AddOnListResponse, address::Address,
-    all_components_scope::AllComponentsScope, applied_coupon::AppliedCoupon,
+    actor::Actor, actor_type::ActorType, add_on::AddOn, add_on_event::AddOnEvent,
+    add_on_event_data::AddOnEventData, add_on_id::AddOnId, add_on_list_response::AddOnListResponse,
+    address::Address, all_components_scope::AllComponentsScope, applied_coupon::AppliedCoupon,
     applied_coupon_detailed::AppliedCouponDetailed, applied_coupon_id::AppliedCouponId,
-    available_parameters::AvailableParameters, bank_account_id::BankAccountId,
+    auto_top_up::AutoTopUp, auto_top_up_cap_reached_event::AutoTopUpCapReachedEvent,
+    auto_top_up_cap_reached_event_data::AutoTopUpCapReachedEventData,
+    auto_top_up_consent_changed_event::AutoTopUpConsentChangedEvent,
+    auto_top_up_consent_changed_event_data::AutoTopUpConsentChangedEventData,
+    auto_top_up_event::AutoTopUpEvent, auto_top_up_event_data::AutoTopUpEventData,
+    auto_top_up_method::AutoTopUpMethod, auto_top_up_status::AutoTopUpStatus,
+    auto_top_up_write_request::AutoTopUpWriteRequest, available_parameters::AvailableParameters,
+    bank_account_id::BankAccountId,
     bank_transfer_payment_method_config::BankTransferPaymentMethodConfig,
     batch_job_chunk_id::BatchJobChunkId, batch_job_detail_response::BatchJobDetailResponse,
     batch_job_failures_response::BatchJobFailuresResponse, batch_job_id::BatchJobId,
@@ -388,7 +500,9 @@ pub use self::{
     billing_type_enum::BillingTypeEnum, boolean_config_value::BooleanConfigValue,
     boolean_effective_entitlement_value::BooleanEffectiveEntitlementValue,
     boolean_entitlement_value::BooleanEntitlementValue, boolean_feature_type::BooleanFeatureType,
-    boolean_resolved_entitlement_value::BooleanResolvedEntitlementValue,
+    boolean_resolved_entitlement_value::BooleanResolvedEntitlementValue, budget::Budget,
+    budget_author::BudgetAuthor, budget_behavior::BudgetBehavior,
+    budget_list_response::BudgetListResponse, budget_period::BudgetPeriod,
     calendar_reset_period::CalendarResetPeriod, calendar_unit::CalendarUnit,
     cancel_checkout_session_response::CancelCheckoutSessionResponse,
     cancel_subscription_request::CancelSubscriptionRequest,
@@ -406,13 +520,17 @@ pub use self::{
     connected_account_id::ConnectedAccountId,
     connected_accounts_response::ConnectedAccountsResponse, connection_status::ConnectionStatus,
     connection_type::ConnectionType, country_code::CountryCode, coupon::Coupon,
-    coupon_discount::CouponDiscount, coupon_event::CouponEvent, coupon_event_data::CouponEventData,
-    coupon_filter::CouponFilter, coupon_id::CouponId, coupon_line_item::CouponLineItem,
+    coupon_credit_scope::CouponCreditScope, coupon_discount::CouponDiscount,
+    coupon_event::CouponEvent, coupon_event_data::CouponEventData, coupon_filter::CouponFilter,
+    coupon_id::CouponId, coupon_line_item::CouponLineItem,
     coupon_list_response::CouponListResponse, create_add_on_request::CreateAddOnRequest,
+    create_budget_request::CreateBudgetRequest,
     create_checkout_session_request::CreateCheckoutSessionRequest,
     create_checkout_session_response::CreateCheckoutSessionResponse,
     create_connected_account_request::CreateConnectedAccountRequest,
+    create_connected_account_response::CreateConnectedAccountResponse,
     create_coupon_request::CreateCouponRequest,
+    create_credit_grant_request::CreateCreditGrantRequest,
     create_entitlements_request::CreateEntitlementsRequest,
     create_feature_request::CreateFeatureRequest, create_metric_request::CreateMetricRequest,
     create_o_auth_app_request::CreateOAuthAppRequest,
@@ -420,12 +538,33 @@ pub use self::{
     create_plan_request::CreatePlanRequest, create_product_request::CreateProductRequest,
     create_subscription_add_on::CreateSubscriptionAddOn,
     create_subscription_components::CreateSubscriptionComponents,
+    create_top_up_request::CreateTopUpRequest,
     create_webhook_endpoint_request::CreateWebhookEndpointRequest,
-    created_webhook_endpoint::CreatedWebhookEndpoint, credit_note::CreditNote,
+    created_webhook_endpoint::CreatedWebhookEndpoint, credit_applies_to::CreditAppliesTo,
+    credit_cap::CreditCap, credit_caps::CreditCaps, credit_cost::CreditCost,
+    credit_cost_request::CreditCostRequest, credit_discount::CreditDiscount,
+    credit_exhausted_rule::CreditExhaustedRule,
+    credit_exhausted_rule_invoice_variant::CreditExhaustedRuleInvoiceVariant,
+    credit_exhausted_rule_pause_variant::CreditExhaustedRulePauseVariant,
+    credit_expiry_unit::CreditExpiryUnit, credit_fee::CreditFee,
+    credit_fee_structure::CreditFeeStructure, credit_grant::CreditGrant,
+    credit_grant_expired_event::CreditGrantExpiredEvent,
+    credit_grant_expired_event_data::CreditGrantExpiredEventData, credit_grant_id::CreditGrantId,
+    credit_grant_kind::CreditGrantKind, credit_grant_lapse_reason::CreditGrantLapseReason,
+    credit_grant_list_response::CreditGrantListResponse, credit_grant_source::CreditGrantSource,
+    credit_grant_status::CreditGrantStatus, credit_grant_type::CreditGrantType,
+    credit_note::CreditNote,
     credit_note_custom_properties_request::CreditNoteCustomPropertiesRequest,
     credit_note_event::CreditNoteEvent, credit_note_event_data::CreditNoteEventData,
     credit_note_id::CreditNoteId, credit_note_list_response::CreditNoteListResponse,
-    credit_note_status::CreditNoteStatus, credit_type::CreditType, currency::Currency,
+    credit_note_status::CreditNoteStatus, credit_pack_expiry::CreditPackExpiry,
+    credit_pack_rollover::CreditPackRollover, credit_pack_unit::CreditPackUnit,
+    credit_plan_fee::CreditPlanFee, credit_type::CreditType, credit_unit::CreditUnit,
+    credit_unit_create_request::CreditUnitCreateRequest,
+    credit_unit_list_response::CreditUnitListResponse, credit_unit_price::CreditUnitPrice,
+    credit_unit_price_list_response::CreditUnitPriceListResponse,
+    credit_unit_price_set_request::CreditUnitPriceSetRequest,
+    credit_unit_update_request::CreditUnitUpdateRequest, currency::Currency,
     custom_property_definition::CustomPropertyDefinition,
     custom_property_definition_create_request::CustomPropertyDefinitionCreateRequest,
     custom_property_definition_id::CustomPropertyDefinitionId,
@@ -445,7 +584,13 @@ pub use self::{
     e_invoicing_status::EInvoicingStatus, effective_entitlement::EffectiveEntitlement,
     effective_entitlement_list_response::EffectiveEntitlementListResponse,
     effective_entitlement_value::EffectiveEntitlementValue, entitlement::Entitlement,
-    entitlement_id::EntitlementId, entitlement_list_response::EntitlementListResponse,
+    entitlement_check::EntitlementCheck, entitlement_check_feature::EntitlementCheckFeature,
+    entitlement_check_limit::EntitlementCheckLimit,
+    entitlement_check_limit_behavior::EntitlementCheckLimitBehavior,
+    entitlement_check_period::EntitlementCheckPeriod,
+    entitlement_check_reason::EntitlementCheckReason, entitlement_id::EntitlementId,
+    entitlement_list_response::EntitlementListResponse,
+    entitlement_overage_behavior::EntitlementOverageBehavior,
     entitlement_product_ref::EntitlementProductRef,
     entitlement_spec_request::EntitlementSpecRequest, entitlement_value::EntitlementValue,
     error_code::ErrorCode, event::Event, event_id::EventId, event_type::EventType,
@@ -457,7 +602,8 @@ pub use self::{
     extra_recurring_pricing::ExtraRecurringPricing, feature::Feature, feature_id::FeatureId,
     feature_list_response::FeatureListResponse, feature_ref::FeatureRef,
     feature_status::FeatureStatus, feature_type::FeatureType, fee::Fee,
-    fixed_discount::FixedDiscount, fixed_window_reset_period::FixedWindowResetPeriod,
+    fee_credit_unit::FeeCreditUnit, fixed_discount::FixedDiscount,
+    fixed_window_reset_period::FixedWindowResetPeriod,
     get_checkout_session_response::GetCheckoutSessionResponse, grouped_usage::GroupedUsage,
     ingest_events_request::IngestEventsRequest, ingest_events_response::IngestEventsResponse,
     ingest_failure::IngestFailure, introspection_request::IntrospectionRequest, invoice::Invoice,
@@ -465,11 +611,15 @@ pub use self::{
     invoice_documents_event::InvoiceDocumentsEvent,
     invoice_documents_event_data::InvoiceDocumentsEventData, invoice_event::InvoiceEvent,
     invoice_event_data::InvoiceEventData, invoice_id::InvoiceId,
-    invoice_line_item::InvoiceLineItem, invoice_list_response::InvoiceListResponse,
-    invoice_payment_status::InvoicePaymentStatus, invoice_status::InvoiceStatus,
-    invoice_type::InvoiceType, invoicing_entity_id::InvoicingEntityId,
-    json_config_value::JsonConfigValue, linked_segmentation_matrix::LinkedSegmentationMatrix,
+    invoice_line_credit_unit::InvoiceLineCreditUnit, invoice_line_item::InvoiceLineItem,
+    invoice_list_response::InvoiceListResponse, invoice_payment_status::InvoicePaymentStatus,
+    invoice_status::InvoiceStatus, invoice_type::InvoiceType,
+    invoicing_entity_id::InvoicingEntityId, json_config_value::JsonConfigValue,
+    ledger_entry::LedgerEntry, ledger_entry_id::LedgerEntryId, ledger_entry_type::LedgerEntryType,
+    ledger_list_response::LedgerListResponse, linked_segmentation_matrix::LinkedSegmentationMatrix,
     list_checkout_sessions_response::ListCheckoutSessionsResponse,
+    list_customer_usage_costs_granularity::ListCustomerUsageCostsGranularity,
+    list_subscription_usage_costs_granularity::ListSubscriptionUsageCostsGranularity,
     matrix_dimension::MatrixDimension, matrix_plan_pricing::MatrixPlanPricing,
     matrix_pricing::MatrixPricing, matrix_row::MatrixRow,
     metered_effective_entitlement_value::MeteredEffectiveEntitlementValue,
@@ -495,22 +645,24 @@ pub use self::{
     online_methods_config::OnlineMethodsConfig,
     online_payment_method_config::OnlinePaymentMethodConfig, organization_id::OrganizationId,
     package_plan_pricing::PackagePlanPricing, package_pricing::PackagePricing,
-    pagination_response::PaginationResponse, patch_plan_request::PatchPlanRequest,
+    pagination_response::PaginationResponse, patch_budget_request::PatchBudgetRequest,
+    patch_plan_request::PatchPlanRequest, patch_wallet_request::PatchWalletRequest,
     payment_event::PaymentEvent, payment_method_info::PaymentMethodInfo,
     payment_method_type_enum::PaymentMethodTypeEnum, payment_methods_config::PaymentMethodsConfig,
     payment_status_enum::PaymentStatusEnum, payment_transaction_id::PaymentTransactionId,
     payment_type_enum::PaymentTypeEnum, per_unit_plan_pricing::PerUnitPlanPricing,
     per_unit_pricing::PerUnitPricing, percentage_discount::PercentageDiscount, plan::Plan,
     plan_add_on_input::PlanAddOnInput, plan_event::PlanEvent, plan_event_data::PlanEventData,
-    plan_id::PlanId, plan_list_response::PlanListResponse, plan_status_enum::PlanStatusEnum,
-    plan_type_enum::PlanTypeEnum, plan_usage_pricing_model::PlanUsagePricingModel,
-    plan_version_id::PlanVersionId, plan_version_list_response::PlanVersionListResponse,
-    plan_version_summary::PlanVersionSummary, price_component::PriceComponent,
-    price_component_id::PriceComponentId, price_component_input::PriceComponentInput,
-    price_entry::PriceEntry, price_id::PriceId, price_input::PriceInput, pricing::Pricing,
-    product::Product, product_event::ProductEvent, product_event_data::ProductEventData,
-    product_family::ProductFamily, product_family_create_request::ProductFamilyCreateRequest,
-    product_family_id::ProductFamilyId, product_family_list_response::ProductFamilyListResponse,
+    plan_fee_credit_unit::PlanFeeCreditUnit, plan_id::PlanId, plan_list_response::PlanListResponse,
+    plan_status_enum::PlanStatusEnum, plan_type_enum::PlanTypeEnum,
+    plan_usage_pricing_model::PlanUsagePricingModel, plan_version_id::PlanVersionId,
+    plan_version_list_response::PlanVersionListResponse, plan_version_summary::PlanVersionSummary,
+    price_component::PriceComponent, price_component_id::PriceComponentId,
+    price_component_input::PriceComponentInput, price_entry::PriceEntry, price_id::PriceId,
+    price_input::PriceInput, pricing::Pricing, product::Product, product_event::ProductEvent,
+    product_event_data::ProductEventData, product_family::ProductFamily,
+    product_family_create_request::ProductFamilyCreateRequest, product_family_id::ProductFamilyId,
+    product_family_list_response::ProductFamilyListResponse,
     product_fee_structure::ProductFeeStructure, product_fee_type_enum::ProductFeeTypeEnum,
     product_id::ProductId, product_list_response::ProductListResponse, product_ref::ProductRef,
     products_scope::ProductsScope, property_config::PropertyConfig, quote_event::QuoteEvent,
@@ -536,8 +688,9 @@ pub use self::{
     subscription_add_on_price_override::SubscriptionAddOnPriceOverride,
     subscription_component::SubscriptionComponent, subscription_coupon::SubscriptionCoupon,
     subscription_create_request::SubscriptionCreateRequest,
-    subscription_details::SubscriptionDetails, subscription_event::SubscriptionEvent,
-    subscription_event_data::SubscriptionEventData, subscription_fee::SubscriptionFee,
+    subscription_credit::SubscriptionCredit, subscription_details::SubscriptionDetails,
+    subscription_event::SubscriptionEvent, subscription_event_data::SubscriptionEventData,
+    subscription_fee::SubscriptionFee,
     subscription_fee_billing_period_enum::SubscriptionFeeBillingPeriodEnum,
     subscription_id::SubscriptionId, subscription_list_response::SubscriptionListResponse,
     subscription_status_enum::SubscriptionStatusEnum,
@@ -547,19 +700,36 @@ pub use self::{
     tax_exemption_type::TaxExemptionType, tenant_id::TenantId, term_rate::TermRate,
     text_config_value::TextConfigValue, tier_row::TierRow, tiered_plan_pricing::TieredPlanPricing,
     tiered_pricing::TieredPricing, token_introspection_response::TokenIntrospectionResponse,
-    token_request::TokenRequest, token_response::TokenResponse, transaction::Transaction,
-    trial_config::TrialConfig, unit_conversion::UnitConversion,
+    token_request::TokenRequest, token_response::TokenResponse, top_up_collection::TopUpCollection,
+    top_up_response::TopUpResponse, top_up_status::TopUpStatus, transaction::Transaction,
+    trial_config::TrialConfig, unattributed_metric_usage::UnattributedMetricUsage,
+    unattributed_usage_response::UnattributedUsageResponse, unit_conversion::UnitConversion,
     unit_conversion_rounding_enum::UnitConversionRoundingEnum,
     update_add_on_request::UpdateAddOnRequest, update_coupon_request::UpdateCouponRequest,
     update_entitlement_request::UpdateEntitlementRequest,
     update_feature_request::UpdateFeatureRequest, update_metric_request::UpdateMetricRequest,
     update_product_request::UpdateProductRequest,
-    update_webhook_endpoint_request::UpdateWebhookEndpointRequest, usage_fee::UsageFee,
-    usage_fee_structure::UsageFeeStructure, usage_model_enum::UsageModelEnum,
-    usage_plan_fee::UsagePlanFee, usage_pricing::UsagePricing,
-    usage_pricing_model::UsagePricingModel, usage_response::UsageResponse,
-    volume_plan_pricing::VolumePlanPricing, volume_pricing::VolumePricing,
-    webhook_delivery::WebhookDelivery, webhook_delivery_id::WebhookDeliveryId,
+    update_webhook_endpoint_request::UpdateWebhookEndpointRequest, usage_at_zero::UsageAtZero,
+    usage_cost::UsageCost, usage_cost_list_response::UsageCostListResponse,
+    usage_cost_row::UsageCostRow, usage_cost_unit::UsageCostUnit, usage_event::UsageEvent,
+    usage_event_list_response::UsageEventListResponse, usage_fee::UsageFee,
+    usage_fee_structure::UsageFeeStructure, usage_filter::UsageFilter,
+    usage_limit_id::UsageLimitId, usage_model_enum::UsageModelEnum, usage_plan_fee::UsagePlanFee,
+    usage_pricing::UsagePricing, usage_pricing_model::UsagePricingModel,
+    usage_response::UsageResponse, volume_plan_pricing::VolumePlanPricing,
+    volume_pricing::VolumePricing, wallet::Wallet, wallet_balance_low_event::WalletBalanceLowEvent,
+    wallet_balance_low_event_data::WalletBalanceLowEventData, wallet_check::WalletCheck,
+    wallet_credit_recovered_event::WalletCreditRecoveredEvent,
+    wallet_credit_recovered_event_data::WalletCreditRecoveredEventData,
+    wallet_credit_unrecovered_event::WalletCreditUnrecoveredEvent,
+    wallet_credit_unrecovered_event_data::WalletCreditUnrecoveredEventData,
+    wallet_debited_event::WalletDebitedEvent, wallet_debited_event_data::WalletDebitedEventData,
+    wallet_depleted_event::WalletDepletedEvent,
+    wallet_depleted_event_data::WalletDepletedEventData, wallet_funded_event::WalletFundedEvent,
+    wallet_funded_event_data::WalletFundedEventData, wallet_list_response::WalletListResponse,
+    wallet_recovered_event::WalletRecoveredEvent,
+    wallet_recovered_event_data::WalletRecoveredEventData, webhook_delivery::WebhookDelivery,
+    webhook_delivery_id::WebhookDeliveryId,
     webhook_delivery_list_response::WebhookDeliveryListResponse,
     webhook_delivery_status::WebhookDeliveryStatus, webhook_endpoint::WebhookEndpoint,
     webhook_endpoint_disabled_reason::WebhookEndpointDisabledReason,

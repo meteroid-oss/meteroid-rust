@@ -14,6 +14,8 @@ use super::{
 pub struct Invoice {
     pub amount_due: i64,
 
+    /// Paid credit applied after tax, in minor units of the invoice currency: it settles part of
+    /// `total` like a payment, and `amount_due` is net of it.
     pub applied_credits: i64,
 
     /// The period/moment this invoice is about — the subscription period start, or the invoice's
@@ -71,13 +73,29 @@ pub struct Invoice {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parent_invoice_id: Option<InvoiceId>,
 
+    /// When a dispute or chargeback first took money still lost on this invoice's payments. The
+    /// invoice stays paid; absent when nothing is disputed.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment_disputed_at: Option<chrono::DateTime<chrono::Utc>>,
+
     pub payment_status: InvoicePaymentStatus,
+
+    /// Promotional credit applied before tax (credit included with the plan, coupon credit, bonus
+    /// credit), in minor units of the invoice currency. Like a discount, it reduces the taxable
+    /// amount: `tax_amount` and `total` already exclude it, `subtotal` does not. Unlike
+    /// `applied_credits`, which settles part of the `total` after tax.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub promotional_credits: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub purchase_order: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reference: Option<String>,
+
+    /// True when the invoice is `PAID` without any payment: finalized credit notes cancelled its
+    /// whole total. Nothing was collected, so it books no cash.
+    pub settled_by_credit_notes: bool,
 
     pub status: InvoiceStatus,
 
@@ -130,6 +148,7 @@ impl Invoice {
         line_items: Vec<InvoiceLineItem>,
         net_terms: i32,
         payment_status: InvoicePaymentStatus,
+        settled_by_credit_notes: bool,
         status: InvoiceStatus,
         subtotal: i64,
         subtotal_recurring: i64,
@@ -163,9 +182,12 @@ impl Invoice {
             net_terms,
             paid_at: None,
             parent_invoice_id: None,
+            payment_disputed_at: None,
             payment_status,
+            promotional_credits: None,
             purchase_order: None,
             reference: None,
+            settled_by_credit_notes,
             status,
             subscription_id: None,
             subtotal,

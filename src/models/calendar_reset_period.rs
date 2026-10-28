@@ -8,6 +8,8 @@ use super::calendar_unit::CalendarUnit;
 pub struct CalendarResetPeriod {
     pub interval: i32,
 
+    pub r#type: String,
+
     pub unit: CalendarUnit,
 
     /// Properties this version of the SDK does not know, sent back as received.
@@ -21,6 +23,7 @@ impl CalendarResetPeriod {
     pub fn new(interval: i32, unit: CalendarUnit) -> Self {
         Self {
             interval,
+            r#type: "CALENDAR".into(),
             unit,
             extra: serde_json::Map::new(),
         }

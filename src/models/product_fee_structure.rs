@@ -2,7 +2,7 @@
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 use super::{
-    capacity_fee_structure::CapacityFeeStructure,
+    capacity_fee_structure::CapacityFeeStructure, credit_fee_structure::CreditFeeStructure,
     extra_recurring_fee_structure::ExtraRecurringFeeStructure,
     one_time_fee_structure::OneTimeFeeStructure, rate_fee_structure::RateFeeStructure,
     slot_fee_structure::SlotFeeStructure, usage_fee_structure::UsageFeeStructure,
@@ -19,6 +19,7 @@ pub enum ProductFeeStructure {
     Usage(UsageFeeStructure),
     ExtraRecurring(ExtraRecurringFeeStructure),
     OneTime(OneTimeFeeStructure),
+    Credit(CreditFeeStructure),
     /// A variant this version of the SDK does not know yet, as received.
     Unknown(serde_json::Value),
 }
@@ -34,6 +35,7 @@ impl ProductFeeStructure {
             Self::Usage(_) => Some("USAGE"),
             Self::ExtraRecurring(_) => Some("EXTRA_RECURRING"),
             Self::OneTime(_) => Some("ONE_TIME"),
+            Self::Credit(_) => Some("CREDIT"),
             Self::Unknown(value) => value.get("type")?.as_str(),
         }
     }
@@ -52,6 +54,7 @@ impl Serialize for ProductFeeStructure {
                 codec::internally_tagged(serializer, "type", "EXTRA_RECURRING", value)
             }
             Self::OneTime(value) => codec::internally_tagged(serializer, "type", "ONE_TIME", value),
+            Self::Credit(value) => codec::internally_tagged(serializer, "type", "CREDIT", value),
             Self::Unknown(value) => value.serialize(serializer),
         }
     }
@@ -67,6 +70,7 @@ impl<'de> Deserialize<'de> for ProductFeeStructure {
             "USAGE" => Self::Usage(codec::from_value(value)?),
             "EXTRA_RECURRING" => Self::ExtraRecurring(codec::from_value(value)?),
             "ONE_TIME" => Self::OneTime(codec::from_value(value)?),
+            "CREDIT" => Self::Credit(codec::from_value(value)?),
             _ => Self::Unknown(value),
         })
     }

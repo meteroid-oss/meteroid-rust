@@ -5,6 +5,8 @@ use serde::{Deserialize, Serialize};
 pub struct BooleanEntitlementValue {
     pub enabled: bool,
 
+    pub r#type: String,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -16,6 +18,7 @@ impl BooleanEntitlementValue {
     pub fn new(enabled: bool) -> Self {
         Self {
             enabled,
+            r#type: "BOOLEAN".into(),
             extra: serde_json::Map::new(),
         }
     }

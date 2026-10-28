@@ -13,6 +13,11 @@ use super::{
 pub struct Transaction {
     pub amount: i64,
 
+    /// On a PAYMENT: the part of `amount_reversed` lost to disputes or chargebacks. The invoice
+    /// stays paid; only the rest of `amount_reversed` (a failed collection) reopens it.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub amount_disputed: Option<i64>,
+
     /// On a PAYMENT: how much was voluntarily given back (the sum of its settled REFUND
     /// children). The invoice stays paid — the Refund credit note is what reduces it.
     pub amount_refunded: i64,
@@ -20,6 +25,11 @@ pub struct Transaction {
     /// On a PAYMENT: how much was involuntarily clawed back (chargeback, bank recall, lost
     /// dispute). This is what the invoice nets out, reopening it.
     pub amount_reversed: i64,
+
+    /// On a PAYMENT: what the provider withdrew above what the payment still held (refunded
+    /// before). Never applied to the invoice or credit: contest it with the provider.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub amount_reversed_excess: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub credit_note_id: Option<CreditNoteId>,
@@ -79,8 +89,10 @@ impl Transaction {
     ) -> Self {
         Self {
             amount,
+            amount_disputed: None,
             amount_refunded,
             amount_reversed,
+            amount_reversed_excess: None,
             credit_note_id: None,
             currency: currency.into(),
             error: None,

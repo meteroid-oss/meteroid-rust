@@ -7,6 +7,11 @@ pub struct MeteredEntitlementUsage {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub consumed: Option<rust_decimal::Decimal>,
 
+    /// Switched on, but refused: the `BLOCK` limit (plus its grace) is reached, so `enabled` is
+    /// false until the window resets. Never set for a limit grouped by a property.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub limit_reached: Option<bool>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     pub remaining: Option<rust_decimal::Decimal>,
 
@@ -24,6 +29,7 @@ impl MeteredEntitlementUsage {
     pub fn new() -> Self {
         Self {
             consumed: None,
+            limit_reached: None,
             remaining: None,
             reset_at: None,
             extra: serde_json::Map::new(),
