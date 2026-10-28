@@ -12,6 +12,7 @@ pub enum ProductFeeTypeEnum {
     Usage,
     ExtraRecurring,
     OneTime,
+    Credit,
     /// A value this version of the SDK does not know yet.
     Unknown(String),
 }
@@ -27,6 +28,7 @@ impl ProductFeeTypeEnum {
             Self::Usage => "USAGE",
             Self::ExtraRecurring => "EXTRA_RECURRING",
             Self::OneTime => "ONE_TIME",
+            Self::Credit => "CREDIT",
             Self::Unknown(value) => value,
         }
     }
@@ -41,6 +43,7 @@ impl From<&str> for ProductFeeTypeEnum {
             "USAGE" => Self::Usage,
             "EXTRA_RECURRING" => Self::ExtraRecurring,
             "ONE_TIME" => Self::OneTime,
+            "CREDIT" => Self::Credit,
             other => Self::Unknown(other.to_owned()),
         }
     }

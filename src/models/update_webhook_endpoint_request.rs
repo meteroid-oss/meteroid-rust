@@ -21,7 +21,8 @@ pub struct UpdateWebhookEndpointRequest {
     )]
     pub disabled: Option<Option<bool>>,
 
-    /// Replaces the subscription list. An empty array subscribes to every event type.
+    /// Replaces the subscription list. An empty array subscribes to every event type except Beta
+    /// ones, which are sent only to endpoints that list them.
     #[serde(
         default,
         skip_serializing_if = "Option::is_none",

@@ -11,6 +11,8 @@ use super::{
 pub struct MeteredEffectiveEntitlementValue {
     pub spec: MeteredEntitlementSpec,
 
+    pub r#type: String,
+
     pub usage: MeteredEntitlementUsage,
 
     /// Properties this version of the SDK does not know, sent back as received.
@@ -24,6 +26,7 @@ impl MeteredEffectiveEntitlementValue {
     pub fn new(spec: MeteredEntitlementSpec, usage: MeteredEntitlementUsage) -> Self {
         Self {
             spec,
+            r#type: "METERED".into(),
             usage,
             extra: serde_json::Map::new(),
         }

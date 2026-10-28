@@ -1,7 +1,7 @@
 // this file is @generated
 use serde::{Deserialize, Serialize};
 
-use super::payment_methods_config::PaymentMethodsConfig;
+use super::{payment_methods_config::PaymentMethodsConfig, usage_filter::UsageFilter};
 
 #[derive(Clone, Debug, Default, PartialEq, Deserialize, Serialize)]
 pub struct SubscriptionUpdateRequest {
@@ -57,6 +57,13 @@ pub struct SubscriptionUpdateRequest {
     )]
     pub purchase_order: Option<Option<String>>,
 
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::models::codec::nullable"
+    )]
+    pub usage_filter: Option<Option<UsageFilter>>,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -74,6 +81,7 @@ impl SubscriptionUpdateRequest {
             net_terms: None,
             payment_methods_config: None,
             purchase_order: None,
+            usage_filter: None,
             extra: serde_json::Map::new(),
         }
     }
@@ -169,6 +177,20 @@ impl SubscriptionUpdateRequest {
     #[must_use]
     pub fn clear_purchase_order(mut self) -> Self {
         self.purchase_order = Some(None);
+        self
+    }
+
+    /// Sets `usage_filter`.
+    #[must_use]
+    pub fn usage_filter(mut self, usage_filter: impl Into<UsageFilter>) -> Self {
+        self.usage_filter = Some(Some(usage_filter.into()));
+        self
+    }
+
+    /// Sends `usage_filter` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_usage_filter(mut self) -> Self {
+        self.usage_filter = Some(None);
         self
     }
 }

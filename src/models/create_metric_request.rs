@@ -36,6 +36,17 @@ pub struct CreateMetricRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub unit_conversion: Option<UnitConversion>,
 
+    /// What several units of the metric are called, e.g. `tokens`. Set together with
+    /// `unit_singular`. Trimmed; at most 32 characters.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub unit_plural: Option<String>,
+
+    /// What one unit of the metric is called, e.g. `token`, used to label quantities and
+    /// prices ("$12.00 per 1M tokens"). Set both `unit_singular` and `unit_plural`, or neither.
+    /// Trimmed; at most 32 characters.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub unit_singular: Option<String>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     pub usage_group_key: Option<String>,
 
@@ -64,6 +75,8 @@ impl CreateMetricRequest {
             product_id: None,
             segmentation_matrix: None,
             unit_conversion: None,
+            unit_plural: None,
+            unit_singular: None,
             usage_group_key: None,
             extra: serde_json::Map::new(),
         }
@@ -111,6 +124,20 @@ impl CreateMetricRequest {
     #[must_use]
     pub fn unit_conversion(mut self, unit_conversion: impl Into<UnitConversion>) -> Self {
         self.unit_conversion = Some(unit_conversion.into());
+        self
+    }
+
+    /// Sets `unit_plural`.
+    #[must_use]
+    pub fn unit_plural(mut self, unit_plural: impl Into<String>) -> Self {
+        self.unit_plural = Some(unit_plural.into());
+        self
+    }
+
+    /// Sets `unit_singular`.
+    #[must_use]
+    pub fn unit_singular(mut self, unit_singular: impl Into<String>) -> Self {
+        self.unit_singular = Some(unit_singular.into());
         self
     }
 

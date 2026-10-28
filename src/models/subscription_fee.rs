@@ -2,7 +2,7 @@
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 use super::{
-    capacity_fee::CapacityFee, one_time_fee::OneTimeFee, rate_fee::RateFee,
+    capacity_fee::CapacityFee, credit_fee::CreditFee, one_time_fee::OneTimeFee, rate_fee::RateFee,
     recurring_fee::RecurringFee, slot_fee::SlotFee, usage_fee::UsageFee,
 };
 use crate::models::codec;
@@ -17,6 +17,7 @@ pub enum SubscriptionFee {
     Capacity(CapacityFee),
     Slot(SlotFee),
     Usage(UsageFee),
+    Credit(CreditFee),
     /// A variant this version of the SDK does not know yet, as received.
     Unknown(serde_json::Value),
 }
@@ -32,6 +33,7 @@ impl SubscriptionFee {
             Self::Capacity(_) => Some("CAPACITY"),
             Self::Slot(_) => Some("SLOT"),
             Self::Usage(_) => Some("USAGE"),
+            Self::Credit(_) => Some("CREDIT"),
             Self::Unknown(value) => value.get("type")?.as_str(),
         }
     }
@@ -50,6 +52,7 @@ impl Serialize for SubscriptionFee {
             }
             Self::Slot(value) => codec::internally_tagged(serializer, "type", "SLOT", value),
             Self::Usage(value) => codec::internally_tagged(serializer, "type", "USAGE", value),
+            Self::Credit(value) => codec::internally_tagged(serializer, "type", "CREDIT", value),
             Self::Unknown(value) => value.serialize(serializer),
         }
     }
@@ -65,6 +68,7 @@ impl<'de> Deserialize<'de> for SubscriptionFee {
             "CAPACITY" => Self::Capacity(codec::from_value(value)?),
             "SLOT" => Self::Slot(codec::from_value(value)?),
             "USAGE" => Self::Usage(codec::from_value(value)?),
+            "CREDIT" => Self::Credit(codec::from_value(value)?),
             _ => Self::Unknown(value),
         })
     }

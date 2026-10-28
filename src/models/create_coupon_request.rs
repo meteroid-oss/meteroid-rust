@@ -5,6 +5,8 @@ use super::{coupon_discount::CouponDiscount, plan_id::PlanId};
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct CreateCouponRequest {
+    /// 1 to 64 ASCII letters, digits, hyphens or underscores. A promotional-credit (`CREDIT`) code
+    /// is stored upper-case. Codes are matched as described on `Coupon.code`.
     pub code: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -24,6 +26,8 @@ pub struct CreateCouponRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub redemption_limit: Option<i32>,
 
+    /// Whether one customer may redeem the coupon more than once. Must be false for a
+    /// promotional-credit (`CREDIT`) coupon.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reusable: Option<bool>,
 

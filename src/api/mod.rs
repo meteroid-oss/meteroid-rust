@@ -33,10 +33,17 @@ pub type ErrorBody = crate::models::RestErrorResponse;
 mod add_ons;
 mod add_ons_entitlements;
 mod batch_jobs;
+mod budgets;
 mod checkout_sessions;
+mod checks;
 mod connect;
 mod coupons;
 mod credit_notes;
+mod credit_units;
+mod credit_units_prices;
+mod credits;
+mod credits_grants;
+mod credits_wallets;
 mod custom_properties;
 mod customers;
 mod entitlements;
@@ -53,6 +60,10 @@ mod products;
 mod products_entitlements;
 mod subscriptions;
 mod usage;
+mod usage_costs;
+mod usage_costs_customer;
+mod usage_costs_subscription;
+mod usage_customer;
 mod webhook_endpoints;
 mod webhook_endpoints_endpoints;
 
@@ -60,11 +71,24 @@ pub use self::{
     add_ons::{AddOns, AddOnsListOptions},
     add_ons_entitlements::AddOnsEntitlements,
     batch_jobs::{BatchJobs, BatchJobsListFailuresOptions, BatchJobsListOptions},
+    budgets::{
+        Budgets, BudgetsArchiveOptions, BudgetsCreateOptions, BudgetsListOptions,
+        BudgetsUpdateOptions,
+    },
     checkout_sessions::{CheckoutSessions, CheckoutSessionsListOptions},
+    checks::{Checks, ChecksCheckEntitlementOptions},
     client::{Meteroid, MeteroidBuilder},
     connect::Connect,
     coupons::{Coupons, CouponsListOptions},
     credit_notes::{CreditNotes, CreditNotesListOptions},
+    credit_units::{CreditUnits, CreditUnitsListOptions},
+    credit_units_prices::{CreditUnitsPrices, CreditUnitsPricesListOptions},
+    credits::{Credits, CreditsCreateCustomerTopUpOptions, CreditsListCustomerCreditLedgerOptions},
+    credits_grants::{CreditsGrants, CreditsGrantsCreateOptions, CreditsGrantsListOptions},
+    credits_wallets::{
+        CreditsWallets, CreditsWalletsCheckOptions, CreditsWalletsListOptions,
+        CreditsWalletsUpdateOptions,
+    },
     custom_properties::{CustomProperties, CustomPropertiesListCustomPropertyDefinitionsOptions},
     customers::{Customers, CustomersListOptions},
     entitlements::Entitlements,
@@ -80,9 +104,17 @@ pub use self::{
     products::{Products, ProductsListOptions},
     products_entitlements::ProductsEntitlements,
     subscriptions::{Subscriptions, SubscriptionsListOptions},
-    usage::{
-        Usage, UsageRetrieveCustomerOptions, UsageRetrieveSubscriptionOptions,
-        UsageRetrieveSummaryOptions,
+    usage::{Usage, UsageRetrieveSubscriptionOptions, UsageRetrieveSummaryOptions},
+    usage_costs::UsageCosts,
+    usage_costs_customer::{
+        UsageCostsCustomer, UsageCostsCustomerListCostsOptions, UsageCostsCustomerListEventsOptions,
+    },
+    usage_costs_subscription::{
+        UsageCostsSubscription, UsageCostsSubscriptionListCostsOptions,
+        UsageCostsSubscriptionListEventsOptions,
+    },
+    usage_customer::{
+        UsageCustomer, UsageCustomerRetrieveOptions, UsageCustomerRetrieveUnattributedOptions,
     },
     webhook_endpoints::WebhookEndpoints,
     webhook_endpoints_endpoints::{
@@ -124,6 +156,14 @@ pub(crate) mod pages {
         has_more: None,
         total: Some(|page| Some(page.total_count)),
     };
+    pub(crate) static BUDGETS_LIST: Fields<models::BudgetListResponse, models::Budget> = Fields {
+        items: |page| Some(&page.data),
+        items_mut: |page| Some(&mut page.data),
+        next_cursor: None,
+        item_cursor: None,
+        has_more: None,
+        total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+    };
     pub(crate) static COUPONS_LIST: Fields<models::CouponListResponse, models::Coupon> = Fields {
         items: |page| Some(&page.data),
         items_mut: |page| Some(&mut page.data),
@@ -135,6 +175,28 @@ pub(crate) mod pages {
     pub(crate) static CREDIT_NOTES_LIST: Fields<
         models::CreditNoteListResponse,
         models::CreditNote,
+    > = Fields {
+        items: |page| Some(&page.data),
+        items_mut: |page| Some(&mut page.data),
+        next_cursor: None,
+        item_cursor: None,
+        has_more: None,
+        total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+    };
+    pub(crate) static CREDITS_LIST_CUSTOMER_CREDIT_LEDGER: Fields<
+        models::LedgerListResponse,
+        models::LedgerEntry,
+    > = Fields {
+        items: |page| Some(&page.data),
+        items_mut: |page| Some(&mut page.data),
+        next_cursor: None,
+        item_cursor: None,
+        has_more: None,
+        total: Some(|page| Some(i64::from(page.pagination_meta.total_pages))),
+    };
+    pub(crate) static CREDITS_GRANTS_LIST: Fields<
+        models::CreditGrantListResponse,
+        models::CreditGrant,
     > = Fields {
         items: |page| Some(&page.data),
         items_mut: |page| Some(&mut page.data),

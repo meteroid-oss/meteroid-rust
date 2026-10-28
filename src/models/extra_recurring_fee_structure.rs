@@ -7,6 +7,8 @@ use super::extra_recurring_billing_type_enum::ExtraRecurringBillingTypeEnum;
 pub struct ExtraRecurringFeeStructure {
     pub billing_type: ExtraRecurringBillingTypeEnum,
 
+    pub r#type: String,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -18,6 +20,7 @@ impl ExtraRecurringFeeStructure {
     pub fn new(billing_type: ExtraRecurringBillingTypeEnum) -> Self {
         Self {
             billing_type,
+            r#type: "EXTRA_RECURRING".into(),
             extra: serde_json::Map::new(),
         }
     }

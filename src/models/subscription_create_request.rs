@@ -6,6 +6,7 @@ use super::{
     create_subscription_components::CreateSubscriptionComponents,
     payment_methods_config::PaymentMethodsConfig, plan_id::PlanId,
     subscription_activation_condition_enum::SubscriptionActivationConditionEnum,
+    usage_filter::UsageFilter,
 };
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
@@ -29,6 +30,10 @@ pub struct SubscriptionCreateRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub charge_automatically: Option<bool>,
 
+    /// Codes of the coupons to apply. A code matches whatever the case of its ASCII letters; when
+    /// several coupons differ from it only in that case, the one with exactly that code applies. A
+    /// code that names no live coupon, or several differing only in case, refuses the request with
+    /// 400 listing the codes (unknown codes used to be ignored silently).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub coupon_codes: Option<Vec<String>>,
 
@@ -70,6 +75,11 @@ pub struct SubscriptionCreateRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub trial_days: Option<i32>,
 
+    /// Bill only the customer's events whose property has this value. Omit to bill the events
+    /// no usage filter of the customer's other subscriptions matches.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub usage_filter: Option<UsageFilter>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     pub version: Option<i32>,
 
@@ -107,6 +117,7 @@ impl SubscriptionCreateRequest {
             skip_past_invoices: None,
             start_date,
             trial_days: None,
+            usage_filter: None,
             version: None,
             extra: serde_json::Map::new(),
         }
@@ -220,6 +231,13 @@ impl SubscriptionCreateRequest {
     #[must_use]
     pub fn trial_days(mut self, trial_days: impl Into<i32>) -> Self {
         self.trial_days = Some(trial_days.into());
+        self
+    }
+
+    /// Sets `usage_filter`.
+    #[must_use]
+    pub fn usage_filter(mut self, usage_filter: impl Into<UsageFilter>) -> Self {
+        self.usage_filter = Some(usage_filter.into());
         self
     }
 

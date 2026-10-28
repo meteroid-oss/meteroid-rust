@@ -242,7 +242,8 @@ impl Features {
 
     /// Archive a feature
     ///
-    /// Keeps the feature and its entitlements but hides them from resolution.
+    /// Turns the feature off and hides it and its entitlements until it is unarchived, and frees its
+    /// code for a new feature.
     ///
     /// `POST /api/v1/features/{id_or_code}/archive`.
     ///
@@ -258,11 +259,14 @@ impl Features {
 
     /// Unarchive a feature
     ///
+    /// Makes the feature active again with all its entitlements. Fails while another feature uses its
+    /// code.
+    ///
     /// `POST /api/v1/features/{id_or_code}/unarchive`.
     ///
     /// # Errors
     ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429).
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 409, 429).
     pub fn unarchive(&self, id_or_code: &str) -> crate::api::Call<()> {
         crate::request::Request::new(
             http::Method::POST,

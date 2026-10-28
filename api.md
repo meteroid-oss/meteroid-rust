@@ -9,7 +9,7 @@ awaited, a `Page` that dereferences to the body (`page.field`) and lists `page.i
 `next_page()`; `.items()` streams every item across pages and `.pages()` every page. Models are
 in [`src/models`](src/models), and the options structs next to their resource.
 
-[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Checkout sessions](#checkout-sessions) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage) · [Webhook endpoints](#webhook-endpoints) · [Webhook endpoints endpoints](#webhook-endpoints-endpoints)
+[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Budgets](#budgets) · [Checkout sessions](#checkout-sessions) · [Checks](#checks) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Credit units](#credit-units) · [Credit units prices](#credit-units-prices) · [Credits](#credits) · [Credits grants](#credits-grants) · [Credits wallets](#credits-wallets) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage) · [Usage customer](#usage-customer) · [Usage costs](#usage-costs) · [Usage costs customer](#usage-costs-customer) · [Usage costs subscription](#usage-costs-subscription) · [Webhook endpoints](#webhook-endpoints) · [Webhook endpoints endpoints](#webhook-endpoints-endpoints)
 
 ## Add ons
 
@@ -43,6 +43,17 @@ in [`src/models`](src/models), and the options structs next to their resource.
 | `client.batch_jobs().retrieve(batch_job_id: &str) -> Call<BatchJobDetailResponse>` | `GET /api/v1/batch-jobs/{batch_job_id}` | [`BatchJobDetailResponse`](src/models/batch_job_detail_response.rs) |
 | `client.batch_jobs().list_failures(batch_job_id: &str, options: impl Into<Option<BatchJobsListFailuresOptions>>) -> PageCall<BatchJobFailuresResponse, BatchJobItemFailureResponse>` | `GET /api/v1/batch-jobs/{batch_job_id}/failures` | [`BatchJobFailuresResponse`](src/models/batch_job_failures_response.rs) page of [`BatchJobItemFailureResponse`](src/models/batch_job_item_failure_response.rs) |
 
+## Budgets
+
+[`client.budgets()`](src/api/budgets.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.budgets().list(id_or_alias: &str, options: impl Into<Option<BudgetsListOptions>>) -> PageCall<BudgetListResponse, Budget>` | `GET /api/v1/customers/{id_or_alias}/budgets` | [`BudgetListResponse`](src/models/budget_list_response.rs) page of [`Budget`](src/models/budget.rs) |
+| `client.budgets().create(id_or_alias: &str, create_budget_request: CreateBudgetRequest, options: BudgetsCreateOptions) -> Call<Budget>` | `POST /api/v1/customers/{id_or_alias}/budgets` | [`Budget`](src/models/budget.rs) |
+| `client.budgets().update(id_or_alias: &str, budget_id: &str, patch_budget_request: PatchBudgetRequest, options: BudgetsUpdateOptions) -> Call<Budget>` | `PATCH /api/v1/customers/{id_or_alias}/budgets/{budget_id}` | [`Budget`](src/models/budget.rs) |
+| `client.budgets().archive(id_or_alias: &str, budget_id: &str, options: BudgetsArchiveOptions) -> Call<Budget>` | `POST /api/v1/customers/{id_or_alias}/budgets/{budget_id}/archive` | [`Budget`](src/models/budget.rs) |
+
 ## Checkout sessions
 
 [`client.checkout_sessions()`](src/api/checkout_sessions.rs)
@@ -54,6 +65,14 @@ in [`src/models`](src/models), and the options structs next to their resource.
 | `client.checkout_sessions().retrieve(id: &str) -> Call<GetCheckoutSessionResponse>` | `GET /api/v1/checkout-sessions/{id}` | [`GetCheckoutSessionResponse`](src/models/get_checkout_session_response.rs) |
 | `client.checkout_sessions().cancel(id: &str) -> Call<CancelCheckoutSessionResponse>` | `POST /api/v1/checkout-sessions/{id}/cancel` | [`CancelCheckoutSessionResponse`](src/models/cancel_checkout_session_response.rs) |
 
+## Checks
+
+[`client.checks()`](src/api/checks.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.checks().check_entitlement(id_or_alias: &str, feature_id_or_code: &str, options: impl Into<Option<ChecksCheckEntitlementOptions>>) -> Call<EntitlementCheck>` | `GET /api/v1/customers/{id_or_alias}/entitlements/{feature_id_or_code}/check` | [`EntitlementCheck`](src/models/entitlement_check.rs) |
+
 ## Connect
 
 [`client.connect()`](src/api/connect.rs)
@@ -61,7 +80,7 @@ in [`src/models`](src/models), and the options structs next to their resource.
 | Method | Request | Returns |
 | --- | --- | --- |
 | `client.connect().list_connected_accounts() -> Call<ConnectedAccountsResponse>` | `GET /api/v1/connected-accounts` | [`ConnectedAccountsResponse`](src/models/connected_accounts_response.rs) |
-| `client.connect().create_connected_account(create_connected_account_request: CreateConnectedAccountRequest) -> Call<ConnectedAccount>` | `POST /api/v1/connected-accounts` | [`ConnectedAccount`](src/models/connected_account.rs) |
+| `client.connect().create_connected_account(create_connected_account_request: CreateConnectedAccountRequest) -> Call<CreateConnectedAccountResponse>` | `POST /api/v1/connected-accounts` | [`CreateConnectedAccountResponse`](src/models/create_connected_account_response.rs) |
 | `client.connect().retrieve_connected_account(id: &str) -> Call<ConnectedAccount>` | `GET /api/v1/connected-accounts/{id}` | [`ConnectedAccount`](src/models/connected_account.rs) |
 | `client.connect().disconnect_account(id: &str) -> Call<()>` | `DELETE /api/v1/connected-accounts/{id}` | nothing |
 | `client.connect().create_onboarding_link(id: &str, create_onboarding_link_request: CreateOnboardingLinkRequest) -> Call<OnboardingLinkResponse>` | `POST /api/v1/connected-accounts/{id}/onboarding` | [`OnboardingLinkResponse`](src/models/onboarding_link_response.rs) |
@@ -92,6 +111,55 @@ in [`src/models`](src/models), and the options structs next to their resource.
 | `client.credit_notes().update_custom_properties(credit_note_id: &str, credit_note_custom_properties_request: CreditNoteCustomPropertiesRequest) -> Call<CreditNote>` | `PATCH /api/v1/credit-notes/{credit_note_id}/custom-properties` | [`CreditNote`](src/models/credit_note.rs) |
 | `client.credit_notes().download(credit_note_id: &str) -> Call<Bytes>` | `GET /api/v1/credit-notes/{credit_note_id}/download` | bytes |
 | `client.credit_notes().download_xml(credit_note_id: &str) -> Call<Bytes>` | `GET /api/v1/credit-notes/{credit_note_id}/xml` | bytes |
+
+## Credit units
+
+[`client.credit_units()`](src/api/credit_units.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.credit_units().list(options: impl Into<Option<CreditUnitsListOptions>>) -> Call<CreditUnitListResponse>` | `GET /api/v1/credit-units` | [`CreditUnitListResponse`](src/models/credit_unit_list_response.rs) |
+| `client.credit_units().create(credit_unit_create_request: CreditUnitCreateRequest) -> Call<CreditUnit>` | `POST /api/v1/credit-units` | [`CreditUnit`](src/models/credit_unit.rs) |
+| `client.credit_units().retrieve(id: &str) -> Call<CreditUnit>` | `GET /api/v1/credit-units/{id}` | [`CreditUnit`](src/models/credit_unit.rs) |
+| `client.credit_units().update(id: &str, credit_unit_update_request: CreditUnitUpdateRequest) -> Call<CreditUnit>` | `PATCH /api/v1/credit-units/{id}` | [`CreditUnit`](src/models/credit_unit.rs) |
+
+### Credit units prices
+
+[`client.credit_units().prices()`](src/api/credit_units_prices.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.credit_units().prices().list(id: &str, options: impl Into<Option<CreditUnitsPricesListOptions>>) -> Call<CreditUnitPriceListResponse>` | `GET /api/v1/credit-units/{id}/prices` | [`CreditUnitPriceListResponse`](src/models/credit_unit_price_list_response.rs) |
+| `client.credit_units().prices().update(id: &str, currency: &str, credit_unit_price_set_request: CreditUnitPriceSetRequest) -> Call<CreditUnitPrice>` | `PUT /api/v1/credit-units/{id}/prices/{currency}` | [`CreditUnitPrice`](src/models/credit_unit_price.rs) |
+| `client.credit_units().prices().archive(id: &str, currency: &str) -> Call<CreditUnitPrice>` | `DELETE /api/v1/credit-units/{id}/prices/{currency}` | [`CreditUnitPrice`](src/models/credit_unit_price.rs) |
+
+## Credits
+
+[`client.credits()`](src/api/credits.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.credits().list_customer_credit_ledger(id_or_alias: &str, options: impl Into<Option<CreditsListCustomerCreditLedgerOptions>>) -> PageCall<LedgerListResponse, LedgerEntry>` | `GET /api/v1/customers/{id_or_alias}/credit-ledger` | [`LedgerListResponse`](src/models/ledger_list_response.rs) page of [`LedgerEntry`](src/models/ledger_entry.rs) |
+| `client.credits().create_customer_top_up(id_or_alias: &str, create_top_up_request: CreateTopUpRequest, options: CreditsCreateCustomerTopUpOptions) -> Call<TopUpResponse>` | `POST /api/v1/customers/{id_or_alias}/top-ups` | [`TopUpResponse`](src/models/top_up_response.rs) |
+
+### Credits grants
+
+[`client.credits().grants()`](src/api/credits_grants.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.credits().grants().list(id_or_alias: &str, options: impl Into<Option<CreditsGrantsListOptions>>) -> PageCall<CreditGrantListResponse, CreditGrant>` | `GET /api/v1/customers/{id_or_alias}/credit-grants` | [`CreditGrantListResponse`](src/models/credit_grant_list_response.rs) page of [`CreditGrant`](src/models/credit_grant.rs) |
+| `client.credits().grants().create(id_or_alias: &str, create_credit_grant_request: CreateCreditGrantRequest, options: CreditsGrantsCreateOptions) -> Call<CreditGrant>` | `POST /api/v1/customers/{id_or_alias}/credit-grants` | [`CreditGrant`](src/models/credit_grant.rs) |
+
+### Credits wallets
+
+[`client.credits().wallets()`](src/api/credits_wallets.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.credits().wallets().list(id_or_alias: &str, options: impl Into<Option<CreditsWalletsListOptions>>) -> Call<WalletListResponse>` | `GET /api/v1/customers/{id_or_alias}/wallets` | [`WalletListResponse`](src/models/wallet_list_response.rs) |
+| `client.credits().wallets().check(id_or_alias: &str, options: impl Into<Option<CreditsWalletsCheckOptions>>) -> Call<WalletCheck>` | `GET /api/v1/customers/{id_or_alias}/wallets/check` | [`WalletCheck`](src/models/wallet_check.rs) |
+| `client.credits().wallets().update(id_or_alias: &str, currency: &str, patch_wallet_request: PatchWalletRequest, options: CreditsWalletsUpdateOptions) -> Call<Wallet>` | `PATCH /api/v1/customers/{id_or_alias}/wallets/{currency}` | [`Wallet`](src/models/wallet.rs) |
 
 ## Custom properties
 
@@ -279,9 +347,42 @@ in [`src/models`](src/models), and the options structs next to their resource.
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.usage().retrieve_customer(customer_id: &str, options: UsageRetrieveCustomerOptions) -> Call<UsageResponse>` | `GET /api/v1/usage/customer/{customer_id}` | [`UsageResponse`](src/models/usage_response.rs) |
 | `client.usage().retrieve_subscription(subscription_id: &str, options: impl Into<Option<UsageRetrieveSubscriptionOptions>>) -> Call<UsageResponse>` | `GET /api/v1/usage/subscription/{subscription_id}` | [`UsageResponse`](src/models/usage_response.rs) |
 | `client.usage().retrieve_summary(options: UsageRetrieveSummaryOptions) -> Call<UsageResponse>` | `GET /api/v1/usage/summary` | [`UsageResponse`](src/models/usage_response.rs) |
+
+### Usage customer
+
+[`client.usage().customer()`](src/api/usage_customer.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.usage().customer().retrieve(customer_id: &str, options: UsageCustomerRetrieveOptions) -> Call<UsageResponse>` | `GET /api/v1/usage/customer/{customer_id}` | [`UsageResponse`](src/models/usage_response.rs) |
+| `client.usage().customer().retrieve_unattributed(customer_id: &str, options: impl Into<Option<UsageCustomerRetrieveUnattributedOptions>>) -> Call<UnattributedUsageResponse>` | `GET /api/v1/usage/customer/{customer_id}/unattributed` | [`UnattributedUsageResponse`](src/models/unattributed_usage_response.rs) |
+
+## Usage costs
+
+[`client.usage_costs()`](src/api/usage_costs.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+
+### Usage costs customer
+
+[`client.usage_costs().customer()`](src/api/usage_costs_customer.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.usage_costs().customer().list_costs(customer_id: &str, options: UsageCostsCustomerListCostsOptions) -> Call<UsageCostListResponse>` | `GET /api/v1/usage/customer/{customer_id}/costs` | [`UsageCostListResponse`](src/models/usage_cost_list_response.rs) |
+| `client.usage_costs().customer().list_events(customer_id: &str, options: UsageCostsCustomerListEventsOptions) -> Call<UsageEventListResponse>` | `GET /api/v1/usage/customer/{customer_id}/events` | [`UsageEventListResponse`](src/models/usage_event_list_response.rs) |
+
+### Usage costs subscription
+
+[`client.usage_costs().subscription()`](src/api/usage_costs_subscription.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.usage_costs().subscription().list_costs(subscription_id: &str, options: UsageCostsSubscriptionListCostsOptions) -> Call<UsageCostListResponse>` | `GET /api/v1/usage/subscription/{subscription_id}/costs` | [`UsageCostListResponse`](src/models/usage_cost_list_response.rs) |
+| `client.usage_costs().subscription().list_events(subscription_id: &str, options: UsageCostsSubscriptionListEventsOptions) -> Call<UsageEventListResponse>` | `GET /api/v1/usage/subscription/{subscription_id}/events` | [`UsageEventListResponse`](src/models/usage_event_list_response.rs) |
 
 ## Webhook endpoints
 

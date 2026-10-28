@@ -5,6 +5,8 @@ use super::config_value::ConfigValue;
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct ConfigEntitlementValue {
+    pub r#type: String,
+
     pub value: ConfigValue,
 
     /// Properties this version of the SDK does not know, sent back as received.
@@ -17,6 +19,7 @@ impl ConfigEntitlementValue {
     #[must_use]
     pub fn new(value: ConfigValue) -> Self {
         Self {
+            r#type: "CONFIG".into(),
             value,
             extra: serde_json::Map::new(),
         }

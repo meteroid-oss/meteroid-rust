@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use super::billing_period_enum::BillingPeriodEnum;
 
-#[derive(Clone, Debug, Default, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct SubscriptionAddOnParameterization {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub billing_period: Option<BillingPeriodEnum>,
@@ -13,6 +13,8 @@ pub struct SubscriptionAddOnParameterization {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub initial_slot_count: Option<i32>,
+
+    pub r#type: String,
 
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
@@ -27,6 +29,7 @@ impl SubscriptionAddOnParameterization {
             billing_period: None,
             committed_capacity: None,
             initial_slot_count: None,
+            r#type: "PARAMETERIZATION".into(),
             extra: serde_json::Map::new(),
         }
     }
@@ -50,5 +53,18 @@ impl SubscriptionAddOnParameterization {
     pub fn initial_slot_count(mut self, initial_slot_count: impl Into<i32>) -> Self {
         self.initial_slot_count = Some(initial_slot_count.into());
         self
+    }
+}
+
+/// Sets `type` to `PARAMETERIZATION`.
+impl Default for SubscriptionAddOnParameterization {
+    fn default() -> Self {
+        Self {
+            billing_period: Default::default(),
+            committed_capacity: Default::default(),
+            initial_slot_count: Default::default(),
+            r#type: "PARAMETERIZATION".into(),
+            extra: serde_json::Map::new(),
+        }
     }
 }

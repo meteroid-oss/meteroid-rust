@@ -1,12 +1,15 @@
 // this file is @generated
 use serde::{Deserialize, Serialize};
 
-use super::sub_line_item::SubLineItem;
+use super::{invoice_line_credit_unit::InvoiceLineCreditUnit, sub_line_item::SubLineItem};
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[non_exhaustive]
 pub struct InvoiceLineItem {
     pub amount_total: i64,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub credit_unit: Option<InvoiceLineCreditUnit>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -50,6 +53,7 @@ impl InvoiceLineItem {
     ) -> Self {
         Self {
             amount_total,
+            credit_unit: None,
             description: None,
             end_date,
             name: name.into(),

@@ -13,9 +13,18 @@ use super::{
 pub struct PaymentEvent {
     pub amount: i64,
 
+    /// The part of `amount_reversed` lost to disputes or chargebacks: the invoice stays paid.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub amount_disputed: Option<i64>,
+
     pub amount_refunded: i64,
 
     pub amount_reversed: i64,
+
+    /// What the provider withdrew above what the payment still held (refunded before); never
+    /// applied to the invoice or credit. Contest it with the provider.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub amount_reversed_excess: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub credit_note_id: Option<CreditNoteId>,
@@ -80,8 +89,10 @@ impl PaymentEvent {
     ) -> Self {
         Self {
             amount,
+            amount_disputed: None,
             amount_refunded,
             amount_reversed,
+            amount_reversed_excess: None,
             credit_note_id: None,
             currency: currency.into(),
             decline_kind: None,

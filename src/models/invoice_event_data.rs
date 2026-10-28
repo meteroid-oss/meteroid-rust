@@ -27,6 +27,10 @@ pub struct InvoiceEventData {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parent_invoice_id: Option<InvoiceId>,
 
+    /// On `invoice.paid`: true when finalized credit notes, not a payment, settled the invoice's
+    /// whole total. Nothing was collected, so it books no cash. False on every other event.
+    pub settled_by_credit_notes: bool,
+
     pub status: InvoiceStatus,
 
     pub tax_amount: i64,
@@ -47,6 +51,7 @@ impl InvoiceEventData {
         custom_properties: serde_json::Value,
         customer_id: impl Into<CustomerId>,
         invoice_id: impl Into<InvoiceId>,
+        settled_by_credit_notes: bool,
         status: InvoiceStatus,
         tax_amount: i64,
         total: i64,
@@ -60,6 +65,7 @@ impl InvoiceEventData {
             invoice_id: invoice_id.into(),
             invoice_number: None,
             parent_invoice_id: None,
+            settled_by_credit_notes,
             status,
             tax_amount,
             total,

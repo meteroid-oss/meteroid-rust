@@ -1,7 +1,10 @@
 // this file is @generated
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
-use super::{fixed_discount::FixedDiscount, percentage_discount::PercentageDiscount};
+use super::{
+    credit_discount::CreditDiscount, fixed_discount::FixedDiscount,
+    percentage_discount::PercentageDiscount,
+};
 use crate::models::codec;
 
 /// Variants are told apart by `type`.
@@ -10,6 +13,7 @@ use crate::models::codec;
 pub enum CouponDiscount {
     Percentage(PercentageDiscount),
     Fixed(FixedDiscount),
+    Credit(CreditDiscount),
     /// A variant this version of the SDK does not know yet, as received.
     Unknown(serde_json::Value),
 }
@@ -21,6 +25,7 @@ impl CouponDiscount {
         match self {
             Self::Percentage(_) => Some("PERCENTAGE"),
             Self::Fixed(_) => Some("FIXED"),
+            Self::Credit(_) => Some("CREDIT"),
             Self::Unknown(value) => value.get("type")?.as_str(),
         }
     }
@@ -33,6 +38,7 @@ impl Serialize for CouponDiscount {
                 codec::internally_tagged(serializer, "type", "PERCENTAGE", value)
             }
             Self::Fixed(value) => codec::internally_tagged(serializer, "type", "FIXED", value),
+            Self::Credit(value) => codec::internally_tagged(serializer, "type", "CREDIT", value),
             Self::Unknown(value) => value.serialize(serializer),
         }
     }
@@ -44,6 +50,7 @@ impl<'de> Deserialize<'de> for CouponDiscount {
         Ok(match tag.as_str() {
             "PERCENTAGE" => Self::Percentage(codec::from_value(value)?),
             "FIXED" => Self::Fixed(codec::from_value(value)?),
+            "CREDIT" => Self::Credit(codec::from_value(value)?),
             _ => Self::Unknown(value),
         })
     }

@@ -3,10 +3,12 @@ use serde::{Deserialize, Serialize};
 
 use super::bank_account_id::BankAccountId;
 
-#[derive(Clone, Debug, Default, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct BankTransferPaymentMethodConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub account_id: Option<BankAccountId>,
+
+    pub r#type: String,
 
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
@@ -19,6 +21,7 @@ impl BankTransferPaymentMethodConfig {
     pub fn new() -> Self {
         Self {
             account_id: None,
+            r#type: "bank_transfer".into(),
             extra: serde_json::Map::new(),
         }
     }
@@ -28,5 +31,16 @@ impl BankTransferPaymentMethodConfig {
     pub fn account_id(mut self, account_id: impl Into<BankAccountId>) -> Self {
         self.account_id = Some(account_id.into());
         self
+    }
+}
+
+/// Sets `type` to `bank_transfer`.
+impl Default for BankTransferPaymentMethodConfig {
+    fn default() -> Self {
+        Self {
+            account_id: Default::default(),
+            r#type: "bank_transfer".into(),
+            extra: serde_json::Map::new(),
+        }
     }
 }

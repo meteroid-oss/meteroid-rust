@@ -4,48 +4,6 @@
 #[allow(unused_imports, clippy::wildcard_imports)]
 use crate::{error::Result, models::*, Configuration};
 
-/// Query and header parameters of [`Usage::retrieve_customer`], built
-/// with the required ones by [`new`](Self::new).
-#[derive(Clone, Debug)]
-#[non_exhaustive]
-pub struct UsageRetrieveCustomerOptions {
-    /// The `start_date` query parameter.
-    pub start_date: chrono::NaiveDate,
-    /// The `end_date` query parameter.
-    pub end_date: chrono::NaiveDate,
-    /// The `metric_id` query parameter.
-    pub metric_id: Option<BillableMetricId>,
-}
-
-impl UsageRetrieveCustomerOptions {
-    /// Options with the required parameters set.
-    #[must_use]
-    pub fn new(
-        start_date: impl Into<chrono::NaiveDate>,
-        end_date: impl Into<chrono::NaiveDate>,
-    ) -> Self {
-        Self {
-            start_date: start_date.into(),
-            end_date: end_date.into(),
-            metric_id: None,
-        }
-    }
-
-    /// Sets the `metric_id` query parameter.
-    #[must_use]
-    pub fn metric_id(mut self, metric_id: impl Into<BillableMetricId>) -> Self {
-        self.metric_id = Some(metric_id.into());
-        self
-    }
-
-    /// Sets the `metric_id` query parameter, or unsets it with `None`.
-    #[must_use]
-    pub fn maybe_metric_id(mut self, metric_id: Option<BillableMetricId>) -> Self {
-        self.metric_id = metric_id;
-        self
-    }
-}
-
 /// Query and header parameters of [`Usage::retrieve_subscription`].
 #[derive(Clone, Debug, Default)]
 #[non_exhaustive]
@@ -186,39 +144,19 @@ impl Usage {
         self
     }
 
-    /// Get customer usage
-    ///
-    /// Retrieve aggregated usage data for a customer over a specified period.
-    ///
-    /// `GET /api/v1/usage/customer/{customer_id}`.
-    ///
-    /// # Errors
-    ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (401, 404, 429, 500).
-    pub fn retrieve_customer(
-        &self,
-        customer_id: &str,
-        options: UsageRetrieveCustomerOptions,
-    ) -> crate::api::Call<crate::models::UsageResponse> {
-        let UsageRetrieveCustomerOptions {
-            start_date,
-            end_date,
-            metric_id,
-        } = options;
-
-        crate::request::Request::new(http::Method::GET, "/api/v1/usage/customer/{customer_id}")
-            .with_path_param("customer_id", customer_id)
-            .with_query_param("start_date", &start_date)
-            .with_query_param("end_date", &end_date)
-            .with_optional_query_param("metric_id", metric_id)
-            .with_options(&self.options)
-            .json(&self.cfg)
+    /// The customer API, with the options of this one.
+    #[must_use]
+    pub fn customer(&self) -> super::UsageCustomer {
+        super::UsageCustomer::new(self.cfg.clone()).with_options(self.options.clone())
     }
 
     /// Get subscription usage
     ///
     /// Retrieve aggregated usage data for a subscription's usage-based components.
-    /// If start_date/end_date are omitted, defaults to the current billing period.
+    /// If start_date/end_date are omitted, defaults to the current billing period, and the response
+    /// then carries the running total (beta): what each metric's usage adds so far to the next invoice,
+    /// and what they add up to, before discounts and credits. That reading is shared for up to 30
+    /// seconds (see `computed_at`). Counts towards the usage cost reads' rate limit.
     ///
     /// `GET /api/v1/usage/subscription/{subscription_id}`.
     ///

@@ -9,6 +9,8 @@ pub struct DoubleSegmentationMatrix {
 
     pub dimension2: MetricDimension,
 
+    pub r#type: String,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -21,6 +23,7 @@ impl DoubleSegmentationMatrix {
         Self {
             dimension1,
             dimension2,
+            r#type: "DOUBLE".into(),
             extra: serde_json::Map::new(),
         }
     }

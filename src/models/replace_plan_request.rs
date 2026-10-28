@@ -2,7 +2,8 @@
 use serde::{Deserialize, Serialize};
 
 use super::{
-    billing_config::BillingConfig, entitlement_spec_request::EntitlementSpecRequest,
+    billing_config::BillingConfig, credit_exhausted_rule::CreditExhaustedRule,
+    entitlement_spec_request::EntitlementSpecRequest,
     minimum_commitment_input::MinimumCommitmentInput, plan_add_on_input::PlanAddOnInput,
     plan_status_enum::PlanStatusEnum, price_component_input::PriceComponentInput,
     trial_config::TrialConfig,
@@ -17,6 +18,9 @@ pub struct ReplacePlanRequest {
     pub billing: Option<BillingConfig>,
 
     pub components: Vec<PriceComponentInput>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub credit_exhausted_rule: Option<CreditExhaustedRule>,
 
     pub currency: String,
 
@@ -64,6 +68,7 @@ impl ReplacePlanRequest {
             add_ons: None,
             billing: None,
             components,
+            credit_exhausted_rule: None,
             currency: currency.into(),
             description: None,
             entitlements: None,
@@ -87,6 +92,16 @@ impl ReplacePlanRequest {
     #[must_use]
     pub fn billing(mut self, billing: impl Into<BillingConfig>) -> Self {
         self.billing = Some(billing.into());
+        self
+    }
+
+    /// Sets `credit_exhausted_rule`.
+    #[must_use]
+    pub fn credit_exhausted_rule(
+        mut self,
+        credit_exhausted_rule: impl Into<CreditExhaustedRule>,
+    ) -> Self {
+        self.credit_exhausted_rule = Some(credit_exhausted_rule.into());
         self
     }
 

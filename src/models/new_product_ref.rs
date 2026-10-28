@@ -13,6 +13,8 @@ pub struct NewProductRef {
 
     pub name: String,
 
+    pub r#type: String,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -30,6 +32,7 @@ impl NewProductRef {
             fee_structure,
             fee_type,
             name: name.into(),
+            r#type: "NEW".into(),
             extra: serde_json::Map::new(),
         }
     }
