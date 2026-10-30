@@ -248,11 +248,23 @@ pub mod invoice_payment_status;
 pub mod invoice_status;
 pub mod invoice_type;
 pub mod invoicing_entity_id;
+pub mod issue_license_request;
+pub mod issue_license_response;
+pub mod issue_offline_license_request;
 pub mod json_config_value;
 pub mod ledger_entry;
 pub mod ledger_entry_id;
 pub mod ledger_entry_type;
 pub mod ledger_list_response;
+pub mod license;
+pub mod license_activation_code;
+pub mod license_id;
+pub mod license_list_response;
+pub mod license_signing_key;
+pub mod license_signing_key_status;
+pub mod license_signing_keys_response;
+pub mod license_status;
+pub mod licensing_endpoints;
 pub mod linked_segmentation_matrix;
 pub mod list_checkout_sessions_response;
 pub mod list_customer_usage_costs_granularity;
@@ -290,6 +302,7 @@ pub mod o_auth_app_with_secret;
 pub mod o_auth_apps_response;
 pub mod o_auth_error_code;
 pub mod o_auth_error_response;
+pub mod offline_license;
 pub mod onboarding_link_response;
 pub mod onboarding_mode;
 pub mod one_time_fee;
@@ -368,6 +381,7 @@ pub mod resolved_entitlement_value;
 pub mod rest_error_response;
 pub mod reversal_kind;
 pub mod revocation_request;
+pub mod revoke_license_request;
 pub mod rotated_secret;
 pub mod select_option;
 pub mod shipping_address;
@@ -614,9 +628,16 @@ pub use self::{
     invoice_line_credit_unit::InvoiceLineCreditUnit, invoice_line_item::InvoiceLineItem,
     invoice_list_response::InvoiceListResponse, invoice_payment_status::InvoicePaymentStatus,
     invoice_status::InvoiceStatus, invoice_type::InvoiceType,
-    invoicing_entity_id::InvoicingEntityId, json_config_value::JsonConfigValue,
+    invoicing_entity_id::InvoicingEntityId, issue_license_request::IssueLicenseRequest,
+    issue_license_response::IssueLicenseResponse,
+    issue_offline_license_request::IssueOfflineLicenseRequest, json_config_value::JsonConfigValue,
     ledger_entry::LedgerEntry, ledger_entry_id::LedgerEntryId, ledger_entry_type::LedgerEntryType,
-    ledger_list_response::LedgerListResponse, linked_segmentation_matrix::LinkedSegmentationMatrix,
+    ledger_list_response::LedgerListResponse, license::License,
+    license_activation_code::LicenseActivationCode, license_id::LicenseId,
+    license_list_response::LicenseListResponse, license_signing_key::LicenseSigningKey,
+    license_signing_key_status::LicenseSigningKeyStatus,
+    license_signing_keys_response::LicenseSigningKeysResponse, license_status::LicenseStatus,
+    licensing_endpoints::LicensingEndpoints, linked_segmentation_matrix::LinkedSegmentationMatrix,
     list_checkout_sessions_response::ListCheckoutSessionsResponse,
     list_customer_usage_costs_granularity::ListCustomerUsageCostsGranularity,
     list_subscription_usage_costs_granularity::ListSubscriptionUsageCostsGranularity,
@@ -638,11 +659,11 @@ pub use self::{
     new_product_ref::NewProductRef, number_config_value::NumberConfigValue, o_auth_app::OAuthApp,
     o_auth_app_id::OAuthAppId, o_auth_app_with_secret::OAuthAppWithSecret,
     o_auth_apps_response::OAuthAppsResponse, o_auth_error_code::OAuthErrorCode,
-    o_auth_error_response::OAuthErrorResponse, onboarding_link_response::OnboardingLinkResponse,
-    onboarding_mode::OnboardingMode, one_time_fee::OneTimeFee,
-    one_time_fee_structure::OneTimeFeeStructure, one_time_plan_fee::OneTimePlanFee,
-    one_time_pricing::OneTimePricing, online_method_config::OnlineMethodConfig,
-    online_methods_config::OnlineMethodsConfig,
+    o_auth_error_response::OAuthErrorResponse, offline_license::OfflineLicense,
+    onboarding_link_response::OnboardingLinkResponse, onboarding_mode::OnboardingMode,
+    one_time_fee::OneTimeFee, one_time_fee_structure::OneTimeFeeStructure,
+    one_time_plan_fee::OneTimePlanFee, one_time_pricing::OneTimePricing,
+    online_method_config::OnlineMethodConfig, online_methods_config::OnlineMethodsConfig,
     online_payment_method_config::OnlinePaymentMethodConfig, organization_id::OrganizationId,
     package_plan_pricing::PackagePlanPricing, package_pricing::PackagePricing,
     pagination_response::PaginationResponse, patch_budget_request::PatchBudgetRequest,
@@ -674,7 +695,8 @@ pub use self::{
     resolved_entitlement_list_response::ResolvedEntitlementListResponse,
     resolved_entitlement_value::ResolvedEntitlementValue, rest_error_response::RestErrorResponse,
     reversal_kind::ReversalKind, revocation_request::RevocationRequest,
-    rotated_secret::RotatedSecret, select_option::SelectOption, shipping_address::ShippingAddress,
+    revoke_license_request::RevokeLicenseRequest, rotated_secret::RotatedSecret,
+    select_option::SelectOption, shipping_address::ShippingAddress,
     sliding_window_reset_period::SlidingWindowResetPeriod,
     slot_downgrade_policy_enum::SlotDowngradePolicyEnum, slot_fee::SlotFee,
     slot_fee_structure::SlotFeeStructure, slot_plan_fee::SlotPlanFee, slot_pricing::SlotPricing,

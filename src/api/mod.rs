@@ -50,6 +50,7 @@ mod entitlements;
 mod events;
 mod features;
 mod invoices;
+mod licenses;
 mod metrics;
 mod oauth;
 mod oauth_apps;
@@ -95,6 +96,7 @@ pub use self::{
     events::Events,
     features::{Features, FeaturesListOptions},
     invoices::{Invoices, InvoicesListOptions},
+    licenses::{Licenses, LicensesListOptions},
     metrics::{Metrics, MetricsListOptions},
     oauth::Oauth,
     oauth_apps::OauthApps,

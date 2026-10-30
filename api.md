@@ -9,7 +9,7 @@ awaited, a `Page` that dereferences to the body (`page.field`) and lists `page.i
 `next_page()`; `.items()` streams every item across pages and `.pages()` every page. Models are
 in [`src/models`](src/models), and the options structs next to their resource.
 
-[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Budgets](#budgets) · [Checkout sessions](#checkout-sessions) · [Checks](#checks) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Credit units](#credit-units) · [Credit units prices](#credit-units-prices) · [Credits](#credits) · [Credits grants](#credits-grants) · [Credits wallets](#credits-wallets) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage) · [Usage customer](#usage-customer) · [Usage costs](#usage-costs) · [Usage costs customer](#usage-costs-customer) · [Usage costs subscription](#usage-costs-subscription) · [Webhook endpoints](#webhook-endpoints) · [Webhook endpoints endpoints](#webhook-endpoints-endpoints)
+[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Budgets](#budgets) · [Checkout sessions](#checkout-sessions) · [Checks](#checks) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Credit units](#credit-units) · [Credit units prices](#credit-units-prices) · [Credits](#credits) · [Credits grants](#credits-grants) · [Credits wallets](#credits-wallets) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Licenses](#licenses) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage) · [Usage customer](#usage-customer) · [Usage costs](#usage-costs) · [Usage costs customer](#usage-costs-customer) · [Usage costs subscription](#usage-costs-subscription) · [Webhook endpoints](#webhook-endpoints) · [Webhook endpoints endpoints](#webhook-endpoints-endpoints)
 
 ## Add ons
 
@@ -232,6 +232,20 @@ in [`src/models`](src/models), and the options structs next to their resource.
 | `client.invoices().download(invoice_id: &str) -> Call<Bytes>` | `GET /api/v1/invoices/{invoice_id}/download` | bytes |
 | `client.invoices().refresh(invoice_id: &str) -> Call<Invoice>` | `POST /api/v1/invoices/{invoice_id}/refresh` | [`Invoice`](src/models/invoice.rs) |
 | `client.invoices().download_xml(invoice_id: &str) -> Call<Bytes>` | `GET /api/v1/invoices/{invoice_id}/xml` | bytes |
+
+## Licenses
+
+[`client.licenses()`](src/api/licenses.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.licenses().list(options: impl Into<Option<LicensesListOptions>>) -> Call<LicenseListResponse>` | `GET /api/v1/licenses` | [`LicenseListResponse`](src/models/license_list_response.rs) |
+| `client.licenses().create(issue_license_request: IssueLicenseRequest) -> Call<IssueLicenseResponse>` | `POST /api/v1/licenses` | [`IssueLicenseResponse`](src/models/issue_license_response.rs) |
+| `client.licenses().retrieve(license_id: &str) -> Call<License>` | `GET /api/v1/licenses/{license_id}` | [`License`](src/models/license.rs) |
+| `client.licenses().retrieve_activation_code(license_id: &str) -> Call<LicenseActivationCode>` | `GET /api/v1/licenses/{license_id}/activation-code` | [`LicenseActivationCode`](src/models/license_activation_code.rs) |
+| `client.licenses().offline(license_id: &str, issue_offline_license_request: IssueOfflineLicenseRequest) -> Call<OfflineLicense>` | `POST /api/v1/licenses/{license_id}/offline` | [`OfflineLicense`](src/models/offline_license.rs) |
+| `client.licenses().revoke(license_id: &str, revoke_license_request: RevokeLicenseRequest) -> Call<License>` | `POST /api/v1/licenses/{license_id}/revoke` | [`License`](src/models/license.rs) |
+| `client.licenses().list_licensing_signing_keys() -> Call<LicenseSigningKeysResponse>` | `GET /api/v1/licensing/signing-keys` | [`LicenseSigningKeysResponse`](src/models/license_signing_keys_response.rs) |
 
 ## Metrics
 

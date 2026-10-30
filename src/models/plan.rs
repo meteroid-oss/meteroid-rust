@@ -32,6 +32,10 @@ pub struct Plan {
 
     pub id: PlanId,
 
+    /// Subscriptions to this plan are issued a software license automatically.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub issues_license: Option<bool>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     pub minimum_commitment: Option<MinimumCommitment>,
 
@@ -98,6 +102,7 @@ impl Plan {
             description: None,
             entitlements: None,
             id: id.into(),
+            issues_license: None,
             minimum_commitment: None,
             name: name.into(),
             net_terms,

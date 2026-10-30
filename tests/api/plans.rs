@@ -38,7 +38,7 @@ async fn list() {
     let (client, requests) = mock(
         200,
         Some("application/json"),
-        r#"{"data":[{"available_parameters":{},"created_at":"2024-03-15T10:30:45.123+02:00","currency":"TMT","id":"plan_id_25","name":"sample","net_terms":-2147483648,"plan_type":"CUSTOM","price_components":[{"id":"price_component_id_8","name":"sample"}],"product_family":{"id":"product_family_id_2","name":"sample"},"status":"DRAFT","tax_inclusive":false,"version":123456789,"version_id":"plan_version_id_3"}],"pagination_meta":{"page":-123456789,"per_page":-123456789,"total_items":-9007199254740993,"total_pages":123456789}}"#,
+        r#"{"data":[{"available_parameters":{},"created_at":"2024-03-15T10:30:45.123+02:00","currency":"TMT","id":"plan_id_25","name":"sample","net_terms":-2147483648,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_2","name":"sample"}],"product_family":{"id":"product_family_id_19","name":"sample"},"status":"ARCHIVED","tax_inclusive":false,"version":-2147483648,"version_id":"plan_version_id_67"}],"pagination_meta":{"page":-123456789,"per_page":-123456789,"total_items":-9007199254740993,"total_pages":123456789}}"#,
     );
     client.plans().list(None).await.unwrap();
     assert_eq!(*requests.lock().unwrap(), ["GET /api/v1/plans"]);
@@ -49,7 +49,7 @@ async fn create() {
     let (client, requests) = mock(
         200,
         Some("application/json"),
-        r#"{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":-123456789,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_88","name":"sample"}],"product_family":{"id":"product_family_id_15","name":"sample"},"status":"ACTIVE","tax_inclusive":true,"version":123456789,"version_id":"plan_version_id_79"}"#,
+        r#"{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":2147483647,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_40","name":"sample"}],"product_family":{"id":"product_family_id_5","name":"sample"},"status":"INACTIVE","tax_inclusive":true,"version":-2147483648,"version_id":"plan_version_id_81"}"#,
     );
     client.plans().create(decode::<meteroid_rs::models::CreatePlanRequest>(r#"{"components":[{"fee":{"type":"RATE","rates":[{"price":"-0.000123","term":"ANNUAL"}]},"name":"sample"}],"currency":"sample","name":"sample","plan_type":"CUSTOM","product_family_id":"product_family_id_90","status":"INACTIVE"}"#)).await.unwrap();
     assert_eq!(*requests.lock().unwrap(), ["POST /api/v1/plans"]);
@@ -60,7 +60,7 @@ async fn retrieve() {
     let (client, requests) = mock(
         200,
         Some("application/json"),
-        r#"{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":-123456789,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_88","name":"sample"}],"product_family":{"id":"product_family_id_15","name":"sample"},"status":"ACTIVE","tax_inclusive":true,"version":123456789,"version_id":"plan_version_id_79"}"#,
+        r#"{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":2147483647,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_40","name":"sample"}],"product_family":{"id":"product_family_id_5","name":"sample"},"status":"INACTIVE","tax_inclusive":true,"version":-2147483648,"version_id":"plan_version_id_81"}"#,
     );
     client.plans().retrieve("plan_id", None).await.unwrap();
     assert_eq!(*requests.lock().unwrap(), ["GET /api/v1/plans/plan_id"]);
@@ -71,7 +71,7 @@ async fn replace() {
     let (client, requests) = mock(
         200,
         Some("application/json"),
-        r#"{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":-123456789,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_88","name":"sample"}],"product_family":{"id":"product_family_id_15","name":"sample"},"status":"ACTIVE","tax_inclusive":true,"version":123456789,"version_id":"plan_version_id_79"}"#,
+        r#"{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":2147483647,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_40","name":"sample"}],"product_family":{"id":"product_family_id_5","name":"sample"},"status":"INACTIVE","tax_inclusive":true,"version":-2147483648,"version_id":"plan_version_id_81"}"#,
     );
     client.plans().replace("plan_id", decode::<meteroid_rs::models::ReplacePlanRequest>(r#"{"components":[{"fee":{"type":"RATE","rates":[{"price":"-0.000123","term":"ANNUAL"}]},"name":"sample"}],"currency":"sample","name":"sample"}"#)).await.unwrap();
     assert_eq!(*requests.lock().unwrap(), ["PUT /api/v1/plans/plan_id"]);
@@ -82,7 +82,7 @@ async fn update() {
     let (client, requests) = mock(
         200,
         Some("application/json"),
-        r#"{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":-123456789,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_88","name":"sample"}],"product_family":{"id":"product_family_id_15","name":"sample"},"status":"ACTIVE","tax_inclusive":true,"version":123456789,"version_id":"plan_version_id_79"}"#,
+        r#"{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":2147483647,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_40","name":"sample"}],"product_family":{"id":"product_family_id_5","name":"sample"},"status":"INACTIVE","tax_inclusive":true,"version":-2147483648,"version_id":"plan_version_id_81"}"#,
     );
     client
         .plans()
@@ -110,7 +110,7 @@ async fn publish() {
     let (client, requests) = mock(
         200,
         Some("application/json"),
-        r#"{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":-123456789,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_88","name":"sample"}],"product_family":{"id":"product_family_id_15","name":"sample"},"status":"ACTIVE","tax_inclusive":true,"version":123456789,"version_id":"plan_version_id_79"}"#,
+        r#"{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":2147483647,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_40","name":"sample"}],"product_family":{"id":"product_family_id_5","name":"sample"},"status":"INACTIVE","tax_inclusive":true,"version":-2147483648,"version_id":"plan_version_id_81"}"#,
     );
     client.plans().publish("plan_id").await.unwrap();
     assert_eq!(
