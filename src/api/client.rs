@@ -182,6 +182,12 @@ impl Meteroid {
         super::Invoices::new(self.cfg.clone())
     }
 
+    /// The licenses API.
+    #[must_use]
+    pub fn licenses(&self) -> super::Licenses {
+        super::Licenses::new(self.cfg.clone())
+    }
+
     /// The metrics API.
     #[must_use]
     pub fn metrics(&self) -> super::Metrics {

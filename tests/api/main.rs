@@ -21,6 +21,7 @@ mod entitlements;
 mod events;
 mod features;
 mod invoices;
+mod licenses;
 mod metrics;
 mod oauth;
 mod oauth_apps;

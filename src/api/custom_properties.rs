@@ -181,7 +181,7 @@ impl CustomProperties {
     ///
     /// # Errors
     ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 409, 429, 500).
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 403, 409, 429, 500).
     pub fn create_custom_property_definition(
         &self,
         custom_property_definition_create_request: crate::models::CustomPropertyDefinitionCreateRequest,
@@ -218,7 +218,7 @@ impl CustomProperties {
     ///
     /// # Errors
     ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (404, 429, 500).
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (403, 404, 429, 500).
     pub fn update_custom_property_definition(
         &self,
         id: &str,
