@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.31.1](https://github.com/meteroid-oss/meteroid-rust/compare/v0.31.0...v0.31.1) (2026-10-30)
+
+
+### Features
+
+* **api:** add `GET /api/v1/licenses`, `GET /api/v1/licenses/{license_id}`, `GET /api/v1/licenses/{license_id}/activation-code`, `GET /api/v1/licensing/signing-keys`, `POST /api/v1/licenses` and 2 more ([7b390a7](https://github.com/meteroid-oss/meteroid-rust/commit/7b390a7ade0826d453c58e206336ef482599d451))
+* **api:** update `GET /api/v1/plans`, `GET /api/v1/plans/{plan_id}`, `PATCH /api/v1/plans/{plan_id}`, `POST /api/v1/custom-property-definitions`, `POST /api/v1/plans` and 3 more ([7b390a7](https://github.com/meteroid-oss/meteroid-rust/commit/7b390a7ade0826d453c58e206336ef482599d451))
+* **api:** update SDKs to meteroid 0.1.0 ([#18](https://github.com/meteroid-oss/meteroid-rust/issues/18)) ([7b390a7](https://github.com/meteroid-oss/meteroid-rust/commit/7b390a7ade0826d453c58e206336ef482599d451))
+
 ## [0.31.0](https://github.com/meteroid-oss/meteroid-rust/compare/v0.30.1...v0.31.0) (2026-10-28)
 
 
