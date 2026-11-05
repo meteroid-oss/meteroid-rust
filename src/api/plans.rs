@@ -368,7 +368,7 @@ impl Plans {
     ///
     /// # Errors
     ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429).
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 403, 404, 429).
     pub fn replace(
         &self,
         plan_id: impl Into<crate::models::PlanId>,
