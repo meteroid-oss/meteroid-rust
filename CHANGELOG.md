@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.31.2](https://github.com/meteroid-oss/meteroid-rust/compare/v0.31.1...v0.31.2) (2026-11-05)
+
+
+### Features
+
+* **api:** update `PATCH /api/v1/customers/{id_or_alias}/budgets/{budget_id}`, `PATCH /api/v1/customers/{id_or_alias}/wallets/{currency}`, `POST /api/v1/customers/{id_or_alias}/budgets`, `PUT /api/v1/plans/versions/{plan_version_id}/minimum`, `PUT /api/v1/plans/{plan_id}` ([709f687](https://github.com/meteroid-oss/meteroid-rust/commit/709f68780964629014b67ed1fe09f76348f64727))
+* **api:** update SDKs to meteroid 0.1.0 ([#20](https://github.com/meteroid-oss/meteroid-rust/issues/20)) ([709f687](https://github.com/meteroid-oss/meteroid-rust/commit/709f68780964629014b67ed1fe09f76348f64727))
+
 ## [0.31.1](https://github.com/meteroid-oss/meteroid-rust/compare/v0.31.0...v0.31.1) (2026-10-30)
 
 
