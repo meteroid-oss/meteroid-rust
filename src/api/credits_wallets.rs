@@ -254,7 +254,7 @@ impl CreditsWallets {
     ///
     /// # Errors
     ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 409, 429, 500).
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 403, 404, 409, 429, 500).
     pub fn update(
         &self,
         id_or_alias: &str,

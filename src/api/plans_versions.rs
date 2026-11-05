@@ -91,7 +91,7 @@ impl PlansVersions {
     ///
     /// # Errors
     ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429).
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 403, 404, 429).
     pub fn update_minimum(
         &self,
         plan_version_id: impl Into<crate::models::PlanVersionId>,
