@@ -164,7 +164,7 @@ impl UsageCostsCustomer {
     ///
     /// # Errors
     ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429, 500).
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 403, 404, 429, 500).
     pub fn list_costs(
         &self,
         customer_id: &str,
@@ -205,7 +205,7 @@ impl UsageCostsCustomer {
     ///
     /// # Errors
     ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429, 500).
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 403, 404, 429, 500).
     pub fn list_events(
         &self,
         customer_id: &str,

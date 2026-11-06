@@ -16,6 +16,7 @@ pub enum DeclineKind {
     ProcessingError,
     Other,
     DoNotRetry,
+    Unconfirmed,
     /// A value this version of the SDK does not know yet.
     Unknown(String),
 }
@@ -34,6 +35,7 @@ impl DeclineKind {
             Self::ProcessingError => "PROCESSING_ERROR",
             Self::Other => "OTHER",
             Self::DoNotRetry => "DO_NOT_RETRY",
+            Self::Unconfirmed => "UNCONFIRMED",
             Self::Unknown(value) => value,
         }
     }
@@ -51,6 +53,7 @@ impl From<&str> for DeclineKind {
             "PROCESSING_ERROR" => Self::ProcessingError,
             "OTHER" => Self::Other,
             "DO_NOT_RETRY" => Self::DoNotRetry,
+            "UNCONFIRMED" => Self::Unconfirmed,
             other => Self::Unknown(other.to_owned()),
         }
     }
