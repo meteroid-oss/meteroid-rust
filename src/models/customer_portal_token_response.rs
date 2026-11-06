@@ -16,7 +16,7 @@ pub struct CustomerPortalTokenResponse {
     /// Base URL of the customer portal
     pub portal_url: String,
 
-    /// JWT token for portal access
+    /// Opaque token for portal access
     pub token: String,
 
     /// Properties this version of the SDK does not know, sent back as received.
