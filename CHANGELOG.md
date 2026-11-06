@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.31.3](https://github.com/meteroid-oss/meteroid-rust/compare/v0.31.2...v0.31.3) (2026-11-06)
+
+
+### Features
+
+* **api:** update `GET /api/v1/usage/customer/{customer_id}/costs`, `GET /api/v1/usage/customer/{customer_id}/events`, `GET /api/v1/usage/subscription/{subscription_id}/costs`, `GET /api/v1/usage/subscription/{subscription_id}/events`, `POST webhook:payment.failed` and 5 more ([0ba8273](https://github.com/meteroid-oss/meteroid-rust/commit/0ba82731d0b9a2dc55b3f8071b132c897629ff2a))
+* **api:** update SDKs to meteroid 0.1.0 ([#22](https://github.com/meteroid-oss/meteroid-rust/issues/22)) ([0ba8273](https://github.com/meteroid-oss/meteroid-rust/commit/0ba82731d0b9a2dc55b3f8071b132c897629ff2a))
+
 ## [0.31.2](https://github.com/meteroid-oss/meteroid-rust/compare/v0.31.1...v0.31.2) (2026-11-05)
 
 
