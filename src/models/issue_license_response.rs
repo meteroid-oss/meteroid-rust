@@ -7,6 +7,7 @@ use super::license::License;
 #[non_exhaustive]
 pub struct IssueLicenseResponse {
     /// Online: one-time code the customer enters in their installation to activate the license.
+    /// Ephemeral: the reusable code, e.g. a CI secret.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub activation_code: Option<String>,
 

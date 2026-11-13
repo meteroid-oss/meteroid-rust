@@ -170,7 +170,7 @@ impl Licenses {
 
     /// Get a license's activation code
     ///
-    /// Available until the license is activated or revoked.
+    /// Available until the license is activated or revoked; for an ephemeral license, until revoked.
     ///
     /// `GET /api/v1/licenses/{license_id}/activation-code`.
     ///

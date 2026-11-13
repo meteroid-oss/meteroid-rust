@@ -6,6 +6,12 @@ pub struct IssueLicenseRequest {
     /// Customer ID or alias
     pub customer_id: String,
 
+    /// Ephemeral, for CI and other short-lived installations: the activation code can be used
+    /// any number of times, each activation gets a license of this many hours (1 to 24) for the
+    /// installation activating, and nothing is refreshed. Not with `offline` or `validity_days`.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub ephemeral_hours: Option<i32>,
+
     /// Offline only. The installation's id as it reports it, up to 255 characters without
     /// spaces: the license names it (`aud`) and stays bound to it. Without one, the license is
     /// not tied to an installation.
@@ -38,12 +44,20 @@ impl IssueLicenseRequest {
     pub fn new(customer_id: impl Into<String>) -> Self {
         Self {
             customer_id: customer_id.into(),
+            ephemeral_hours: None,
             instance_id: None,
             offline: None,
             subscription_id: None,
             validity_days: None,
             extra: serde_json::Map::new(),
         }
+    }
+
+    /// Sets `ephemeral_hours`.
+    #[must_use]
+    pub fn ephemeral_hours(mut self, ephemeral_hours: impl Into<i32>) -> Self {
+        self.ephemeral_hours = Some(ephemeral_hours.into());
+        self
     }
 
     /// Sets `instance_id`.
