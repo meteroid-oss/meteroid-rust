@@ -18,6 +18,10 @@ pub struct License {
 
     pub customer_name: String,
 
+    /// Ephemeral: each activation of the reusable code gets a license of this many hours.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub ephemeral_hours: Option<i32>,
+
     /// Whether the activation code can still be retrieved: only until activation or revocation.
     pub has_activation_code: bool,
 
@@ -77,6 +81,7 @@ impl License {
             created_at,
             customer_id: customer_id.into(),
             customer_name: customer_name.into(),
+            ephemeral_hours: None,
             has_activation_code,
             id: id.into(),
             instance_id: None,
