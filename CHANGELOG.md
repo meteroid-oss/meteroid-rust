@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.31.5](https://github.com/meteroid-oss/meteroid-rust/compare/v0.31.4...v0.31.5) (2026-11-22)
+
+
+### Features
+
+* **api:** add `POST /api/v1/invoices/{invoice_id}/mark-paid`, `POST /api/v1/invoices/{invoice_id}/mark-uncollectible`, `POST /api/v1/invoices/{invoice_id}/payments`, `POST /api/v1/invoices/{invoice_id}/payments/{transaction_id}/reverse` ([521f702](https://github.com/meteroid-oss/meteroid-rust/commit/521f702abf99364affbb7abae2501015c415475a))
+* **api:** update `GET /api/v1/credit-notes`, `GET /api/v1/credit-notes/{credit_note_id}`, `GET /api/v1/invoices`, `GET /api/v1/invoices/{invoice_id}`, `GET /api/v1/metrics/{metric_id}` and 11 more ([521f702](https://github.com/meteroid-oss/meteroid-rust/commit/521f702abf99364affbb7abae2501015c415475a))
+* **api:** update SDKs to meteroid 0.1.0 ([#26](https://github.com/meteroid-oss/meteroid-rust/issues/26)) ([521f702](https://github.com/meteroid-oss/meteroid-rust/commit/521f702abf99364affbb7abae2501015c415475a))
+
 ## [0.31.4](https://github.com/meteroid-oss/meteroid-rust/compare/v0.31.3...v0.31.4) (2026-11-13)
 
 
