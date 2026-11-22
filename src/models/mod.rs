@@ -243,6 +243,8 @@ pub mod invoice_event_data;
 pub mod invoice_id;
 pub mod invoice_line_credit_unit;
 pub mod invoice_line_item;
+pub mod invoice_line_usage_breakdown;
+pub mod invoice_line_usage_breakdown_item;
 pub mod invoice_list_response;
 pub mod invoice_payment_status;
 pub mod invoice_status;
@@ -370,6 +372,7 @@ pub mod rate_fee;
 pub mod rate_fee_structure;
 pub mod rate_plan_fee;
 pub mod rate_pricing;
+pub mod record_invoice_payment_request;
 pub mod recurring_fee;
 pub mod refund_event_data;
 pub mod refund_mode;
@@ -380,6 +383,7 @@ pub mod resolved_entitlement_list_response;
 pub mod resolved_entitlement_value;
 pub mod rest_error_response;
 pub mod reversal_kind;
+pub mod reverse_invoice_payment_request;
 pub mod revocation_request;
 pub mod revoke_license_request;
 pub mod rotated_secret;
@@ -626,6 +630,8 @@ pub use self::{
     invoice_documents_event_data::InvoiceDocumentsEventData, invoice_event::InvoiceEvent,
     invoice_event_data::InvoiceEventData, invoice_id::InvoiceId,
     invoice_line_credit_unit::InvoiceLineCreditUnit, invoice_line_item::InvoiceLineItem,
+    invoice_line_usage_breakdown::InvoiceLineUsageBreakdown,
+    invoice_line_usage_breakdown_item::InvoiceLineUsageBreakdownItem,
     invoice_list_response::InvoiceListResponse, invoice_payment_status::InvoicePaymentStatus,
     invoice_status::InvoiceStatus, invoice_type::InvoiceType,
     invoicing_entity_id::InvoicingEntityId, issue_license_request::IssueLicenseRequest,
@@ -689,14 +695,15 @@ pub use self::{
     products_scope::ProductsScope, property_config::PropertyConfig, quote_event::QuoteEvent,
     quote_event_data::QuoteEventData, quote_id::QuoteId, rate_fee::RateFee,
     rate_fee_structure::RateFeeStructure, rate_plan_fee::RatePlanFee, rate_pricing::RatePricing,
-    recurring_fee::RecurringFee, refund_event_data::RefundEventData, refund_mode::RefundMode,
+    record_invoice_payment_request::RecordInvoicePaymentRequest, recurring_fee::RecurringFee,
+    refund_event_data::RefundEventData, refund_mode::RefundMode,
     replace_plan_request::ReplacePlanRequest, reset_period::ResetPeriod,
     resolved_entitlement::ResolvedEntitlement,
     resolved_entitlement_list_response::ResolvedEntitlementListResponse,
     resolved_entitlement_value::ResolvedEntitlementValue, rest_error_response::RestErrorResponse,
-    reversal_kind::ReversalKind, revocation_request::RevocationRequest,
-    revoke_license_request::RevokeLicenseRequest, rotated_secret::RotatedSecret,
-    select_option::SelectOption, shipping_address::ShippingAddress,
+    reversal_kind::ReversalKind, reverse_invoice_payment_request::ReverseInvoicePaymentRequest,
+    revocation_request::RevocationRequest, revoke_license_request::RevokeLicenseRequest,
+    rotated_secret::RotatedSecret, select_option::SelectOption, shipping_address::ShippingAddress,
     sliding_window_reset_period::SlidingWindowResetPeriod,
     slot_downgrade_policy_enum::SlotDowngradePolicyEnum, slot_fee::SlotFee,
     slot_fee_structure::SlotFeeStructure, slot_plan_fee::SlotPlanFee, slot_pricing::SlotPricing,

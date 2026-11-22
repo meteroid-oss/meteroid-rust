@@ -50,6 +50,7 @@ mod entitlements;
 mod events;
 mod features;
 mod invoices;
+mod invoices_payments;
 mod licenses;
 mod metrics;
 mod oauth;
@@ -95,7 +96,12 @@ pub use self::{
     entitlements::Entitlements,
     events::Events,
     features::{Features, FeaturesListOptions},
-    invoices::{Invoices, InvoicesListOptions},
+    invoices::{
+        Invoices, InvoicesListOptions, InvoicesMarkPaidOptions, InvoicesMarkUncollectibleOptions,
+    },
+    invoices_payments::{
+        InvoicesPayments, InvoicesPaymentsCreateOptions, InvoicesPaymentsReverseOptions,
+    },
     licenses::{Licenses, LicensesListOptions},
     metrics::{Metrics, MetricsListOptions},
     oauth::Oauth,

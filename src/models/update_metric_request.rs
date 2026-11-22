@@ -62,6 +62,14 @@ pub struct UpdateMetricRequest {
     )]
     pub unit_singular: Option<Option<String>>,
 
+    /// Omit to leave the breakdown key unchanged; send `null` to remove it.
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "crate::models::codec::nullable"
+    )]
+    pub usage_breakdown_key: Option<Option<String>>,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -79,6 +87,7 @@ impl UpdateMetricRequest {
             unit_conversion: None,
             unit_plural: None,
             unit_singular: None,
+            usage_breakdown_key: None,
             extra: serde_json::Map::new(),
         }
     }
@@ -181,6 +190,20 @@ impl UpdateMetricRequest {
     #[must_use]
     pub fn clear_unit_singular(mut self) -> Self {
         self.unit_singular = Some(None);
+        self
+    }
+
+    /// Sets `usage_breakdown_key`.
+    #[must_use]
+    pub fn usage_breakdown_key(mut self, usage_breakdown_key: impl Into<String>) -> Self {
+        self.usage_breakdown_key = Some(Some(usage_breakdown_key.into()));
+        self
+    }
+
+    /// Sends `usage_breakdown_key` as `null`, clearing it.
+    #[must_use]
+    pub fn clear_usage_breakdown_key(mut self) -> Self {
+        self.usage_breakdown_key = Some(None);
         self
     }
 }

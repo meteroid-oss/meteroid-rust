@@ -9,7 +9,7 @@ awaited, a `Page` that dereferences to the body (`page.field`) and lists `page.i
 `next_page()`; `.items()` streams every item across pages and `.pages()` every page. Models are
 in [`src/models`](src/models), and the options structs next to their resource.
 
-[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Budgets](#budgets) · [Checkout sessions](#checkout-sessions) · [Checks](#checks) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Credit units](#credit-units) · [Credit units prices](#credit-units-prices) · [Credits](#credits) · [Credits grants](#credits-grants) · [Credits wallets](#credits-wallets) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Licenses](#licenses) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage) · [Usage customer](#usage-customer) · [Usage costs](#usage-costs) · [Usage costs customer](#usage-costs-customer) · [Usage costs subscription](#usage-costs-subscription) · [Webhook endpoints](#webhook-endpoints) · [Webhook endpoints endpoints](#webhook-endpoints-endpoints)
+[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Budgets](#budgets) · [Checkout sessions](#checkout-sessions) · [Checks](#checks) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Credit units](#credit-units) · [Credit units prices](#credit-units-prices) · [Credits](#credits) · [Credits grants](#credits-grants) · [Credits wallets](#credits-wallets) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Invoices payments](#invoices-payments) · [Licenses](#licenses) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage) · [Usage customer](#usage-customer) · [Usage costs](#usage-costs) · [Usage costs customer](#usage-costs-customer) · [Usage costs subscription](#usage-costs-subscription) · [Webhook endpoints](#webhook-endpoints) · [Webhook endpoints endpoints](#webhook-endpoints-endpoints)
 
 ## Add ons
 
@@ -230,8 +230,19 @@ in [`src/models`](src/models), and the options structs next to their resource.
 | `client.invoices().retrieve(invoice_id: &str) -> Call<Invoice>` | `GET /api/v1/invoices/{invoice_id}` | [`Invoice`](src/models/invoice.rs) |
 | `client.invoices().update_custom_properties(invoice_id: &str, invoice_custom_properties_request: InvoiceCustomPropertiesRequest) -> Call<Invoice>` | `PATCH /api/v1/invoices/{invoice_id}/custom-properties` | [`Invoice`](src/models/invoice.rs) |
 | `client.invoices().download(invoice_id: &str) -> Call<Bytes>` | `GET /api/v1/invoices/{invoice_id}/download` | bytes |
+| `client.invoices().mark_paid(invoice_id: &str, record_invoice_payment_request: RecordInvoicePaymentRequest, options: InvoicesMarkPaidOptions) -> Call<Transaction>` | `POST /api/v1/invoices/{invoice_id}/mark-paid` | [`Transaction`](src/models/transaction.rs) |
+| `client.invoices().mark_uncollectible(invoice_id: &str, options: InvoicesMarkUncollectibleOptions) -> Call<()>` | `POST /api/v1/invoices/{invoice_id}/mark-uncollectible` | nothing |
 | `client.invoices().refresh(invoice_id: &str) -> Call<Invoice>` | `POST /api/v1/invoices/{invoice_id}/refresh` | [`Invoice`](src/models/invoice.rs) |
 | `client.invoices().download_xml(invoice_id: &str) -> Call<Bytes>` | `GET /api/v1/invoices/{invoice_id}/xml` | bytes |
+
+### Invoices payments
+
+[`client.invoices().payments()`](src/api/invoices_payments.rs)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.invoices().payments().create(invoice_id: &str, record_invoice_payment_request: RecordInvoicePaymentRequest, options: InvoicesPaymentsCreateOptions) -> Call<Transaction>` | `POST /api/v1/invoices/{invoice_id}/payments` | [`Transaction`](src/models/transaction.rs) |
+| `client.invoices().payments().reverse(invoice_id: &str, transaction_id: &str, reverse_invoice_payment_request: ReverseInvoicePaymentRequest, options: InvoicesPaymentsReverseOptions) -> Call<Transaction>` | `POST /api/v1/invoices/{invoice_id}/payments/{transaction_id}/reverse` | [`Transaction`](src/models/transaction.rs) |
 
 ## Licenses
 

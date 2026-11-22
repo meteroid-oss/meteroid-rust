@@ -17,7 +17,7 @@ pub struct Event {
     pub properties: Option<std::collections::HashMap<String, String>>,
 
     /// RFC 3339 timestamp. Defaults to ingestion time if omitted.
-    /// Must be between 24 hours ago and 1 hour from now. Set `allow_backfilling` to remove the past limit.
+    /// Must be between 24 hours ago and 1 hour from now. Set `allow_backfilling` to accept timestamps up to 13 months in the past.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub timestamp: Option<chrono::DateTime<chrono::Utc>>,
 

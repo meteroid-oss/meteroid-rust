@@ -194,7 +194,7 @@ impl Metrics {
     ///
     /// # Errors
     ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 429).
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 403, 429).
     pub fn create(
         &self,
         create_metric_request: crate::models::CreateMetricRequest,
@@ -233,7 +233,7 @@ impl Metrics {
     ///
     /// # Errors
     ///
-    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 404, 429).
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 403, 404, 429).
     pub fn update(
         &self,
         metric_id: impl Into<crate::models::BillableMetricId>,
