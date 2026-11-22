@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.31.6](https://github.com/meteroid-oss/meteroid-rust/compare/v0.31.5...v0.31.6) (2026-11-22)
+
+
+### Features
+
+* **api:** update `GET /api/v1/subscriptions/{subscription_id}`, `PATCH /api/v1/subscriptions/{subscription_id}`, `POST /api/v1/subscriptions`, `POST /api/v1/subscriptions/{subscription_id}/cancel` ([4535f6c](https://github.com/meteroid-oss/meteroid-rust/commit/4535f6ca91ae3ddcda0cbbec13d050e3c8d72948))
+* **api:** update SDKs to meteroid 0.1.0 ([#28](https://github.com/meteroid-oss/meteroid-rust/issues/28)) ([4535f6c](https://github.com/meteroid-oss/meteroid-rust/commit/4535f6ca91ae3ddcda0cbbec13d050e3c8d72948))
+
 ## [0.31.5](https://github.com/meteroid-oss/meteroid-rust/compare/v0.31.4...v0.31.5) (2026-11-22)
 
 
