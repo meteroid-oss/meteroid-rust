@@ -51,6 +51,9 @@ pub struct MetricEvent {
     pub unit_singular: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub usage_breakdown_key: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub usage_group_key: Option<String>,
 
     pub id: EventId,
@@ -93,6 +96,7 @@ impl MetricEvent {
             unit_conversion_rounding: None,
             unit_plural: None,
             unit_singular: None,
+            usage_breakdown_key: None,
             usage_group_key: None,
             id: id.into(),
             timestamp,

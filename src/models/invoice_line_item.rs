@@ -1,7 +1,10 @@
 // this file is @generated
 use serde::{Deserialize, Serialize};
 
-use super::{invoice_line_credit_unit::InvoiceLineCreditUnit, sub_line_item::SubLineItem};
+use super::{
+    invoice_line_credit_unit::InvoiceLineCreditUnit,
+    invoice_line_usage_breakdown::InvoiceLineUsageBreakdown, sub_line_item::SubLineItem,
+};
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[non_exhaustive]
@@ -35,6 +38,9 @@ pub struct InvoiceLineItem {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub unit_price: Option<rust_decimal::Decimal>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub usage_breakdown: Option<InvoiceLineUsageBreakdown>,
+
     /// Properties this version of the SDK does not know, sent back as received.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -63,6 +69,7 @@ impl InvoiceLineItem {
             sub_line_items,
             tax_rate,
             unit_price: None,
+            usage_breakdown: None,
             extra: serde_json::Map::new(),
         }
     }

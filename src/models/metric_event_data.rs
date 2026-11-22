@@ -50,6 +50,9 @@ pub struct MetricEventData {
     pub unit_singular: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub usage_breakdown_key: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub usage_group_key: Option<String>,
 
     /// Properties this version of the SDK does not know, sent back as received.
@@ -83,6 +86,7 @@ impl MetricEventData {
             unit_conversion_rounding: None,
             unit_plural: None,
             unit_singular: None,
+            usage_breakdown_key: None,
             usage_group_key: None,
             extra: serde_json::Map::new(),
         }

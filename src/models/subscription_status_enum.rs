@@ -3,6 +3,8 @@ use std::fmt;
 
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
+/// `PendingCharge`, `Paused`, `Suspended`, `Superseded` and `Errored` stay in the published
+/// schema; no subscription holds them any more, and a filter on them lists none.
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[non_exhaustive]
 pub enum SubscriptionStatusEnum {

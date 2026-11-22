@@ -52,6 +52,13 @@ pub struct Metric {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub unit_singular: Option<String>,
 
+    /// Event property, e.g. `project_id`, that breaks each invoice line down by value. The line is
+    /// still priced on its total usage, and each value shows its quantity and share of the amount.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub usage_breakdown_key: Option<String>,
+
+    /// Event property, e.g. `cluster_id`, whose values are billed as separate invoice lines, each
+    /// priced on its own usage.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub usage_group_key: Option<String>,
 
@@ -87,6 +94,7 @@ impl Metric {
             unit_conversion: None,
             unit_plural: None,
             unit_singular: None,
+            usage_breakdown_key: None,
             usage_group_key: None,
             extra: serde_json::Map::new(),
         }

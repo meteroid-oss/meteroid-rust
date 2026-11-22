@@ -5,7 +5,7 @@ use super::event::Event;
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct IngestEventsRequest {
-    /// Allow events with timestamps more than 1 day in the past. Defaults to `false`.
+    /// Allow events with timestamps more than 1 day in the past, up to 13 months. Defaults to `false`.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_backfilling: Option<bool>,
 

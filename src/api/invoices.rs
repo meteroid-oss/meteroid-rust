@@ -139,6 +139,44 @@ impl InvoicesListOptions {
     }
 }
 
+/// Query and header parameters of [`Invoices::mark_paid`], built
+/// with the required ones by [`new`](Self::new).
+#[derive(Clone, Debug)]
+#[non_exhaustive]
+pub struct InvoicesMarkPaidOptions {
+    /// The `Idempotency-Key` header parameter.
+    pub idempotency_key: String,
+}
+
+impl InvoicesMarkPaidOptions {
+    /// Options with the required parameters set.
+    #[must_use]
+    pub fn new(idempotency_key: impl Into<String>) -> Self {
+        Self {
+            idempotency_key: idempotency_key.into(),
+        }
+    }
+}
+
+/// Query and header parameters of [`Invoices::mark_uncollectible`], built
+/// with the required ones by [`new`](Self::new).
+#[derive(Clone, Debug)]
+#[non_exhaustive]
+pub struct InvoicesMarkUncollectibleOptions {
+    /// The `Idempotency-Key` header parameter.
+    pub idempotency_key: String,
+}
+
+impl InvoicesMarkUncollectibleOptions {
+    /// Options with the required parameters set.
+    #[must_use]
+    pub fn new(idempotency_key: impl Into<String>) -> Self {
+        Self {
+            idempotency_key: idempotency_key.into(),
+        }
+    }
+}
+
 /// The invoices API, from the client's
 /// [`invoices`](crate::api::Meteroid::invoices).
 #[derive(Clone)]
@@ -169,6 +207,12 @@ impl Invoices {
     pub fn with_options(mut self, options: crate::api::RequestOptions) -> Self {
         self.options = options;
         self
+    }
+
+    /// The payments API, with the options of this one.
+    #[must_use]
+    pub fn payments(&self) -> super::InvoicesPayments {
+        super::InvoicesPayments::new(self.cfg.clone()).with_options(self.options.clone())
     }
 
     fn list_request(
@@ -299,6 +343,67 @@ impl Invoices {
             )
             .with_options(&self.options)
             .binary(&self.cfg)
+    }
+
+    /// Mark an invoice as paid
+    ///
+    /// Record an external payment for the entire remaining balance of a finalized invoice. The amount
+    /// must match the remaining balance.
+    ///
+    /// `POST /api/v1/invoices/{invoice_id}/mark-paid`.
+    ///
+    /// # Errors
+    ///
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 403, 404, 409, 429, 500).
+    pub fn mark_paid(
+        &self,
+        invoice_id: impl Into<crate::models::InvoiceId>,
+        record_invoice_payment_request: crate::models::RecordInvoicePaymentRequest,
+        options: InvoicesMarkPaidOptions,
+    ) -> crate::api::Call<crate::models::Transaction> {
+        let InvoicesMarkPaidOptions { idempotency_key } = options;
+
+        crate::request::Request::new(
+            http::Method::POST,
+            "/api/v1/invoices/{invoice_id}/mark-paid",
+        )
+        .with_path_param(
+            "invoice_id",
+            Into::<crate::models::InvoiceId>::into(invoice_id),
+        )
+        .with_header_param("Idempotency-Key", &idempotency_key)
+        .with_body_param(record_invoice_payment_request)
+        .with_options(&self.options)
+        .json(&self.cfg)
+    }
+
+    /// Mark an invoice as uncollectible
+    ///
+    /// Transition a finalized invoice to uncollectible and stop its payment reminders.
+    ///
+    /// `POST /api/v1/invoices/{invoice_id}/mark-uncollectible`.
+    ///
+    /// # Errors
+    ///
+    /// An API error's body is [`RestErrorResponse`](crate::models::RestErrorResponse) (400, 401, 403, 404, 409, 429, 500).
+    pub fn mark_uncollectible(
+        &self,
+        invoice_id: impl Into<crate::models::InvoiceId>,
+        options: InvoicesMarkUncollectibleOptions,
+    ) -> crate::api::Call<()> {
+        let InvoicesMarkUncollectibleOptions { idempotency_key } = options;
+
+        crate::request::Request::new(
+            http::Method::POST,
+            "/api/v1/invoices/{invoice_id}/mark-uncollectible",
+        )
+        .with_path_param(
+            "invoice_id",
+            Into::<crate::models::InvoiceId>::into(invoice_id),
+        )
+        .with_header_param("Idempotency-Key", &idempotency_key)
+        .with_options(&self.options)
+        .empty(&self.cfg)
     }
 
     /// Refresh invoice
