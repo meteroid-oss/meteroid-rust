@@ -328,6 +328,7 @@ pub mod payment_methods_config;
 pub mod payment_status_enum;
 pub mod payment_transaction_id;
 pub mod payment_type_enum;
+pub mod pending_scheduled_event;
 pub mod per_unit_plan_pricing;
 pub mod per_unit_pricing;
 pub mod percentage_discount;
@@ -387,6 +388,8 @@ pub mod reverse_invoice_payment_request;
 pub mod revocation_request;
 pub mod revoke_license_request;
 pub mod rotated_secret;
+pub mod scheduled_event_id;
+pub mod scheduled_event_type;
 pub mod select_option;
 pub mod shipping_address;
 pub mod sliding_window_reset_period;
@@ -677,19 +680,19 @@ pub use self::{
     payment_event::PaymentEvent, payment_method_info::PaymentMethodInfo,
     payment_method_type_enum::PaymentMethodTypeEnum, payment_methods_config::PaymentMethodsConfig,
     payment_status_enum::PaymentStatusEnum, payment_transaction_id::PaymentTransactionId,
-    payment_type_enum::PaymentTypeEnum, per_unit_plan_pricing::PerUnitPlanPricing,
-    per_unit_pricing::PerUnitPricing, percentage_discount::PercentageDiscount, plan::Plan,
-    plan_add_on_input::PlanAddOnInput, plan_event::PlanEvent, plan_event_data::PlanEventData,
-    plan_fee_credit_unit::PlanFeeCreditUnit, plan_id::PlanId, plan_list_response::PlanListResponse,
-    plan_status_enum::PlanStatusEnum, plan_type_enum::PlanTypeEnum,
-    plan_usage_pricing_model::PlanUsagePricingModel, plan_version_id::PlanVersionId,
-    plan_version_list_response::PlanVersionListResponse, plan_version_summary::PlanVersionSummary,
-    price_component::PriceComponent, price_component_id::PriceComponentId,
-    price_component_input::PriceComponentInput, price_entry::PriceEntry, price_id::PriceId,
-    price_input::PriceInput, pricing::Pricing, product::Product, product_event::ProductEvent,
-    product_event_data::ProductEventData, product_family::ProductFamily,
-    product_family_create_request::ProductFamilyCreateRequest, product_family_id::ProductFamilyId,
-    product_family_list_response::ProductFamilyListResponse,
+    payment_type_enum::PaymentTypeEnum, pending_scheduled_event::PendingScheduledEvent,
+    per_unit_plan_pricing::PerUnitPlanPricing, per_unit_pricing::PerUnitPricing,
+    percentage_discount::PercentageDiscount, plan::Plan, plan_add_on_input::PlanAddOnInput,
+    plan_event::PlanEvent, plan_event_data::PlanEventData, plan_fee_credit_unit::PlanFeeCreditUnit,
+    plan_id::PlanId, plan_list_response::PlanListResponse, plan_status_enum::PlanStatusEnum,
+    plan_type_enum::PlanTypeEnum, plan_usage_pricing_model::PlanUsagePricingModel,
+    plan_version_id::PlanVersionId, plan_version_list_response::PlanVersionListResponse,
+    plan_version_summary::PlanVersionSummary, price_component::PriceComponent,
+    price_component_id::PriceComponentId, price_component_input::PriceComponentInput,
+    price_entry::PriceEntry, price_id::PriceId, price_input::PriceInput, pricing::Pricing,
+    product::Product, product_event::ProductEvent, product_event_data::ProductEventData,
+    product_family::ProductFamily, product_family_create_request::ProductFamilyCreateRequest,
+    product_family_id::ProductFamilyId, product_family_list_response::ProductFamilyListResponse,
     product_fee_structure::ProductFeeStructure, product_fee_type_enum::ProductFeeTypeEnum,
     product_id::ProductId, product_list_response::ProductListResponse, product_ref::ProductRef,
     products_scope::ProductsScope, property_config::PropertyConfig, quote_event::QuoteEvent,
@@ -703,8 +706,9 @@ pub use self::{
     resolved_entitlement_value::ResolvedEntitlementValue, rest_error_response::RestErrorResponse,
     reversal_kind::ReversalKind, reverse_invoice_payment_request::ReverseInvoicePaymentRequest,
     revocation_request::RevocationRequest, revoke_license_request::RevokeLicenseRequest,
-    rotated_secret::RotatedSecret, select_option::SelectOption, shipping_address::ShippingAddress,
-    sliding_window_reset_period::SlidingWindowResetPeriod,
+    rotated_secret::RotatedSecret, scheduled_event_id::ScheduledEventId,
+    scheduled_event_type::ScheduledEventType, select_option::SelectOption,
+    shipping_address::ShippingAddress, sliding_window_reset_period::SlidingWindowResetPeriod,
     slot_downgrade_policy_enum::SlotDowngradePolicyEnum, slot_fee::SlotFee,
     slot_fee_structure::SlotFeeStructure, slot_plan_fee::SlotPlanFee, slot_pricing::SlotPricing,
     slot_upgrade_policy_enum::SlotUpgradePolicyEnum, sub_line_item::SubLineItem,

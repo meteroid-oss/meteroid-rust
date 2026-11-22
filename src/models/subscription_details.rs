@@ -5,7 +5,8 @@ use super::{
     applied_coupon_detailed::AppliedCouponDetailed, billing_period_enum::BillingPeriodEnum,
     currency::Currency, customer_id::CustomerId, entitlement::Entitlement,
     minimum_commitment::MinimumCommitment, payment_methods_config::PaymentMethodsConfig,
-    plan_id::PlanId, plan_version_id::PlanVersionId, subscription_add_on::SubscriptionAddOn,
+    pending_scheduled_event::PendingScheduledEvent, plan_id::PlanId,
+    plan_version_id::PlanVersionId, subscription_add_on::SubscriptionAddOn,
     subscription_component::SubscriptionComponent, subscription_id::SubscriptionId,
     subscription_status_enum::SubscriptionStatusEnum, usage_filter::UsageFilter,
 };
@@ -83,6 +84,10 @@ pub struct SubscriptionDetails {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub payment_methods_config: Option<PaymentMethodsConfig>,
 
+    /// Changes scheduled to apply later: cancellation, plan change or amendment.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub pending_events: Option<Vec<PendingScheduledEvent>>,
+
     /// Billing period (monthly, annual, etc.)
     pub period: BillingPeriodEnum,
 
@@ -96,6 +101,11 @@ pub struct SubscriptionDetails {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub purchase_order: Option<String>,
+
+    /// Date the subscription ends at the start of, when a cancellation is scheduled: its first
+    /// day without service. `end_date` is not affected by a scheduled cancellation.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scheduled_cancellation_date: Option<chrono::NaiveDate>,
 
     /// When the subscription contract starts (benefits apply from this date)
     pub start_date: chrono::NaiveDate,
@@ -176,12 +186,14 @@ impl SubscriptionDetails {
             mrr_cents,
             net_terms,
             payment_methods_config: None,
+            pending_events: None,
             period,
             plan_id: plan_id.into(),
             plan_name: plan_name.into(),
             plan_version,
             plan_version_id: plan_version_id.into(),
             purchase_order: None,
+            scheduled_cancellation_date: None,
             start_date,
             status,
             tax_inclusive,
