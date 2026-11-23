@@ -24,6 +24,13 @@ pub struct Invoice {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub billing_period_start: Option<chrono::NaiveDate>,
 
+    /// Debts carried in from earlier invoices (amounts due below the payment providers' minimum
+    /// charge, never collected on their own) less the one this invoice carried to a later
+    /// invoice, in minor units. Included in `amount_due`:
+    /// `amount_due = total + carried_balance - applied_credits - paid`.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub carried_balance: Option<i64>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     pub child_invoice_id: Option<InvoiceId>,
 
@@ -162,6 +169,7 @@ impl Invoice {
             amount_due,
             applied_credits,
             billing_period_start: None,
+            carried_balance: None,
             child_invoice_id: None,
             coupons,
             created_at,

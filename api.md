@@ -206,6 +206,8 @@ in [`src/models`](src/models), and the options structs next to their resource.
 | Method | Request | Returns |
 | --- | --- | --- |
 | `client.events().ingest(ingest_events_request: IngestEventsRequest) -> Call<IngestEventsResponse>` | `POST /api/v1/events/ingest` | [`IngestEventsResponse`](src/models/ingest_events_response.rs) |
+| `client.events().amend(event_id: &str, amend_event_request: AmendEventRequest) -> Call<EventChangeResponse>` | `POST /api/v1/events/{event_id}/amend` | [`EventChangeResponse`](src/models/event_change_response.rs) |
+| `client.events().void(event_id: &str, void_event_request: VoidEventRequest) -> Call<EventChangeResponse>` | `POST /api/v1/events/{event_id}/void` | [`EventChangeResponse`](src/models/event_change_response.rs) |
 
 ## Features
 
