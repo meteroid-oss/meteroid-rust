@@ -21,6 +21,7 @@ pub mod add_on_id;
 pub mod add_on_list_response;
 pub mod address;
 pub mod all_components_scope;
+pub mod amend_event_request;
 pub mod applied_coupon;
 pub mod applied_coupon_detailed;
 pub mod applied_coupon_id;
@@ -208,6 +209,7 @@ pub mod entitlement_spec_request;
 pub mod entitlement_value;
 pub mod error_code;
 pub mod event;
+pub mod event_change_response;
 pub mod event_id;
 pub mod event_type;
 pub mod existing_price_ref;
@@ -465,6 +467,7 @@ pub mod usage_plan_fee;
 pub mod usage_pricing;
 pub mod usage_pricing_model;
 pub mod usage_response;
+pub mod void_event_request;
 pub mod volume_plan_pricing;
 pub mod volume_pricing;
 pub mod wallet;
@@ -498,7 +501,8 @@ pub mod webhook_header_input;
 pub use self::{
     actor::Actor, actor_type::ActorType, add_on::AddOn, add_on_event::AddOnEvent,
     add_on_event_data::AddOnEventData, add_on_id::AddOnId, add_on_list_response::AddOnListResponse,
-    address::Address, all_components_scope::AllComponentsScope, applied_coupon::AppliedCoupon,
+    address::Address, all_components_scope::AllComponentsScope,
+    amend_event_request::AmendEventRequest, applied_coupon::AppliedCoupon,
     applied_coupon_detailed::AppliedCouponDetailed, applied_coupon_id::AppliedCouponId,
     auto_top_up::AutoTopUp, auto_top_up_cap_reached_event::AutoTopUpCapReachedEvent,
     auto_top_up_cap_reached_event_data::AutoTopUpCapReachedEventData,
@@ -614,8 +618,9 @@ pub use self::{
     entitlement_overage_behavior::EntitlementOverageBehavior,
     entitlement_product_ref::EntitlementProductRef,
     entitlement_spec_request::EntitlementSpecRequest, entitlement_value::EntitlementValue,
-    error_code::ErrorCode, event::Event, event_id::EventId, event_type::EventType,
-    existing_price_ref::ExistingPriceRef, existing_product_ref::ExistingProductRef,
+    error_code::ErrorCode, event::Event, event_change_response::EventChangeResponse,
+    event_id::EventId, event_type::EventType, existing_price_ref::ExistingPriceRef,
+    existing_product_ref::ExistingProductRef,
     external_payment_method_config::ExternalPaymentMethodConfig, extra_component::ExtraComponent,
     extra_recurring_billing_type_enum::ExtraRecurringBillingTypeEnum,
     extra_recurring_fee_structure::ExtraRecurringFeeStructure,
@@ -749,8 +754,9 @@ pub use self::{
     usage_fee_structure::UsageFeeStructure, usage_filter::UsageFilter,
     usage_limit_id::UsageLimitId, usage_model_enum::UsageModelEnum, usage_plan_fee::UsagePlanFee,
     usage_pricing::UsagePricing, usage_pricing_model::UsagePricingModel,
-    usage_response::UsageResponse, volume_plan_pricing::VolumePlanPricing,
-    volume_pricing::VolumePricing, wallet::Wallet, wallet_balance_low_event::WalletBalanceLowEvent,
+    usage_response::UsageResponse, void_event_request::VoidEventRequest,
+    volume_plan_pricing::VolumePlanPricing, volume_pricing::VolumePricing, wallet::Wallet,
+    wallet_balance_low_event::WalletBalanceLowEvent,
     wallet_balance_low_event_data::WalletBalanceLowEventData, wallet_check::WalletCheck,
     wallet_credit_recovered_event::WalletCreditRecoveredEvent,
     wallet_credit_recovered_event_data::WalletCreditRecoveredEventData,

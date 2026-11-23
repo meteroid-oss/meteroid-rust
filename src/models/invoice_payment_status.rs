@@ -11,6 +11,7 @@ pub enum InvoicePaymentStatus {
     Paid,
     Errored,
     Processing,
+    Carried,
     /// A value this version of the SDK does not know yet.
     Unknown(String),
 }
@@ -25,6 +26,7 @@ impl InvoicePaymentStatus {
             Self::Paid => "PAID",
             Self::Errored => "ERRORED",
             Self::Processing => "PROCESSING",
+            Self::Carried => "CARRIED",
             Self::Unknown(value) => value,
         }
     }
@@ -38,6 +40,7 @@ impl From<&str> for InvoicePaymentStatus {
             "PAID" => Self::Paid,
             "ERRORED" => Self::Errored,
             "PROCESSING" => Self::Processing,
+            "CARRIED" => Self::Carried,
             other => Self::Unknown(other.to_owned()),
         }
     }
