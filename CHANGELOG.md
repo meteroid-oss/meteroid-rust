@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.31.7](https://github.com/meteroid-oss/meteroid-rust/compare/v0.31.6...v0.31.7) (2026-11-23)
+
+
+### Features
+
+* **api:** add `POST /api/v1/events/{event_id}/amend`, `POST /api/v1/events/{event_id}/void` ([225d413](https://github.com/meteroid-oss/meteroid-rust/commit/225d4137b2798dc0c630d2c7dc43a4fa1a52478f))
+* **api:** update `GET /api/v1/invoices`, `GET /api/v1/invoices/{invoice_id}`, `PATCH /api/v1/invoices/{invoice_id}/custom-properties`, `POST /api/v1/invoices/{invoice_id}/refresh` ([225d413](https://github.com/meteroid-oss/meteroid-rust/commit/225d4137b2798dc0c630d2c7dc43a4fa1a52478f))
+* **api:** update SDKs to meteroid 0.1.0 ([#30](https://github.com/meteroid-oss/meteroid-rust/issues/30)) ([225d413](https://github.com/meteroid-oss/meteroid-rust/commit/225d4137b2798dc0c630d2c7dc43a4fa1a52478f))
+
 ## [0.31.6](https://github.com/meteroid-oss/meteroid-rust/compare/v0.31.5...v0.31.6) (2026-11-22)
 
 
