@@ -7,8 +7,8 @@ pub struct IssueLicenseRequest {
     pub customer_id: String,
 
     /// Ephemeral, for CI and other short-lived installations: the activation code can be used
-    /// any number of times, each activation gets a license of this many hours (1 to 24) for the
-    /// installation activating, and nothing is refreshed. Not with `offline` or `validity_days`.
+    /// by any number of installations, each gets one license of this many hours (1 to 24), never
+    /// renewed. Not with `offline` or `validity_days`.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub ephemeral_hours: Option<i32>,
 
@@ -17,6 +17,12 @@ pub struct IssueLicenseRequest {
     /// not tied to an installation.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub instance_id: Option<String>,
+
+    /// Signed into the license as is, for the licensed software to read: at most 20 entries,
+    /// keys of 1 to 64 characters among `a-z`, `0-9`, `_`, `.` and `-`, values up to 256
+    /// characters. Reserved: `environment` only takes `non_production`.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, String>>,
 
     /// Delivers the license at once as a signed offline license, for an installation that
     /// can't reach the license server: no activation code, no refresh. Default: false.
@@ -46,6 +52,7 @@ impl IssueLicenseRequest {
             customer_id: customer_id.into(),
             ephemeral_hours: None,
             instance_id: None,
+            metadata: None,
             offline: None,
             subscription_id: None,
             validity_days: None,
@@ -64,6 +71,16 @@ impl IssueLicenseRequest {
     #[must_use]
     pub fn instance_id(mut self, instance_id: impl Into<String>) -> Self {
         self.instance_id = Some(instance_id.into());
+        self
+    }
+
+    /// Sets `metadata`.
+    #[must_use]
+    pub fn metadata(
+        mut self,
+        metadata: impl Into<std::collections::HashMap<String, String>>,
+    ) -> Self {
+        self.metadata = Some(metadata.into());
         self
     }
 

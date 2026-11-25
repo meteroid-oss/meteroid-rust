@@ -34,6 +34,9 @@ pub struct License {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub last_refreshed_at: Option<chrono::DateTime<chrono::Utc>>,
 
+    /// Signed into the license as is.
+    pub metadata: std::collections::HashMap<String, String>,
+
     /// Issued as a signed offline license: never activated nor refreshed.
     pub offline: bool,
 
@@ -71,6 +74,7 @@ impl License {
         customer_name: impl Into<String>,
         has_activation_code: bool,
         id: impl Into<LicenseId>,
+        metadata: std::collections::HashMap<String, String>,
         offline: bool,
         revoked_immediately: bool,
         status: LicenseStatus,
@@ -86,6 +90,7 @@ impl License {
             id: id.into(),
             instance_id: None,
             last_refreshed_at: None,
+            metadata,
             offline,
             plan_name: None,
             revoked_at: None,
