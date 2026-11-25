@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.31.8](https://github.com/meteroid-oss/meteroid-rust/compare/v0.31.7...v0.31.8) (2026-11-25)
+
+
+### Features
+
+* **api:** update `GET /api/v1/licenses`, `GET /api/v1/licenses/{license_id}`, `POST /api/v1/licenses`, `POST /api/v1/licenses/{license_id}/revoke` ([3c36e9f](https://github.com/meteroid-oss/meteroid-rust/commit/3c36e9fab4ce2801282bc70053ce661453c3c890))
+* **api:** update SDKs to meteroid 0.1.0 ([#32](https://github.com/meteroid-oss/meteroid-rust/issues/32)) ([3c36e9f](https://github.com/meteroid-oss/meteroid-rust/commit/3c36e9fab4ce2801282bc70053ce661453c3c890))
+
 ## [0.31.7](https://github.com/meteroid-oss/meteroid-rust/compare/v0.31.6...v0.31.7) (2026-11-23)
 
 
